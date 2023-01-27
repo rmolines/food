@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Footer from "./Footer";
 import Header from "./Header";
 
 export default function Layout({ children }) {
@@ -16,19 +17,10 @@ export default function Layout({ children }) {
 				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			{/* <nav className="h-16 border-b-1 w-full flex items-center justify-end gap-x-4 px-8 text-gray-700">
-				<div>
-					<Link href="/creator/">Reviews</Link>
-				</div>
-				<div>
-					<Link href="/creator/account/">
-						<IoPersonCircle size={40} />
-					</Link>
-				</div>
-			</nav> */}
-			<div className="container mx-auto px-4">
+			<div className="container mx-auto px-4 min-h-screen flex justify-between flex-col">
 				<Header />
-				<main>{children}</main>
+				<main className="h-full mb-16">{children}</main>
+				<Footer />
 			</div>
 		</>
 	);

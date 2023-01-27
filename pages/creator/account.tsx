@@ -6,6 +6,7 @@ import {
 } from "@supabase/auth-helpers-react";
 import Avatar from "../../components/Avatar";
 import { useRouter } from "next/router";
+import ProfileModal from "../../components/ProfileModal";
 
 export default function Account() {
 	const supabase = useSupabaseClient();
@@ -71,6 +72,8 @@ export default function Account() {
 				updated_at: new Date().toISOString(),
 			};
 
+			console.log(updates);
+
 			let { error } = await supabase.from("profiles").upsert(updates);
 			if (error) throw error;
 			alert("Profile updated!");
@@ -83,6 +86,25 @@ export default function Account() {
 	}
 
 	if (loading) return;
+
+	return (
+		<ProfileModal
+			prev_username={username}
+			prev_instagram={instagram}
+			prev_full_name={full_name}
+			avatar_url={avatar_url}
+			onUpload={(url) => {
+				setAvatarUrl(url);
+				updateProfile({
+					username,
+					instagram,
+					full_name,
+					avatar_url: url,
+				});
+			}}
+			update_profile={updateProfile}
+		/>
+	);
 
 	return (
 		<div className="bg-gray-100 p-8 rounded gap-y-4 flex flex-col">

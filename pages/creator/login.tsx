@@ -18,5 +18,9 @@ export default function Login() {
 		}
 	}, [router, session]);
 
-	return <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />;
+	return (
+		<div className="flex items-center justify-center">
+			<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
+		</div>
+	);
 }

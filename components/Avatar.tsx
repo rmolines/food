@@ -3,6 +3,9 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "../utils/database.types";
 import Image from "next/image";
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
+import { v4 } from "uuid";
+
+export const revalidate = 0;
 
 export default function Avatar({
 	uid,
@@ -22,7 +25,9 @@ export default function Avatar({
 	const [uploading, setUploading] = useState(false);
 
 	useEffect(() => {
-		if (url) downloadImage(url);
+		if (url) {
+			downloadImage(url);
+		}
 	}, [url]);
 
 	async function downloadImage(path: string) {
@@ -34,6 +39,7 @@ export default function Avatar({
 				throw error;
 			}
 			const url = URL.createObjectURL(data);
+			console.log(url);
 			setAvatarUrl(url);
 		} catch (error) {
 			console.log("Error downloading image: ", error);
@@ -52,8 +58,10 @@ export default function Avatar({
 
 			const file = event.target.files[0];
 			const fileExt = file.name.split(".").pop();
-			const fileName = `${uid}.${fileExt}`;
+			const fileName = `${v4()}.${fileExt}`;
 			const filePath = `${fileName}`;
+
+			console.log(filePath);
 
 			let { error: uploadError } = await supabase.storage
 				.from("avatars")
@@ -73,7 +81,7 @@ export default function Avatar({
 	};
 
 	return (
-		<div className="flex gap-y-2 flex-col">
+		<div className="flex gap-y-4 flex-col">
 			{avatarUrl ? (
 				<Image
 					src={avatarUrl}
@@ -89,12 +97,12 @@ export default function Avatar({
 				/>
 			)}
 			{uploadable && (
-				<div style={{ width: size }}>
+				<div>
 					<label
-						className="bg-gray-800 rounded p-2 text-gray-50 inline-block cursor-pointer"
+						className="cursor-pointer text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-2.5 py-1 mr-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
 						htmlFor="single"
 					>
-						{uploading ? "Uploading ..." : "Upload"}
+						{uploading ? "Carregando..." : "Trocar Foto de Perfil"}
 					</label>
 					<input
 						style={{
