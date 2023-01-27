@@ -17,11 +17,11 @@ export default function Layout({ children }) {
 				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<div className="container mx-auto px-4 min-h-screen flex justify-between flex-col">
+			<div className="container mx-auto px-4 min-h-screen flex justify-start flex-col">
 				<Header />
 				<main className="h-full mb-16">{children}</main>
-				<Footer />
 			</div>
+			<Footer />
 		</>
 	);
 }
