@@ -18,8 +18,10 @@ export default function Layout({ children }) {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<div className="container mx-auto px-4 min-h-screen flex justify-between flex-col">
-				<Header />
-				<main className="h-full mb-16">{children}</main>
+				<div className="flex flex-col grow">
+					<Header />
+					<main className="grow flex flex-col">{children}</main>
+				</div>
 				<Footer />
 			</div>
 		</>

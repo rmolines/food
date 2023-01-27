@@ -49,7 +49,7 @@ function Creator() {
 	if (loading) return;
 
 	return (
-		<div>
+		<div className="flex h-full grow">
 			<ProfileHeader
 				user_id={user.id}
 				avatar_url={avatar_url}

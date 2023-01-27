@@ -72,7 +72,7 @@ export function ReviewGrid() {
 	}
 
 	return (
-		<>
+		<div className="flex flex-col pl-6 border-l grow">
 			<FilterBar
 				onSortClick={onSortClick}
 				showSortDropdown={showSortDropdown}
@@ -83,7 +83,7 @@ export function ReviewGrid() {
 				setChosenFilters={setChosenFilters}
 				chosenFilters={chosenFilters}
 			/>
-			<div className="px-8 sm:px-0 grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 justify-center justify-items-center">
+			<div className="px-8 sm:px-0 grid grid-cols-1 gap-4 mt-4 lg:grid-cols-2 justify-center justify-items-center">
 				{reviews.map((e) => (
 					<Card
 						key={e.id}
@@ -108,6 +108,6 @@ export function ReviewGrid() {
 					/>
 				))}
 			</div>
-		</>
+		</div>
 	);
 }

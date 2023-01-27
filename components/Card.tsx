@@ -62,13 +62,42 @@ function Card({
 		}
 	}, [images_info]);
 
+	// return (
+	// 	<a
+	// 		href="#"
+	// 		className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+	// 	>
+	// 		<Carousel className="min-w-fit">
+	// 			{imagesUrl.map((e) => (
+	// 				<div key={e} className="relative aspect-square min-h-full">
+	// 					<Image
+	// 						className="rounded-t-lg object-cover"
+	// 						src={e}
+	// 						alt=""
+	// 						fill
+	// 					/>
+	// 				</div>
+	// 			))}
+	// 		</Carousel>
+	// 		<div className="flex flex-col justify-between p-4 leading-normal">
+	// 			<h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+	// 				Noteworthy technology acquisitions 2021
+	// 			</h5>
+	// 			<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+	// 				Here are the biggest enterprise technology acquisitions of
+	// 				2021 so far, in reverse chronological order.
+	// 			</p>
+	// 		</div>
+	// 	</a>
+	// );
+
 	return (
-		<div className="inline-flex w-full flex-col bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-			<Carousel className="">
+		<div className="inline-flex w-full bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+			<Carousel className="aspect-square w-48">
 				{imagesUrl.map((e) => (
 					<div key={e} className="relative aspect-square">
 						<Image
-							className="rounded-t-lg object-cover"
+							className="rounded-l-lg object-cover"
 							src={e}
 							alt=""
 							fill
@@ -76,35 +105,36 @@ function Card({
 					</div>
 				))}
 			</Carousel>
-			{/* <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
-				<Carousel>
-					{imagesUrl.map((e) => (
-						<div key={e} className="relative aspect-square">
-							<Image
-								className="rounded-t-lg object-cover"
-								src={e}
-								alt=""
-								fill
-							/>
+			<div className="p-5 flex flex-col justify-between w-full h-48">
+				<div className="flex w-full justify-between">
+					<div className="flex flex-col">
+						<div className="flex flex-col items-startjustify-between">
+							<div className="text-xs text-gray-500 mb-2">
+								{new Date(created_at).toLocaleDateString(
+									"pt-BR"
+								)}
+							</div>
+							<a href="#">
+								<h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+									{restaurant_name}
+								</h5>
+							</a>
 						</div>
-					))}
-				</Carousel>
-			</div> */}
-			<div className="p-5 flex flex-col justify-between ">
-				<div className="flex flex-col items-startjustify-between">
-					<div className="text-xs text-gray-500 mb-2">
-						{new Date(created_at).toLocaleDateString("pt-BR")}
+						<div className="mb-2 text-xs flex text-gray-800">
+							<div className="flex">
+								<div>📍 {`${neighbourhood}, ${city}`}</div>
+								{/* <div className="">{` ${city}`}</div> */}
+							</div>
+						</div>
 					</div>
-					<a href="#">
-						<h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-							{restaurant_name}
-						</h5>
-					</a>
-				</div>
-				<div className="mb-2 text-xs flex text-gray-800">
-					<div className="flex">
-						<div>📍 {`${neighbourhood}, ${city}`}</div>
-						{/* <div className="">{` ${city}`}</div> */}
+					<div className="ml-2">
+						<button
+							onClick={() => setShowModal(true)}
+							className="flex w-fit items-center gap-x-1 px-1.5 text-xs font-medium py-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+						>
+							<BiEdit className="text-lg" />
+							<div>Editar</div>
+						</button>
 					</div>
 				</div>
 				{/* <div className="mb-2 text-xs flex text-gray-800">
@@ -132,16 +162,9 @@ function Card({
 					</span>
 				</div>
 
-				<p className="mb-3 line-clamp-8 font-normal text-gray-700 border-t-1 pt-4 dark:text-gray-400 text-sm">
+				{/* <p className="mb-3 overflow-hidden font-normal text-gray-700 border-t-1 pt-4 dark:text-gray-400 text-sm">
 					{review}
-				</p>
-				<button
-					onClick={() => setShowModal(true)}
-					className="flex w-fit items-center gap-x-1 px-3 text-sm font-medium py-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-				>
-					<BiEdit className="text-lg" />
-					<div>Editar</div>
-				</button>
+				</p> */}
 				{showModal && (
 					<UpdateReviewModal
 						review_id={uuid}
