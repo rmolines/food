@@ -64,15 +64,10 @@ function Card({
 
 	return (
 		<div className="inline-flex w-full flex-col bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-			<Carousel className="">
+			<Carousel className="" slide={false}>
 				{imagesUrl.map((e) => (
 					<div key={e} className="relative aspect-square">
-						<Image
-							className="rounded-t-lg object-cover"
-							src={e}
-							alt=""
-							fill
-						/>
+						<Image className="object-cover" src={e} alt="" fill />
 					</div>
 				))}
 			</Carousel>
@@ -132,9 +127,9 @@ function Card({
 					</span>
 				</div>
 
-				<p className="mb-3 line-clamp-8 font-normal text-gray-700 border-t-1 pt-4 dark:text-gray-400 text-sm">
+				{/* <p className="mb-3 line-clamp-8 font-normal text-gray-700 border-t-1 pt-4 dark:text-gray-400 text-sm">
 					{review}
-				</p>
+				</p> */}
 				<button
 					onClick={() => setShowModal(true)}
 					className="flex w-fit items-center gap-x-1 px-3 text-sm font-medium py-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
