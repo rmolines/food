@@ -83,7 +83,7 @@ export function ReviewGrid() {
 				setChosenFilters={setChosenFilters}
 				chosenFilters={chosenFilters}
 			/>
-			<div className="px-8 sm:px-0 grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 justify-center justify-items-center">
+			<div className="px-8 sm:px-0 grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 justify-center justify-items-center">
 				{reviews.map((e) => (
 					<Card
 						key={e.id}
