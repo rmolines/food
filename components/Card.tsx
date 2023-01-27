@@ -93,7 +93,7 @@ function Card({
 
 	return (
 		<div className="inline-flex w-full bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-			<Carousel className="aspect-square w-48">
+			<Carousel className="aspect-square w-48" slide={false}>
 				{imagesUrl.map((e) => (
 					<div key={e} className="relative aspect-square">
 						<Image
@@ -106,20 +106,25 @@ function Card({
 				))}
 			</Carousel>
 			<div className="p-5 flex flex-col justify-between w-full h-48">
-				<div className="flex w-full justify-between">
-					<div className="flex flex-col">
-						<div className="flex flex-col items-startjustify-between">
-							<div className="text-xs text-gray-500 mb-2">
-								{new Date(created_at).toLocaleDateString(
-									"pt-BR"
-								)}
-							</div>
-							<a href="#">
-								<h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-									{restaurant_name}
-								</h5>
-							</a>
+				<div className="flex flex-col w-full justify-between">
+					<div className="flex justify-between items-center">
+						<div className="text-xs text-gray-500">
+							{new Date(created_at).toLocaleDateString("pt-BR")}
 						</div>
+						<button
+							onClick={() => setShowModal(true)}
+							className="flex w-fit items-center gap-x-1 px-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg  border-gray-200 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+						>
+							<BiEdit className="text-lg" />
+							<div>Editar</div>
+						</button>
+					</div>
+					<div className="flex flex-col items-startjustify-between">
+						<a href="#">
+							<h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+								{restaurant_name}
+							</h5>
+						</a>
 						<div className="mb-2 text-xs flex text-gray-800">
 							<div className="flex">
 								<div>📍 {`${neighbourhood}, ${city}`}</div>
@@ -127,15 +132,7 @@ function Card({
 							</div>
 						</div>
 					</div>
-					<div className="ml-2">
-						<button
-							onClick={() => setShowModal(true)}
-							className="flex w-fit items-center gap-x-1 px-1.5 text-xs font-medium py-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-						>
-							<BiEdit className="text-lg" />
-							<div>Editar</div>
-						</button>
-					</div>
+					<div className="ml-2"></div>
 				</div>
 				{/* <div className="mb-2 text-xs flex text-gray-800">
 					<div>📍</div>
