@@ -47,20 +47,18 @@ function ProfileModal({
 							onSubmit={handleForm}
 							className="grid grid-cols-2 w-full "
 						>
-							<div className="mb-4 border-r flex w-full items-start mx-auto flex-col">
-								<div className="">
-									<div className="text-sm font-medium mb-2">
-										Imagens
-									</div>
-									<div className="inline-flex gap-y-4 flex-col items-center justify-center">
-										<Avatar
-											uploadable
-											uid={user.id}
-											url={avatar_url}
-											size={150}
-											onUpload={onUpload}
-										/>
-									</div>
+							<div className="mb-4 border-r flex w-full mx-auto flex-col">
+								<div className="text-sm font-medium mb-4">
+									Imagens
+								</div>
+								<div className="flex grow mx-auto gap-y-4 flex-col justify-center items-center">
+									<Avatar
+										uploadable
+										uid={user.id}
+										url={avatar_url}
+										size={150}
+										onUpload={onUpload}
+									/>
 								</div>
 							</div>
 							<div className="flex flex-col gap-4 mb-4 items-center">
@@ -123,12 +121,14 @@ function ProfileModal({
 								</div>
 							</div>
 							<div className="col-span-2 border-b mb-4"></div>
+							{/* <div className="col-span-2 flex justify-end"> */}
 							<button
 								type="submit"
 								className="text-white w-fit inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 							>
 								Atualizar perfil
 							</button>
+							{/* </div> */}
 						</form>
 					</div>
 				</div>

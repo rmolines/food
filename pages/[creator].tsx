@@ -1,25 +1,28 @@
-import { ReviewGrid } from "./../../components/ReviewGrid";
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
-import { ProfileHeaderAlt } from "../../components/ProfileHeaderAlt";
+import { useRouter } from "next/router";
+import { ProfileHeaderAlt } from "../components/ProfileHeaderAlt";
+import { ReviewGridAlt } from "../components/ReviewGridAlt";
 
 function Creator() {
 	const supabase = useSupabaseClient();
-	const user = useUser();
 	const [loading, setLoading] = useState(true);
-	const [username, setUsername] = useState(null);
 	const [instagram, setInstagram] = useState(null);
 	const [full_name, setFullName] = useState(null);
 	const [avatar_url, setAvatarUrl] = useState(null);
+	const [userId, setUserId] = useState(null);
 
-	async function getProfile() {
+	const router = useRouter();
+	const username = router.query.creator;
+
+	async function getProfileFromUsername(username: string) {
 		try {
 			setLoading(true);
 
 			let { data, error, status } = await supabase
 				.from("profiles")
-				.select(`username, instagram, avatar_url, full_name`)
-				.eq("id", user.id)
+				.select(`username, instagram, avatar_url, full_name, id`)
+				.eq("username", username)
 				.single();
 
 			if (error && status !== 406) {
@@ -27,10 +30,10 @@ function Creator() {
 			}
 
 			if (data) {
-				setUsername(data.username);
 				setInstagram(data.instagram);
 				setAvatarUrl(data.avatar_url);
 				setFullName(data.full_name);
+				setUserId(data.id);
 			}
 		} catch (error) {
 			console.log(error);
@@ -41,22 +44,22 @@ function Creator() {
 	}
 
 	useEffect(() => {
-		if (user) {
-			getProfile();
+		if (username) {
+			getProfileFromUsername(username);
 		}
-	}, [user]);
+	}, [username]);
 
 	if (loading) return;
 
 	return (
 		<div className="flex flex-col grow">
 			<ProfileHeaderAlt
-				user_id={user.id}
+				user_id={userId}
 				avatar_url={avatar_url}
 				full_name={full_name}
 				instagram={instagram}
 			/>
-			<ReviewGrid />
+			<ReviewGridAlt />
 		</div>
 	);
 	// return <Account session={session} />;

@@ -4,7 +4,7 @@ import { useDetectClickOutside } from "react-detect-click-outside";
 import Card from "./Card";
 import { FilterBar } from "./FilterBar";
 
-export function ReviewGrid() {
+export function ReviewGridAlt() {
 	const supabase = useSupabaseClient();
 	const [reviews, setReviews] = useState([]);
 	const [chosenFilters, setChosenFilters] = useState([]);
@@ -84,7 +84,7 @@ export function ReviewGrid() {
 				setChosenFilters={setChosenFilters}
 				chosenFilters={chosenFilters}
 			/>
-			<div className="px-8 sm:px-0 grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 justify-center justify-items-center">
+			<div className="grid grid-cols-3 gap-2 mt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 justify-center justify-items-center">
 				{reviews.map((e) => (
 					<Card
 						key={e.id}
