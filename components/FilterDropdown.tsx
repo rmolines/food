@@ -103,7 +103,7 @@ const FilterDropdown = forwardRef(function FilterDropdown(
 											htmlFor="checkbox-item-11"
 											className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
 										>
-											{e.name}
+											{e.name} {e.emoji}
 										</label>
 									</div>
 								</li>

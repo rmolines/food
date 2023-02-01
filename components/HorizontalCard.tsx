@@ -1,12 +1,10 @@
 import { Rating } from "@mui/material";
 import { useUser } from "@supabase/auth-helpers-react";
-import { Carousel } from "flowbite-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { BiEdit } from "react-icons/bi";
 import UpdateReviewModal from "./UpdateReviewModal";
 
-function Card({
+function HorizontalCard({
 	images_info,
 	restaurant_name,
 	restaurant_address,
@@ -21,6 +19,8 @@ function Card({
 	uuid,
 	category_id,
 	type_id,
+	emoji,
+	username,
 }: {
 	images_info: string[];
 	restaurant_name: string;
@@ -36,6 +36,8 @@ function Card({
 	uuid: string;
 	category_id: string;
 	type_id: string;
+	emoji: string;
+	username: string;
 }) {
 	const [imagesUrl, setImagesUrl] = useState([]);
 	const [showModal, setShowModal] = useState(false);
@@ -65,53 +67,80 @@ function Card({
 	}, [images_info]);
 
 	return (
-		<div className="inline-flex w-full flex-col bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-			<Carousel className="" slide={false}>
+		<div className="inline-flex w-full h-fit overflow-hidden bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700">
+			{/* <Carousel className="aspect-square w-36 h-32" slide={false}>
 				{imagesUrl.map((e) => (
-					<div key={e} className="relative aspect-square">
-						<Image className="object-cover" src={e} alt="" fill />
+					<div key={e} className="relative h-full w-full">
+						<Image
+							key={e}
+							className="object-cover"
+							src={e}
+							alt=""
+							fill
+						/>
 					</div>
 				))}
-			</Carousel>
-			{/* <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
-				<Carousel>
-					{imagesUrl.map((e) => (
-						<div key={e} className="relative aspect-square">
-							<Image
-								className="rounded-t-lg object-cover"
-								src={e}
-								alt=""
-								fill
-							/>
-						</div>
-					))}
-				</Carousel>
+			</Carousel> */}
+			{/* <div className="rounded-l-lg shrink-0">
+				<Image
+					className="rounded-l-lg"
+					src={imagesUrl[0]}
+					alt=""
+					width={125}
+					height={125}
+				/>
 			</div> */}
-			<div className="p-5 flex flex-col justify-between ">
-				<div className="flex flex-col items-startjustify-between">
-					<div className="text-xs text-gray-500 mb-2">
-						{new Date(created_at).toLocaleDateString("pt-BR")}
+
+			<div className="flex overflow-hidden sm:w-48 w-36 gap-x-2 snap-x snap-mandatory flex-none">
+				{imagesUrl.map((e) => (
+					<div
+						key={e}
+						className="relative h-32 sm:h-40 w-full snap-center flex-none"
+					>
+						<Image
+							key={e}
+							className="object-cover"
+							src={e}
+							alt=""
+							fill
+							// height={75}
+							// width={150}
+						/>
 					</div>
-					<a href="#">
-						<h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+				))}
+			</div>
+			<div className="flex w-full">
+				<div className="flex flex-col justify-center p-2 pl-3 gap-y-1">
+					{/* <div className="flex justify-between items-center">
+						<div className="text-xs text-gray-500">
+							{new Date(created_at).toLocaleDateString("pt-BR")}
+						</div>
+					</div> */}
+					<div className="flex flex-col items-startjustify-between">
+						<h5 className="font-medium text-gray-900 dark:text-white truncate">
 							{restaurant_name}
 						</h5>
-					</a>
-				</div>
-				<div className="mb-2 text-xs flex text-gray-800">
-					<div className="flex">
-						<div>📍 {`${neighbourhood}, ${city}`}</div>
-						{/* <div className="">{` ${city}`}</div> */}
+						<div className="text-xs flex text-gray-500 font-light truncate">
+							<div className="flex">
+								<div>📍 {`${neighbourhood}, ${city}`}</div>
+							</div>
+						</div>
 					</div>
-				</div>
-				{/* <div className="mb-2 text-xs flex text-gray-800">
+					<div className="ml-2"></div>
+					{/* <div className="mb-2 text-xs flex text-gray-800">
 					<div>📍</div>
 					<div className="flex flex-col">
 						<div>{neighbourhood}</div>
 						<div>{city}</div>
 					</div>
 				</div> */}
-				<div className="mb-2">
+					<div className="flex sm:flex-wrap gap-y-2">
+						<span className="text-gray-500 text-xs font-light dark:bg-gray-700 dark:text-gray-400">
+							{emoji} {category}
+							{/* • {type} */}
+						</span>
+					</div>
+
 					<Rating
 						name="half-rating"
 						value={rating}
@@ -120,45 +149,27 @@ function Card({
 						precision={0.5}
 					/>
 				</div>
-				<div className="flex flex-wrap gap-y-2 mb-4">
-					<span className="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
-						{category}
-					</span>
-					<span className="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
-						{type}
-					</span>
-				</div>
-
-				{/* <p className="mb-3 line-clamp-8 font-normal text-gray-700 border-t-1 pt-4 dark:text-gray-400 text-sm">
+				{/* <p className="mb-3 overflow-hidden font-normal text-gray-700 border-t-1 pt-4 dark:text-gray-400 text-sm">
 					{review}
 				</p> */}
-				{user && (
-					<button
-						onClick={() => setShowModal(true)}
-						className="flex w-fit items-center gap-x-1 px-3 text-sm font-medium py-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-					>
-						<BiEdit className="text-lg" />
-						<div>Editar</div>
-					</button>
-				)}
-				{showModal && (
-					<UpdateReviewModal
-						review_id={uuid}
-						prev_category={category_id}
-						prev_rating={rating}
-						prev_review={review}
-						prev_type={type_id}
-						showModal={showModal}
-						setShowModal={setShowModal}
-						images_preview={imagesUrl}
-						restaurant_name={restaurant_name}
-						restaurant_address={restaurant_address}
-						created_at={created_at}
-					/>
-				)}
 			</div>
+			{showModal && (
+				<UpdateReviewModal
+					review_id={uuid}
+					prev_category={category_id}
+					prev_rating={rating}
+					prev_review={review}
+					prev_type={type_id}
+					showModal={showModal}
+					setShowModal={setShowModal}
+					images_preview={imagesUrl}
+					restaurant_name={restaurant_name}
+					restaurant_address={restaurant_address}
+					created_at={created_at}
+				/>
+			)}
 		</div>
 	);
 }
 
-export default Card;
+export default HorizontalCard;

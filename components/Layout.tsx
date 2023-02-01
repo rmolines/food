@@ -17,11 +17,13 @@ export default function Layout({ children }) {
 				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<div className="container xl:max-w-6xl mx-auto px-4 min-h-screen flex justify-start flex-col">
+			{/* <div className="bg-[url('/gradient.svg')] bg-hero bg-no-repeat bg-cover bg-center bg-fixed"> */}
+			<div className="container max-w-6xl mx-auto px-4 min-h-screen flex justify-start flex-col">
 				<Header />
-				<main className="h-full mb-16">{children}</main>
+				<main className="grow flex flex-col">{children}</main>
+				<Footer />
 			</div>
-			<Footer />
+			{/* </div> */}
 		</>
 	);
 }

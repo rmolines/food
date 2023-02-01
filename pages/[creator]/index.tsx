@@ -1,8 +1,8 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { ProfileHeaderAlt } from "../components/ProfileHeaderAlt";
-import { ReviewGridAlt } from "../components/ReviewGridAlt";
+import { ProfileHeaderAlt } from "../../components/ProfileHeaderAlt";
+import { ReviewGridAlt } from "../../components/ReviewGridAlt";
 
 function Creator() {
 	const supabase = useSupabaseClient();
@@ -43,6 +43,23 @@ function Creator() {
 		}
 	}
 
+	async function fillCategories() {
+		try {
+			setLoading(true);
+
+			const data = {};
+
+			let { error } = await supabase.from("reviews").insert(data);
+			if (error) throw error;
+			alert("Review criada!");
+			router.reload();
+		} catch (error) {
+			alert("Error creating review!");
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	useEffect(() => {
 		if (username) {
 			getProfileFromUsername(username);
@@ -53,13 +70,15 @@ function Creator() {
 
 	return (
 		<div className="flex flex-col grow">
-			<ProfileHeaderAlt
-				user_id={userId}
-				avatar_url={avatar_url}
-				full_name={full_name}
-				instagram={instagram}
-			/>
-			<ReviewGridAlt />
+			<div className="mt-4">
+				<ProfileHeaderAlt
+					user_id={userId}
+					avatar_url={avatar_url}
+					full_name={full_name}
+					instagram={instagram}
+				/>
+			</div>
+			<ReviewGridAlt username={username} />
 		</div>
 	);
 	// return <Account session={session} />;

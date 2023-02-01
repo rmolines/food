@@ -1,16 +1,18 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
-import Card from "./Card";
 import { FilterBar } from "./FilterBar";
+import HorizontalCard from "./HorizontalCard";
 
-export function ReviewGridAlt() {
+export function ReviewGridAlt({ username }: { username: string }) {
 	const supabase = useSupabaseClient();
 	const [reviews, setReviews] = useState([]);
 	const [chosenFilters, setChosenFilters] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
 	const [showSortDropdown, setShowSortDropdown] = useState(false);
+	const [chosenReview, setChosenReview] = useState(-1);
 
 	const filterRef = useDetectClickOutside({
 		onTriggered: () => setShowFilterDropdown(false),
@@ -39,7 +41,7 @@ export function ReviewGridAlt() {
 				let { data, error, status } = await supabase
 					.from("reviews")
 					.select(
-						`review, images_info, category(name, id), type(name, id), restaurant, rating, uuid, created_at`
+						`review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at`
 					)
 					.in("category", chosenFilters)
 					.order("created_at", { ascending: false });
@@ -53,7 +55,7 @@ export function ReviewGridAlt() {
 				let { data, error, status } = await supabase
 					.from("reviews")
 					.select(
-						`review, images_info, category(name, id), type(name, id), restaurant, rating, uuid, created_at`
+						`review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at`
 					)
 					.order("created_at", { ascending: false });
 
@@ -72,8 +74,7 @@ export function ReviewGridAlt() {
 	}
 
 	return (
-		<div className="border-t">
-			{/* <div className="bg-gray-100 px-3 rounded-lg border border-gray-200 pb-3"> */}
+		<div className="flex flex-col grow max-w-lg mx-auto w-full ">
 			<FilterBar
 				onSortClick={onSortClick}
 				showSortDropdown={showSortDropdown}
@@ -84,29 +85,40 @@ export function ReviewGridAlt() {
 				setChosenFilters={setChosenFilters}
 				chosenFilters={chosenFilters}
 			/>
-			<div className="grid grid-cols-3 gap-2 mt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 justify-center justify-items-center">
-				{reviews.map((e) => (
-					<Card
+			<div className="grid grid-cols-1 gap-4 mt-4 justify-center justify-items-center">
+				{reviews.map((e, ind) => (
+					<Link
 						key={e.id}
-						images_info={e.images_info}
-						review={e.review}
-						rating={e.rating}
-						category={e.category.name}
-						restaurant_address={
-							e.restaurant.value.structured_formatting
-								.secondary_text
-						}
-						restaurant_name={
-							e.restaurant.value.structured_formatting.main_text
-						}
-						type={e.type.name}
-						created_at={e.created_at}
-						neighbourhood={e.restaurant.value.terms[2].value}
-						city={e.restaurant.value.terms[3].value}
-						uuid={e.uuid}
-						category_id={e.category.id}
-						type_id={e.type.id}
-					/>
+						href={"/" + username + "/" + e.uuid}
+						className="w-full"
+					>
+						<HorizontalCard
+							key={e.id}
+							images_info={e.images_info}
+							review={e.review}
+							rating={e.rating}
+							category={e.category.name}
+							restaurant_address={
+								e.restaurant.value.structured_formatting
+									.secondary_text
+							}
+							restaurant_name={
+								e.restaurant.value.structured_formatting
+									.main_text
+							}
+							type={e.type.name}
+							created_at={e.created_at}
+							neighbourhood={e.restaurant.value.terms[2].value}
+							city={e.restaurant.value.terms[3].value}
+							uuid={e.uuid}
+							category_id={e.category.id}
+							type_id={e.type.id}
+							emoji={e.category.emoji}
+							username={username}
+							index={ind}
+							setChosenReview={setChosenReview}
+						/>
+					</Link>
 				))}
 			</div>
 		</div>

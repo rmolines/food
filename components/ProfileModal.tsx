@@ -1,6 +1,7 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { IoArrowBack } from "react-icons/io5";
 import Avatar from "./Avatar";
 
 function ProfileModal({
@@ -37,8 +38,14 @@ function ProfileModal({
 					{/* <!-- Modal content --> */}
 					<div className="relative p-4 bg-white rounded-lg dark:bg-gray-800 sm:p-5">
 						{/* <!-- Modal header --> */}
-						<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-							<h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+						<div className="flex justify-start items-center gap-x-2 pb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+							<button
+								className=" rounded-full"
+								onClick={() => router.back()}
+							>
+								<IoArrowBack className="text-2xl" />
+							</button>
+							<h3 className="text-lg align-baseline font-semibold text-gray-900 dark:text-white">
 								Editar Perfil
 							</h3>
 						</div>

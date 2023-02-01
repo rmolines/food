@@ -88,22 +88,24 @@ export default function Account() {
 	if (loading) return;
 
 	return (
-		<ProfileModal
-			prev_username={username}
-			prev_instagram={instagram}
-			prev_full_name={full_name}
-			avatar_url={avatar_url}
-			onUpload={(url) => {
-				setAvatarUrl(url);
-				updateProfile({
-					username,
-					instagram,
-					full_name,
-					avatar_url: url,
-				});
-			}}
-			update_profile={updateProfile}
-		/>
+		<>
+			<ProfileModal
+				prev_username={username}
+				prev_instagram={instagram}
+				prev_full_name={full_name}
+				avatar_url={avatar_url}
+				onUpload={(url) => {
+					setAvatarUrl(url);
+					updateProfile({
+						username,
+						instagram,
+						full_name,
+						avatar_url: url,
+					});
+				}}
+				update_profile={updateProfile}
+			/>
+		</>
 	);
 
 	return (

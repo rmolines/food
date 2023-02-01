@@ -1,8 +1,9 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
-import Card from "./Card";
 import { FilterBar } from "./FilterBar";
+import HorizontalCard from "./HorizontalCard";
 
 export function ReviewGrid() {
 	const supabase = useSupabaseClient();
@@ -39,7 +40,7 @@ export function ReviewGrid() {
 				let { data, error, status } = await supabase
 					.from("reviews")
 					.select(
-						`review, images_info, category(name, id), type(name, id), restaurant, rating, uuid, created_at`
+						`review, images_info, category(name, id), type(name, id), restaurant, rating, uuid, created_at, creator(username)`
 					)
 					.in("category", chosenFilters)
 					.order("created_at", { ascending: false });
@@ -53,7 +54,7 @@ export function ReviewGrid() {
 				let { data, error, status } = await supabase
 					.from("reviews")
 					.select(
-						`review, images_info, category(name, id), type(name, id), restaurant, rating, uuid, created_at`
+						`review, images_info, category(name, id), type(name, id), restaurant, rating, uuid, created_at, creator(username)`
 					)
 					.order("created_at", { ascending: false });
 
@@ -72,7 +73,7 @@ export function ReviewGrid() {
 	}
 
 	return (
-		<div className="border-t">
+		<>
 			{/* <div className="bg-gray-100 px-3 rounded-lg border border-gray-200 pb-3"> */}
 			<FilterBar
 				onSortClick={onSortClick}
@@ -84,31 +85,37 @@ export function ReviewGrid() {
 				setChosenFilters={setChosenFilters}
 				chosenFilters={chosenFilters}
 			/>
-			<div className="px-8 sm:px-0 grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 justify-center justify-items-center">
+			<div className="grid grid-cols-1 gap-4 mt-4 mx-auto w-full justify-center justify-items-center max-w-lg">
 				{reviews.map((e) => (
-					<Card
+					<Link
 						key={e.id}
-						images_info={e.images_info}
-						review={e.review}
-						rating={e.rating}
-						category={e.category.name}
-						restaurant_address={
-							e.restaurant.value.structured_formatting
-								.secondary_text
-						}
-						restaurant_name={
-							e.restaurant.value.structured_formatting.main_text
-						}
-						type={e.type.name}
-						created_at={e.created_at}
-						neighbourhood={e.restaurant.value.terms[2].value}
-						city={e.restaurant.value.terms[3].value}
-						uuid={e.uuid}
-						category_id={e.category.id}
-						type_id={e.type.id}
-					/>
+						href={"/" + e.creator.username + "/" + e.uuid}
+						className="w-full"
+					>
+						<HorizontalCard
+							images_info={e.images_info}
+							review={e.review}
+							rating={e.rating}
+							category={e.category.name}
+							restaurant_address={
+								e.restaurant.value.structured_formatting
+									.secondary_text
+							}
+							restaurant_name={
+								e.restaurant.value.structured_formatting
+									.main_text
+							}
+							type={e.type.name}
+							created_at={e.created_at}
+							neighbourhood={e.restaurant.value.terms[2].value}
+							city={e.restaurant.value.terms[3].value}
+							uuid={e.uuid}
+							category_id={e.category.id}
+							type_id={e.type.id}
+						/>
+					</Link>
 				))}
 			</div>
-		</div>
+		</>
 	);
 }
