@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import ReviewModal from "./ReviewModal";
-import { MdOutlineIosShare } from "react-icons/md";
+import Avatar from "./Avatar";
 
 function Header() {
 	const [showModal, setShowModal] = useState(false);
@@ -166,11 +166,10 @@ function Header() {
 									</Link>
 								</div>
 								<div className="items-center lg:order-2 hidden sm:flex">
-									<button
+									{/* <button
 										type="button"
 										className="inline-flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
 										onClick={() => {
-											router.push("/creator/");
 											setShowModal(true);
 										}}
 									>
@@ -205,28 +204,9 @@ function Header() {
 											className="text-lg"
 										/>
 										Compartilhar
-										{/* <div
-										role="tooltip"
-										className="absolute z-10 inline-block w-64 text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800"
-									>
-										<div className="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-											<h3 className="font-semibold text-gray-900 dark:text-white">
-												Popover bottom
-											</h3>
-										</div>
-										<div className="px-3 py-2">
-											<p>
-												And here's some amazing content.
-												It's very engaging. Right?
-											</p>
-										</div>
-									</div> */}
-									</button>
-									{/* <button className="text-2xl hover:bg-gray-200 focus:ring-4 focus:ring-primary-300 p-1 rounded-lg">
-									<RiShareBoxFill />
-								</button> */}
+									</button> */}
 									<div className="relative" ref={ref}>
-										{/* <button
+										<button
 											type="button"
 											className="flex mx-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
 											id="user-menu-button"
@@ -240,10 +220,13 @@ function Header() {
 												Open user menu
 											</span>
 											<Avatar
+												uid={user.id}
 												url={avatar_url}
-												size={40}
+												size={50}
+												uploadable={false}
+												onUpload={() => {}}
 											/>
-										</button> */}
+										</button>
 										{/* <!-- Dropdown menu --> */}
 										{showDropdown && (
 											<div
@@ -270,13 +253,15 @@ function Header() {
 														}
 													>
 														<Link
-															href="/creator/account/"
+															href={
+																"/" + username
+															}
 															className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
 														>
 															Meu perfil
 														</Link>
 													</li>
-													<li
+													{/* <li
 														onClick={() =>
 															setShowDropdown(
 																false
@@ -284,12 +269,14 @@ function Header() {
 														}
 													>
 														<Link
-															href="/creator/"
+															href={
+																"/" + username
+															}
 															className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
 														>
 															Minhas reviews
 														</Link>
-													</li>
+													</li> */}
 												</ul>
 												<ul
 													className="py-1 font-light text-gray-500 dark:text-gray-400"

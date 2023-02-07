@@ -84,7 +84,7 @@ function Creator() {
 	console.log(username, loggedInUsername);
 
 	return (
-		<div className="flex flex-col grow gap-y-4">
+		<div className="flex flex-col grow gap-y-12">
 			<div className="mt-4">
 				<ProfileHeaderAlt
 					user_id={userId}
