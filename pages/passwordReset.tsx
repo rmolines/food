@@ -1,5 +1,4 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { supabase } from "@supabase/auth-ui-react/dist/esm/common/theming";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
