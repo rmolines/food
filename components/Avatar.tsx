@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Database } from "../utils/database.types";
 import Image from "next/image";
-type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 import { v4 } from "uuid";
-
-export const revalidate = 0;
+import { Database, Profiles } from "../types/supabase";
 
 export default function Avatar({
 	uid,

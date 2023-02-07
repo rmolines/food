@@ -2,13 +2,14 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
-import { FilterBar } from "./FilterBar";
+import { Reviews } from "../types/supabase";
+import FilterDropdown from "./FilterDropdown";
 import HorizontalCard from "./HorizontalCard";
 
 export function ReviewGridAlt({ username }: { username: string }) {
 	const supabase = useSupabaseClient();
-	const [reviews, setReviews] = useState([]);
-	const [chosenFilters, setChosenFilters] = useState([]);
+	const [reviews, setReviews] = useState<Reviews[]>();
+	const [chosenFilters, setChosenFilters] = useState<number[]>();
 	const [loading, setLoading] = useState(true);
 	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
 	const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -17,13 +18,6 @@ export function ReviewGridAlt({ username }: { username: string }) {
 	const filterRef = useDetectClickOutside({
 		onTriggered: () => setShowFilterDropdown(false),
 	});
-	const sortRef = useDetectClickOutside({
-		onTriggered: () => setShowSortDropdown(false),
-	});
-
-	function onSortClick() {
-		setShowSortDropdown((prevState) => !prevState);
-	}
 
 	function onFilterClick() {
 		setShowFilterDropdown((prevState) => !prevState);
@@ -37,7 +31,7 @@ export function ReviewGridAlt({ username }: { username: string }) {
 		try {
 			setLoading(true);
 
-			if (chosenFilters.length > 0) {
+			if (chosenFilters && chosenFilters.length > 0) {
 				let { data, error, status } = await supabase
 					.from("reviews")
 					.select(
@@ -74,52 +68,42 @@ export function ReviewGridAlt({ username }: { username: string }) {
 	}
 
 	return (
-		<div className="flex flex-col grow max-w-lg mx-auto w-full ">
-			<FilterBar
-				onSortClick={onSortClick}
-				showSortDropdown={showSortDropdown}
-				sortRef={sortRef}
-				onFilterClick={onFilterClick}
-				showFilterDropdown={showFilterDropdown}
-				filterRef={filterRef}
-				setChosenFilters={setChosenFilters}
-				chosenFilters={chosenFilters}
-			/>
-			<div className="grid grid-cols-1 gap-4 mt-4 justify-center justify-items-center">
-				{reviews.map((e, ind) => (
-					<Link
-						key={e.id}
-						href={"/" + username + "/" + e.uuid}
-						className="w-full"
-					>
-						<HorizontalCard
-							key={e.id}
-							images_info={e.images_info}
-							review={e.review}
-							rating={e.rating}
-							category={e.category.name}
-							restaurant_address={
-								e.restaurant.value.structured_formatting
-									.secondary_text
-							}
-							restaurant_name={
-								e.restaurant.value.structured_formatting
-									.main_text
-							}
-							type={e.type.name}
-							created_at={e.created_at}
-							neighbourhood={e.restaurant.value.terms[2].value}
-							city={e.restaurant.value.terms[3].value}
-							uuid={e.uuid}
-							category_id={e.category.id}
-							type_id={e.type.id}
-							emoji={e.category.emoji}
-							username={username}
-							index={ind}
-							setChosenReview={setChosenReview}
-						/>
-					</Link>
-				))}
+		<div className="flex flex-col grow max-w-lg mx-auto w-full">
+			<div className="flex justify-end items-center gap-x-2">
+				<FilterDropdown
+					onClick={onFilterClick}
+					showDropdown={showFilterDropdown}
+					ref={filterRef}
+					setChosenFilters={setChosenFilters}
+					chosenFilters={chosenFilters}
+				/>
+			</div>
+			<div className="grid grid-cols-1 gap-y-3 mt-4 justify-center justify-items-center">
+				{reviews &&
+					reviews.map((review, ind) => (
+						<Link
+							key={review.uuid}
+							href={username + "/" + review.uuid}
+							className="w-full"
+						>
+							<HorizontalCard
+								key={review.uuid}
+								review={review}
+								restaurant_address={
+									review.restaurant?.value
+										.structured_formatting.secondary_text
+								}
+								restaurant_name={
+									review.restaurant?.value
+										.structured_formatting.main_text
+								}
+								neighbourhood={
+									review.restaurant?.value.terms[2].value
+								}
+								city={review.restaurant?.value.terms[3].value}
+							/>
+						</Link>
+					))}
 			</div>
 		</div>
 	);

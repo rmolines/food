@@ -3,21 +3,22 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ProfileHeaderAlt } from "../../components/ProfileHeaderAlt";
 import Review from "../../components/Review";
-import Link from "next/link";
+import { Reviews } from "../../types/supabase";
 
 function RestaurantReview() {
 	const supabase = useSupabaseClient();
+	const user = useUser();
 	const [loading, setLoading] = useState(true);
-	const [instagram, setInstagram] = useState(null);
-	const [full_name, setFullName] = useState(null);
-	const [avatar_url, setAvatarUrl] = useState(null);
-	const [userId, setUserId] = useState(null);
-	const [review, setReview] = useState(null);
+	const [instagram, setInstagram] = useState();
+	const [full_name, setFullName] = useState();
+	const [avatar_url, setAvatarUrl] = useState();
+	const [userId, setUserId] = useState();
+	const [review, setReview] = useState<Reviews>();
+	const [loggedInUsername, setLoggedInUsername] = useState<string>();
 
 	const router = useRouter();
 	const username = router.query.creator;
 	const uuid = router.query.restaurant;
-	const user = useUser();
 
 	async function getProfileFromUsername(username: string) {
 		try {
@@ -64,6 +65,31 @@ function RestaurantReview() {
 		}
 	}
 
+	async function getLoggedInUsername() {
+		try {
+			setLoading(true);
+
+			let { data, error, status } = await supabase
+				.from("profiles")
+				.select(`username`)
+				.eq("id", user?.id)
+				.single();
+
+			if (error && status !== 406) {
+				throw error;
+			}
+
+			if (data) {
+				setLoggedInUsername(data.username);
+			}
+		} catch (error) {
+			console.log(error);
+			alert("Error loading username!");
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	async function getData(uuid: string, username: string) {
 		await getProfileFromUsername(username);
 		await getReview(uuid);
@@ -72,7 +98,10 @@ function RestaurantReview() {
 
 	useEffect(() => {
 		if (username && uuid) {
-			getData(uuid, username);
+			getData(uuid.toString(), username.toString());
+		}
+		if (user) {
+			getLoggedInUsername();
 		}
 	}, [username]);
 
@@ -80,41 +109,37 @@ function RestaurantReview() {
 
 	return (
 		<div className="flex flex-col grow">
-			<Link href={"/" + username} className="my-4">
+			<div className="mt-4">
 				<ProfileHeaderAlt
 					user_id={userId}
 					avatar_url={avatar_url}
 					full_name={full_name}
 					instagram={instagram}
+					isLoggedInProfile={username === loggedInUsername}
 				/>
-			</Link>
+			</div>
 
 			{/* <button className="p-3 rounded-full text-xl h-fit w-fit mb-2">
 				<IoArrowBack />
 			</button> */}
-			<div className="max-w-xl mx-auto mt-8">
-				<Review
-					key={review.id}
-					images_info={review.images_info}
-					review={review.review}
-					rating={review.rating}
-					category={review.category.name}
-					restaurant_address={
-						review.restaurant.value.structured_formatting
-							.secondary_text
-					}
-					restaurant_name={
-						review.restaurant.value.structured_formatting.main_text
-					}
-					type={review.type.name}
-					created_at={review.created_at}
-					neighbourhood={review.restaurant.value.terms[2].value}
-					city={review.restaurant.value.terms[3].value}
-					uuid={review.uuid}
-					category_id={review.category.id}
-					type_id={review.type.id}
-					emoji={review.category.emoji}
-				/>
+			<div className="max-w-xl mx-auto mt-8 w-full">
+				{review && (
+					<Review
+						key={review.uuid}
+						review={review}
+						restaurant_address={
+							review.restaurant?.value.structured_formatting
+								.secondary_text
+						}
+						restaurant_name={
+							review.restaurant?.value.structured_formatting
+								.main_text
+						}
+						neighbourhood={review.restaurant?.value.terms[2].value}
+						city={review.restaurant?.value.terms[3].value}
+						isLoggedInProfile={username === loggedInUsername}
+					/>
+				)}
 			</div>
 		</div>
 	);

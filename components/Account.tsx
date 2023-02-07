@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import {
+	useUser,
+	useSupabaseClient,
+	useSession,
+} from "@supabase/auth-helpers-react";
 
-export default function Account({ session }) {
+export default function Account() {
 	const supabase = useSupabaseClient();
 	const user = useUser();
+	const session = useSession();
 	const [loading, setLoading] = useState(true);
-	const [username, setUsername] = useState(null);
-	const [website, setWebsite] = useState(null);
-	const [avatar_url, setAvatarUrl] = useState(null);
+	const [username, setUsername] = useState<string>();
+	const [website, setWebsite] = useState<string>();
+	const [avatar_url, setAvatarUrl] = useState<string>();
 
 	useEffect(() => {
 		getProfile();
@@ -20,7 +25,7 @@ export default function Account({ session }) {
 			let { data, error, status } = await supabase
 				.from("profiles")
 				.select(`username, website, avatar_url`)
-				.eq("id", user.id)
+				.eq("id", user?.id)
 				.single();
 
 			if (error && status !== 406) {
@@ -40,12 +45,20 @@ export default function Account({ session }) {
 		}
 	}
 
-	async function updateProfile({ username, website, avatar_url }) {
+	async function updateProfile({
+		username,
+		website,
+		avatar_url,
+	}: {
+		username: string | undefined;
+		website: string | undefined;
+		avatar_url: string | undefined;
+	}) {
 		try {
 			setLoading(true);
 
 			const updates = {
-				id: user.id,
+				id: user?.id,
 				username,
 				website,
 				avatar_url,
@@ -62,6 +75,8 @@ export default function Account({ session }) {
 			setLoading(false);
 		}
 	}
+
+	if (!session) return;
 
 	return (
 		<div className="bg-gray-400">

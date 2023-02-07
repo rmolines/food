@@ -1,17 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import Rating from "@mui/material/Rating";
-import { FileInfo, UploadcareAuthSchema } from "@uploadcare/rest-client";
+import { FileInfo } from "@uploadcare/rest-client";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { Widget } from "@uploadcare/react-widget";
 import { IoIosImages } from "react-icons/io";
 import Image from "next/image";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-
-const uploadcareAuthSchema = new UploadcareAuthSchema({
-	publicKey: "1c38a5dddc184f1a73ef",
-	secretKey: "980b8e2e18b99c9ac006",
-});
 
 function ReviewModal({
 	showModal,
@@ -47,12 +42,20 @@ function ReviewModal({
 		images_info,
 		title,
 		type,
+	}: {
+		restaurant: string;
+		category: string;
+		rating: string;
+		review: string;
+		images_info: string;
+		title: string;
+		type: string;
 	}) {
 		try {
 			setLoading(true);
 
 			const data = {
-				creator_id: user.id,
+				creator: user?.id,
 				restaurant,
 				category,
 				rating,
@@ -67,6 +70,7 @@ function ReviewModal({
 			alert("Review criada!");
 			router.reload();
 		} catch (error) {
+			console.log(error);
 			alert("Error creating review!");
 		} finally {
 			setLoading(false);
@@ -270,7 +274,10 @@ function ReviewModal({
 											Restaurante
 										</label>
 										<GooglePlacesAutocomplete
-											apiKey="AIzaSyCp83P3m4KBOOa73ZaP0DuOGRe9DeuOtXY"
+											apiKey={
+												process.env
+													.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY
+											}
 											apiOptions={{
 												language: "pt-BR",
 												region: "BR",

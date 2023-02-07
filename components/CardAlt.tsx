@@ -3,42 +3,26 @@ import { useUser } from "@supabase/auth-helpers-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
+import { Reviews } from "../types/supabase";
 import UpdateReviewModal from "./UpdateReviewModal";
 
 function CardAlt({
-	images_info,
+	review,
 	restaurant_name,
 	restaurant_address,
-	review,
-	rating,
-	title,
-	type,
-	category,
-	created_at,
 	neighbourhood,
 	city,
-	uuid,
-	category_id,
-	type_id,
 }: {
-	images_info: string[];
+	review: Reviews;
 	restaurant_name: string;
 	restaurant_address: string;
-	review: string;
-	title: string;
-	rating: number;
-	type: string;
-	category: string;
-	created_at: string;
 	neighbourhood: string;
 	city: string;
-	uuid: string;
-	category_id: string;
-	type_id: string;
 }) {
-	const [imagesUrl, setImagesUrl] = useState([]);
+	const [imagesUrl, setImagesUrl] = useState<string[]>();
 	const [showModal, setShowModal] = useState(false);
 	const user = useUser();
+	const { images_info } = review;
 
 	// useEffect(() => {
 	// 	const script = document.createElement("script");
@@ -74,22 +58,23 @@ function CardAlt({
 				))}
 			</Carousel> */}
 			<div className="flex overflow-x-scroll gap-x-2  snap-x snap-mandatory">
-				{imagesUrl.map((e) => (
-					<div
-						key={e}
-						className="relative h-48 w-full snap-start flex-none"
-					>
-						<Image
+				{imagesUrl &&
+					imagesUrl.map((e) => (
+						<div
 							key={e}
-							className="object-cover rounded-t-lg"
-							src={e}
-							alt=""
-							fill
-							// height={75}
-							// width={150}
-						/>
-					</div>
-				))}
+							className="relative h-48 w-full snap-start flex-none"
+						>
+							<Image
+								key={e}
+								className="object-cover rounded-t-lg"
+								src={e}
+								alt=""
+								fill
+								// height={75}
+								// width={150}
+							/>
+						</div>
+					))}
 			</div>
 			{/* <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
 				<Carousel>
@@ -128,7 +113,7 @@ function CardAlt({
 					</div>
 				</div> */}
 				<span className="text-xs text-gray-500 mr-2 rounded dark:bg-gray-700 dark:text-gray-400">
-					$$$ • {category} • {type}
+					$$$ • {review.category.name} • {review.type.name}
 				</span>
 				{/* <div className="flex flex-wrap gap-y-2">
 					<span className="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
@@ -140,7 +125,7 @@ function CardAlt({
 				</div> */}
 				<Rating
 					name="half-rating"
-					value={rating}
+					value={review.rating}
 					size="small"
 					readOnly
 					precision={0.5}
@@ -160,17 +145,12 @@ function CardAlt({
 				)}
 				{showModal && (
 					<UpdateReviewModal
-						review_id={uuid}
-						prev_category={category_id}
-						prev_rating={rating}
-						prev_review={review}
-						prev_type={type_id}
+						review={review}
 						showModal={showModal}
 						setShowModal={setShowModal}
-						images_preview={imagesUrl}
+						imagesUrl={imagesUrl}
 						restaurant_name={restaurant_name}
 						restaurant_address={restaurant_address}
-						created_at={created_at}
 					/>
 				)}
 			</div>

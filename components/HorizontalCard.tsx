@@ -1,60 +1,25 @@
 import { Rating } from "@mui/material";
-import { useUser } from "@supabase/auth-helpers-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Reviews } from "../types/supabase";
 import UpdateReviewModal from "./UpdateReviewModal";
 
 function HorizontalCard({
-	images_info,
+	review,
 	restaurant_name,
 	restaurant_address,
-	review,
-	rating,
-	title,
-	type,
-	category,
-	created_at,
 	neighbourhood,
 	city,
-	uuid,
-	category_id,
-	type_id,
-	emoji,
-	username,
 }: {
-	images_info: string[];
+	review: Reviews;
 	restaurant_name: string;
 	restaurant_address: string;
-	review: string;
-	title: string;
-	rating: number;
-	type: string;
-	category: string;
-	created_at: string;
 	neighbourhood: string;
 	city: string;
-	uuid: string;
-	category_id: string;
-	type_id: string;
-	emoji: string;
-	username: string;
 }) {
-	const [imagesUrl, setImagesUrl] = useState([]);
+	const [imagesUrl, setImagesUrl] = useState<string[]>();
 	const [showModal, setShowModal] = useState(false);
-	const user = useUser();
-
-	// useEffect(() => {
-	// 	const script = document.createElement("script");
-
-	// 	script.src = "/node_modules/flowbite/dist/flowbite.min.js";
-	// 	script.async = true;
-
-	// 	document.body.appendChild(script);
-
-	// 	return () => {
-	// 		document.body.removeChild(script);
-	// 	};
-	// }, []);
+	const { images_info } = review;
 
 	useEffect(() => {
 		if (images_info) {
@@ -91,42 +56,49 @@ function HorizontalCard({
 				/>
 			</div> */}
 
-			<div className="flex overflow-hidden sm:w-48 w-36 gap-x-2 snap-x snap-mandatory flex-none">
-				{imagesUrl.map((e) => (
-					<div
-						key={e}
-						className="relative h-32 sm:h-40 w-full snap-center flex-none"
-					>
-						<Image
+			<div className="flex overflow-hidden h-32 sm:w-48 w-40 gap-x-2 snap-x snap-mandatory flex-none">
+				{imagesUrl &&
+					imagesUrl.map((e) => (
+						<div
 							key={e}
-							className="object-cover"
-							src={e}
-							alt=""
-							fill
-							// height={75}
-							// width={150}
-						/>
-					</div>
-				))}
+							className="relative h-full w-full snap-center flex-none"
+						>
+							<Image
+								key={e}
+								className="object-cover"
+								src={e}
+								alt=""
+								fill
+							/>
+						</div>
+					))}
 			</div>
 			<div className="flex w-full">
-				<div className="flex flex-col justify-center p-2 pl-3 gap-y-1">
+				<div className="flex flex-col justify-between p-2 pl-3 gap-y-1">
 					{/* <div className="flex justify-between items-center">
 						<div className="text-xs text-gray-500">
 							{new Date(created_at).toLocaleDateString("pt-BR")}
 						</div>
 					</div> */}
 					<div className="flex flex-col items-startjustify-between">
-						<h5 className="font-medium text-gray-900 dark:text-white truncate">
+						<h5 className="font-medium text-gray-900 dark:text-white truncate min-w-0">
 							{restaurant_name}
 						</h5>
-						<div className="text-xs flex text-gray-500 font-light truncate">
+						<div className="text-xs flex text-gray-500 font-light truncate mt-1">
 							<div className="flex">
 								<div>📍 {`${neighbourhood}, ${city}`}</div>
 							</div>
 						</div>
+						{review.category && (
+							<div className="flex sm:flex-wrap gap-y-2 mt-1">
+								<span className="text-gray-500 text-xs font-light dark:bg-gray-700 dark:text-gray-400">
+									{review.category.emoji}{" "}
+									{review.category.name}
+									{/* • {review.type.name} */}
+								</span>
+							</div>
+						)}
 					</div>
-					<div className="ml-2"></div>
 					{/* <div className="mb-2 text-xs flex text-gray-800">
 					<div>📍</div>
 					<div className="flex flex-col">
@@ -134,16 +106,10 @@ function HorizontalCard({
 						<div>{city}</div>
 					</div>
 				</div> */}
-					<div className="flex sm:flex-wrap gap-y-2">
-						<span className="text-gray-500 text-xs font-light dark:bg-gray-700 dark:text-gray-400">
-							{emoji} {category}
-							{/* • {type} */}
-						</span>
-					</div>
 
 					<Rating
 						name="half-rating"
-						value={rating}
+						value={review.rating}
 						size="small"
 						readOnly
 						precision={0.5}
@@ -155,17 +121,12 @@ function HorizontalCard({
 			</div>
 			{showModal && (
 				<UpdateReviewModal
-					review_id={uuid}
-					prev_category={category_id}
-					prev_rating={rating}
-					prev_review={review}
-					prev_type={type_id}
 					showModal={showModal}
 					setShowModal={setShowModal}
-					images_preview={imagesUrl}
+					imagesUrl={imagesUrl}
 					restaurant_name={restaurant_name}
 					restaurant_address={restaurant_address}
-					created_at={created_at}
+					review={review}
 				/>
 			)}
 		</div>

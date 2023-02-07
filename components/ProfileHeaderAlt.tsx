@@ -3,19 +3,34 @@ import Link from "next/link";
 import { IoLogoInstagram } from "react-icons/io5";
 import Avatar from "./Avatar";
 
+type Props = {
+	avatar_url: string;
+	full_name: string;
+	instagram: string;
+	user_id: string;
+	isLoggedInProfile: boolean;
+};
+
 export function ProfileHeaderAlt({
 	avatar_url,
 	full_name,
 	instagram,
 	user_id,
-}) {
+	isLoggedInProfile,
+}: Props) {
 	const supabase = useSupabaseClient();
 	const session = useSession();
 
 	return (
 		<div className="flex justify-center gap-x-4 bg-white dark:border-gray-700 dark:bg-gray-800">
 			<div className="">
-				<Avatar uid={user_id} url={avatar_url} size={100} />
+				<Avatar
+					uid={user_id}
+					url={avatar_url}
+					size={100}
+					uploadable={false}
+					onUpload={() => {}}
+				/>
 			</div>
 			<div className="flex flex-col">
 				<div className="text-2xl font-medium tracking-wide">
@@ -31,10 +46,10 @@ export function ProfileHeaderAlt({
 					<IoLogoInstagram />
 					{instagram}
 				</div>
-				{session && (
+				{isLoggedInProfile && (
 					<div className="flex gap-x-2 mt-4">
 						<Link
-							href={"/creator/account/"}
+							href={"/account/"}
 							className="text-sm border rounded-lg w-fit px-2 py-0.5 cursor-pointer hover:bg-gray-100"
 						>
 							Editar perfil

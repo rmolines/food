@@ -4,6 +4,7 @@ import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 import { AppProps } from "next/app";
 import "../styles/globals.css";
 import Layout from "../components/Layout";
+import { Database } from "../types/supabase";
 
 function MyApp({
 	Component,
@@ -11,10 +12,9 @@ function MyApp({
 }: AppProps<{
 	initialSession: Session;
 }>) {
-	const [supabase] = useState(() => createBrowserSupabaseClient());
-	const getLayout = Component.getLayout || ((page) => page);
+	const [supabase] = useState(() => createBrowserSupabaseClient<Database>());
 
-	return getLayout(
+	return (
 		<SessionContextProvider
 			supabaseClient={supabase}
 			initialSession={pageProps.initialSession}

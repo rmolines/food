@@ -2,7 +2,7 @@ import Head from "next/head";
 import Footer from "./Footer";
 import Header from "./Header";
 
-export default function Layout({ children }) {
+export default function Layout({ children }: { children: JSX.Element }) {
 	return (
 		<>
 			<Head>
@@ -18,9 +18,14 @@ export default function Layout({ children }) {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			{/* <div className="bg-[url('/gradient.svg')] bg-hero bg-no-repeat bg-cover bg-center bg-fixed"> */}
-			<div className="container max-w-6xl mx-auto px-4 min-h-screen flex justify-start flex-col">
+			<div className="container mx-auto sm:px-8 px-4 max-w-6xl min-h-screen flex justify-start flex-col">
 				<Header />
 				<main className="grow flex flex-col">{children}</main>
+				<div className="hidden sm:block">
+					<Footer />
+				</div>
+			</div>
+			<div className="block sm:hidden">
 				<Footer />
 			</div>
 			{/* </div> */}

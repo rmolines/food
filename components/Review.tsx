@@ -2,46 +2,33 @@ import { Rating } from "@mui/material";
 import { useUser } from "@supabase/auth-helpers-react";
 import { Carousel } from "flowbite-react";
 import Image from "next/image";
+import router from "next/router";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
+import { IoArrowBack } from "react-icons/io5";
+import { Reviews } from "../types/supabase";
 import UpdateReviewModal from "./UpdateReviewModal";
 
 function Review({
-	images_info,
+	review,
 	restaurant_name,
 	restaurant_address,
-	review,
-	rating,
-	title,
-	type,
-	category,
-	created_at,
 	neighbourhood,
 	city,
-	uuid,
-	category_id,
-	type_id,
-	emoji,
+	isLoggedInProfile,
 }: {
-	images_info: string[];
+	review: Reviews;
 	restaurant_name: string;
 	restaurant_address: string;
-	review: string;
-	title: string;
-	rating: number;
-	type: string;
-	category: string;
-	created_at: string;
 	neighbourhood: string;
 	city: string;
-	uuid: string;
-	category_id: string;
-	type_id: string;
-	emoji: string;
+	isLoggedInProfile: boolean;
 }) {
-	const [imagesUrl, setImagesUrl] = useState([]);
+	const [imagesUrl, setImagesUrl] = useState<string[]>();
 	const [showModal, setShowModal] = useState(false);
 	const user = useUser();
+
+	const { images_info } = review;
 
 	// useEffect(() => {
 	// 	const script = document.createElement("script");
@@ -69,13 +56,23 @@ function Review({
 	return (
 		<div className="inline-flex w-full overflow-hidden mx-auto flex-col dark:bg-gray-800 dark:border-gray-700">
 			{/* <div className="inline-flex w-full flex-col dark:bg-gray-800 dark:border-gray-700"> */}
-			<Carousel className="rounded-none" slide={false}>
-				{imagesUrl.map((e) => (
-					<div key={e} className="relative h-64 rounded-none">
-						<Image className="object-cover" src={e} alt="" fill />
-					</div>
-				))}
-			</Carousel>
+			<button onClick={() => router.back()}>
+				<IoArrowBack className="text-2xl mb-4" />
+			</button>
+			{imagesUrl && (
+				<Carousel className="rounded-none" slide={false}>
+					{imagesUrl.map((e) => (
+						<div key={e} className="relative h-64 rounded-none">
+							<Image
+								className="object-cover"
+								src={e}
+								alt=""
+								fill
+							/>
+						</div>
+					))}
+				</Carousel>
+			)}
 			{/* <div className="flex overflow-x-scroll gap-x-2  snap-x snap-mandatory">
 				{imagesUrl.map((e) => (
 					<div
@@ -131,7 +128,10 @@ function Review({
 					</div>
 				</div> */}
 				<span className="text-xs text-gray-500 mr-2 rounded dark:bg-gray-700 dark:text-gray-400">
-					{emoji} {category} • {type}
+					<>
+						{review.category.emoji} {review.category.name} •{" "}
+						{review.type.name}
+					</>
 				</span>
 				{/* <div className="flex flex-wrap gap-y-2">
 					<span className="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
@@ -143,16 +143,16 @@ function Review({
 				</div> */}
 				<Rating
 					name="half-rating"
-					value={rating}
+					value={review.rating}
 					size="small"
 					readOnly
 					precision={0.5}
 				/>
 
 				<p className="mb-3 font-normal text-gray-700 border-t-1 pt-4 dark:text-gray-400 text-sm">
-					{review}
+					{review.review}
 				</p>
-				{user && (
+				{isLoggedInProfile && (
 					<button
 						onClick={() => setShowModal(true)}
 						className="flex w-fit items-center gap-x-1 px-3 text-sm font-medium py-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -163,17 +163,12 @@ function Review({
 				)}
 				{showModal && (
 					<UpdateReviewModal
-						review_id={uuid}
-						prev_category={category_id}
-						prev_rating={rating}
-						prev_review={review}
-						prev_type={type_id}
 						showModal={showModal}
 						setShowModal={setShowModal}
-						images_preview={imagesUrl}
+						imagesUrl={imagesUrl}
 						restaurant_name={restaurant_name}
 						restaurant_address={restaurant_address}
-						created_at={created_at}
+						review={review}
 					/>
 				)}
 			</div>

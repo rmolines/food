@@ -1,68 +1,64 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Rating from "@mui/material/Rating";
-import { UploadcareAuthSchema } from "@uploadcare/rest-client";
 import Image from "next/image";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { IoTrashOutline } from "react-icons/io5";
-
-const uploadcareAuthSchema = new UploadcareAuthSchema({
-	publicKey: "1c38a5dddc184f1a73ef",
-	secretKey: "980b8e2e18b99c9ac006",
-});
+import { Categories, Reviews, Types } from "../types/supabase";
 
 function UpdateReviewModal({
 	showModal,
 	setShowModal,
-	prev_category,
-	prev_rating,
-	prev_review,
-	prev_title,
-	prev_type,
-	review_id,
-	images_preview,
 	restaurant_name,
 	restaurant_address,
-	created_at,
+	review,
+	imagesUrl,
 }: {
 	showModal: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
-	prev_category: string;
-	prev_rating: number;
-	prev_review: string;
-	prev_title: string;
-	prev_type: string;
 	restaurant_name: string;
 	restaurant_address: string;
-	review_id: string;
-	created_at: string;
-	images_preview: string[];
+	review: Reviews;
+	imagesUrl: string[] | undefined;
 }) {
-	const widgetApi = useRef();
-	const [category, setCategory] = useState(prev_category);
-	const [rating, setRating] = useState(prev_rating);
-	const [review, setReview] = useState(prev_review);
-	const [title, setTitle] = useState(prev_title);
-	const [type, setType] = useState(prev_type);
+	const [category, setCategory] = useState(review.category.name);
+	const [rating, setRating] = useState(review.rating);
+	const [reviewText, setReview] = useState(review.review);
+	const [title, setTitle] = useState(review.title);
+	const [type, setType] = useState(review.type);
 	const [loading, setLoading] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-	const [categories, setCategories] = useState();
-	const [types, setTypes] = useState();
+	const [categories, setCategories] = useState<Categories[]>();
+	const [types, setTypes] = useState<Types[]>();
 
 	const supabase = useSupabaseClient();
 	const user = useUser();
 
 	const router = useRouter();
 
-	async function updateReview({ category, rating, review, title, type }) {
+	async function updateReview({
+		category,
+		rating,
+		reviewText,
+		title,
+		type,
+		id,
+	}: {
+		category: number | null;
+		rating: number | null;
+		reviewText: string | null;
+		title: string | null;
+		type: number | null;
+		id: string | null;
+	}) {
 		try {
 			setLoading(true);
 
 			const data = {
 				category,
 				rating,
-				review,
+				reviewText,
 				title,
 				type,
 			};
@@ -70,7 +66,7 @@ function UpdateReviewModal({
 			let { error } = await supabase
 				.from("reviews")
 				.update(data)
-				.eq("uuid", review_id);
+				.eq("uuid", id);
 			if (error) throw error;
 			alert("Review atualizada!");
 			router.reload();
@@ -128,17 +124,17 @@ function UpdateReviewModal({
 		}
 	}
 
-	async function deleteReview() {
+	async function deleteReview(id: Reviews["uuid"]) {
 		try {
 			setLoading(true);
 
 			let { error } = await supabase
 				.from("reviews")
 				.delete()
-				.eq("uuid", review_id);
+				.eq("uuid", id);
 			if (error) throw error;
 			alert("Review excluída!");
-			router.reload();
+			router.back();
 		} catch (error) {
 			alert("Error deleting review!");
 			console.log(error);
@@ -200,29 +196,31 @@ function UpdateReviewModal({
 									updateReview({
 										category,
 										rating,
-										review,
+										reviewText,
 										title,
 										type,
+										id: review.uuid,
 									});
 								}}
 							>
 								<div className="mb-4 bg-gray-100 p-4 rounded-lg">
 									<div className="grid relative grid-cols-3 justify-center items-center gap-4 w-full rounded-lg">
-										{images_preview.map((url) => {
-											return (
-												<div
-													className="relative aspect-square rounded-lg border-gray-600 "
-													key={url}
-												>
-													<Image
-														src={url}
-														alt={url}
-														fill
-														className="rounded-lg object-cover"
-													/>
-												</div>
-											);
-										})}
+										{imagesUrl &&
+											imagesUrl.map((url) => {
+												return (
+													<div
+														className="relative aspect-square rounded-lg border-gray-600 "
+														key={url}
+													>
+														<Image
+															src={url}
+															alt={url}
+															fill
+															className="rounded-lg object-cover"
+														/>
+													</div>
+												);
+											})}
 									</div>
 									<div className="sm:col-span-2">
 										<label
@@ -230,11 +228,15 @@ function UpdateReviewModal({
 											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 										></label>
 										<div className="flex flex-col items-startjustify-between">
-											<div className="text-xs text-gray-500 mb-2">
-												{new Date(
-													created_at
-												).toLocaleDateString("pt-BR")}
-											</div>
+											{review.created_at && (
+												<div className="text-xs text-gray-500 mb-2">
+													{new Date(
+														review.created_at
+													).toLocaleDateString(
+														"pt-BR"
+													)}
+												</div>
+											)}
 											<a href="#">
 												<h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
 													{restaurant_name}
@@ -286,25 +288,29 @@ function UpdateReviewModal({
 										>
 											Tipo
 										</label>
-										<select
-											id="type"
-											className="bg-gray-50 invalid:text-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placehprever-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-											required
-											onChange={(e) =>
-												setType(e.target.value)
-											}
-											value={type}
-										>
-											{types &&
-												types.map((e) => (
-													<option
-														key={e.id}
-														value={e.id}
-													>
-														{e.name}
-													</option>
-												))}
-										</select>
+										{type && (
+											<select
+												id="type"
+												className="bg-gray-50 invalid:text-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placehprever-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+												required
+												onChange={(e) =>
+													setType(
+														parseInt(e.target.value)
+													)
+												}
+												value={type}
+											>
+												{types &&
+													types.map((e) => (
+														<option
+															key={e.id}
+															value={e.id}
+														>
+															{e.name}
+														</option>
+													))}
+											</select>
+										)}
 									</div>
 									<div>
 										<label
@@ -313,15 +319,17 @@ function UpdateReviewModal({
 										>
 											Nota
 										</label>
-										<Rating
-											name="half-rating"
-											defaultValue={rating}
-											precision={0.5}
-											className=""
-											onChange={(event, newValue) =>
-												setRating(newValue)
-											}
-										/>
+										{review.rating && (
+											<Rating
+												name="half-rating"
+												defaultValue={review.rating}
+												precision={0.5}
+												className=""
+												onChange={(event, newValue) =>
+													setRating(newValue)
+												}
+											/>
+										)}
 									</div>
 
 									<div className="sm:col-span-2">
@@ -331,16 +339,18 @@ function UpdateReviewModal({
 										>
 											Review
 										</label>
-										<textarea
-											id="description"
-											rows={5}
-											className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placehprever-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-											placeholder=""
-											defaultValue={review}
-											onChange={(e) =>
-												setReview(e.target.value)
-											}
-										></textarea>
+										{review.review && (
+											<textarea
+												id="description"
+												rows={5}
+												className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placehprever-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+												placeholder=""
+												defaultValue={review.review}
+												onChange={(e) =>
+													setReview(e.target.value)
+												}
+											/>
+										)}
 									</div>
 								</div>
 								<div className="flex justify-between">
@@ -411,7 +421,9 @@ function UpdateReviewModal({
 												</h3>
 												<button
 													onClick={() =>
-														deleteReview()
+														deleteReview(
+															review.uuid
+														)
 													}
 													type="button"
 													className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"

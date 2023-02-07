@@ -38,7 +38,7 @@ function Header() {
 			let { data, error, status } = await supabase
 				.from("profiles")
 				.select(`username, avatar_url, full_name`)
-				.eq("id", user.id)
+				.eq("id", user?.id)
 				.single();
 
 			console.log(data, error, status);
@@ -68,26 +68,29 @@ function Header() {
 					setShowModal={setShowModal}
 				/>
 			)}
-			<header className="mb-4">
+			<header className="sm:my-4">
 				<nav className="border-gray-200 py-2.5 dark:bg-gray-800">
 					<div className="flex flex-wrap justify-between items-center">
 						{(!user || isHomepage) && (
 							<div className="flex justify-between w-full items-center">
-								<div className="flex mr-4 items-center justify-center">
+								<Link
+									href={"/"}
+									className="flex mr-4 items-center justify-center"
+								>
 									<Image
 										src="/abstract-shape.png"
 										className="mr-1 object-scale-down "
 										alt="Innflueced Logo"
-										width={25}
-										height={25}
+										width={30}
+										height={30}
 									/>
-									<span className="inline-flex align-baseline h-fit text-lg lg:text-2xl font-semibold whitespace-nowrap dark:text-white">
+									<span className="inline-flex align-baseline h-fit text-2xl font-semibold whitespace-nowrap dark:text-white">
 										<div className="text-primary-700">
 											Inn
 										</div>
 										<div>fluenced</div>
 									</span>
-								</div>
+								</Link>
 
 								<div className="flex items-center lg:order-2">
 									{/* <a
@@ -98,7 +101,7 @@ function Header() {
 									</a> */}
 									<Link
 										href="/login"
-										className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-semibold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+										className="text-primary-700 border-2 border-primary-700 hover:bg-primary-700 hover:text-white focus:ring-4 focus:ring-primary-300 font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
 									>
 										Entrar
 									</Link>
@@ -144,24 +147,17 @@ function Header() {
 							<>
 								<div className="flex justify-start items-center">
 									<Link
-										href="/creator/"
+										href={"/" + username}
 										className="flex mr-4 items-center justify-center"
 									>
 										<Image
 											src="/abstract-shape.png"
-											className="mr-1 object-scale-down hidden sm:block"
+											className="mr-1 object-scale-down "
 											alt="Innflueced Logo"
 											width={30}
 											height={30}
 										/>
-										<Image
-											src="/abstract-shape.png"
-											className="mr-1 object-scale-down sm:hidden"
-											alt="Innflueced Logo"
-											width={25}
-											height={25}
-										/>
-										<span className="self-center items-center text-xl sm:text-2xl justify-center flex font-semibold tracking-wide whitespace-nowrap dark:text-white">
+										<span className="inline-flex align-baseline h-fit text-2xl font-semibold whitespace-nowrap dark:text-white">
 											<div className="text-primary-700">
 												Inn
 											</div>
@@ -169,7 +165,7 @@ function Header() {
 										</span>
 									</Link>
 								</div>
-								<div className="flex items-center lg:order-2">
+								<div className="items-center lg:order-2 hidden sm:flex">
 									<button
 										type="button"
 										className="inline-flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"

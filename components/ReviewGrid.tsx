@@ -2,12 +2,13 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
+import { Reviews } from "../types/supabase";
 import { FilterBar } from "./FilterBar";
 import HorizontalCard from "./HorizontalCard";
 
 export function ReviewGrid() {
 	const supabase = useSupabaseClient();
-	const [reviews, setReviews] = useState([]);
+	const [reviews, setReviews] = useState<Reviews[]>();
 	const [chosenFilters, setChosenFilters] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
@@ -86,35 +87,30 @@ export function ReviewGrid() {
 				chosenFilters={chosenFilters}
 			/>
 			<div className="grid grid-cols-1 gap-4 mt-4 mx-auto w-full justify-center justify-items-center max-w-lg">
-				{reviews.map((e) => (
-					<Link
-						key={e.id}
-						href={"/" + e.creator.username + "/" + e.uuid}
-						className="w-full"
-					>
-						<HorizontalCard
-							images_info={e.images_info}
-							review={e.review}
-							rating={e.rating}
-							category={e.category.name}
-							restaurant_address={
-								e.restaurant.value.structured_formatting
-									.secondary_text
-							}
-							restaurant_name={
-								e.restaurant.value.structured_formatting
-									.main_text
-							}
-							type={e.type.name}
-							created_at={e.created_at}
-							neighbourhood={e.restaurant.value.terms[2].value}
-							city={e.restaurant.value.terms[3].value}
-							uuid={e.uuid}
-							category_id={e.category.id}
-							type_id={e.type.id}
-						/>
-					</Link>
-				))}
+				{reviews &&
+					reviews.map((e) => (
+						<Link
+							key={e.uuid}
+							href={"/" + e.creator.username + "/" + e.uuid}
+							className="w-full"
+						>
+							<HorizontalCard
+								review={e}
+								restaurant_address={
+									e.restaurant.value.structured_formatting
+										.secondary_text
+								}
+								restaurant_name={
+									e.restaurant.value.structured_formatting
+										.main_text
+								}
+								neighbourhood={
+									e.restaurant.value.terms[2].value
+								}
+								city={e.restaurant.value.terms[3].value}
+							/>
+						</Link>
+					))}
 			</div>
 		</>
 	);

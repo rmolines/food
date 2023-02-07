@@ -4,42 +4,26 @@ import { Carousel } from "flowbite-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
+import { Reviews } from "../types/supabase";
 import UpdateReviewModal from "./UpdateReviewModal";
 
 function Card({
-	images_info,
+	review,
 	restaurant_name,
 	restaurant_address,
-	review,
-	rating,
-	title,
-	type,
-	category,
-	created_at,
 	neighbourhood,
 	city,
-	uuid,
-	category_id,
-	type_id,
 }: {
-	images_info: string[];
+	review: Reviews;
 	restaurant_name: string;
 	restaurant_address: string;
-	review: string;
-	title: string;
-	rating: number;
-	type: string;
-	category: string;
-	created_at: string;
 	neighbourhood: string;
 	city: string;
-	uuid: string;
-	category_id: string;
-	type_id: string;
 }) {
-	const [imagesUrl, setImagesUrl] = useState([]);
+	const [imagesUrl, setImagesUrl] = useState<string[]>();
 	const [showModal, setShowModal] = useState(false);
 	const user = useUser();
+	const { images_info } = review;
 
 	// useEffect(() => {
 	// 	const script = document.createElement("script");
@@ -66,13 +50,20 @@ function Card({
 
 	return (
 		<div className="inline-flex w-full flex-col bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-			<Carousel className="" slide={false}>
-				{imagesUrl.map((e) => (
-					<div key={e} className="relative aspect-square">
-						<Image className="object-cover" src={e} alt="" fill />
-					</div>
-				))}
-			</Carousel>
+			{imagesUrl && (
+				<Carousel className="" slide={false}>
+					{imagesUrl.map((e) => (
+						<div key={e} className="relative aspect-square">
+							<Image
+								className="object-cover"
+								src={e}
+								alt=""
+								fill
+							/>
+						</div>
+					))}
+				</Carousel>
+			)}
 			{/* <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
 				<Carousel>
 					{imagesUrl.map((e) => (
@@ -89,9 +80,9 @@ function Card({
 			</div> */}
 			<div className="p-5 flex flex-col justify-between ">
 				<div className="flex flex-col items-startjustify-between">
-					<div className="text-xs text-gray-500 mb-2">
-						{new Date(created_at).toLocaleDateString("pt-BR")}
-					</div>
+					{/* <div className="text-xs text-gray-500 mb-2">
+						{new Date(review.created_at).toLocaleDateString("pt-BR")}
+					</div> */}
 					<a href="#">
 						<h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
 							{restaurant_name}
@@ -114,7 +105,7 @@ function Card({
 				<div className="mb-2">
 					<Rating
 						name="half-rating"
-						value={rating}
+						value={review.rating}
 						size="small"
 						readOnly
 						precision={0.5}
@@ -122,10 +113,10 @@ function Card({
 				</div>
 				<div className="flex flex-wrap gap-y-2 mb-4">
 					<span className="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
-						{category}
+						{review.category}
 					</span>
 					<span className="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
-						{type}
+						{review.type}
 					</span>
 				</div>
 
@@ -143,17 +134,12 @@ function Card({
 				)}
 				{showModal && (
 					<UpdateReviewModal
-						review_id={uuid}
-						prev_category={category_id}
-						prev_rating={rating}
-						prev_review={review}
-						prev_type={type_id}
+						review={review}
 						showModal={showModal}
 						setShowModal={setShowModal}
-						images_preview={imagesUrl}
+						imagesUrl={imagesUrl}
 						restaurant_name={restaurant_name}
 						restaurant_address={restaurant_address}
-						created_at={created_at}
 					/>
 				)}
 			</div>

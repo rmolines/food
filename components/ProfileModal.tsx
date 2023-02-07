@@ -11,6 +11,13 @@ function ProfileModal({
 	avatar_url,
 	onUpload,
 	update_profile,
+}: {
+	prev_username;
+	prev_instagram;
+	prev_full_name;
+	avatar_url;
+	onUpload;
+	update_profile;
 }) {
 	const user = useUser();
 	const router = useRouter();

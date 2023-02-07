@@ -1,4 +1,4 @@
-import { ReviewGrid } from "./../../components/ReviewGrid";
+import { ReviewGrid } from "../../components/ReviewGrid";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import { ProfileHeaderAlt } from "../../components/ProfileHeaderAlt";
@@ -19,7 +19,7 @@ function Creator() {
 			let { data, error, status } = await supabase
 				.from("profiles")
 				.select(`username, instagram, avatar_url, full_name`)
-				.eq("id", user.id)
+				.eq("id", user?.id)
 				.single();
 
 			if (error && status !== 406) {
@@ -39,6 +39,7 @@ function Creator() {
 			setLoading(false);
 		}
 	}
+	console.log(process.env.GOOGLE_PLACES_API_KEY);
 
 	useEffect(() => {
 		if (user) {

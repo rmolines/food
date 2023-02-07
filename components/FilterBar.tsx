@@ -1,9 +1,12 @@
 import FilterDropdown from "./FilterDropdown";
 
 export function FilterBar({
-	onSortClick,
-	showSortDropdown,
-	sortRef,
+	onFilterClick,
+	showFilterDropdown,
+	filterRef,
+	setChosenFilters,
+	chosenFilters,
+}{
 	onFilterClick,
 	showFilterDropdown,
 	filterRef,
