@@ -31,6 +31,8 @@ export function ReviewGridAlt({ username }: { username: string }) {
 		try {
 			setLoading(true);
 
+			console.log(chosenFilters);
+
 			if (chosenFilters && chosenFilters.length > 0) {
 				let { data, error, status } = await supabase
 					.from("reviews")

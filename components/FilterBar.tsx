@@ -6,12 +6,12 @@ export function FilterBar({
 	filterRef,
 	setChosenFilters,
 	chosenFilters,
-}{
-	onFilterClick,
-	showFilterDropdown,
-	filterRef,
-	setChosenFilters,
-	chosenFilters,
+}: {
+	onFilterClick;
+	showFilterDropdown;
+	filterRef;
+	setChosenFilters;
+	chosenFilters;
 }) {
 	return (
 		<div className="flex justify-end items-center gap-x-2">

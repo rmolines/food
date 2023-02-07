@@ -90,7 +90,12 @@ const FilterDropdown = forwardRef<HTMLDivElement, Props>(
 												onChange={(e) =>
 													setChosenFilters((prev) => {
 														if (!prev) {
-															return prev;
+															return [
+																parseInt(
+																	e.target
+																		.value
+																),
+															];
 														}
 
 														if (
