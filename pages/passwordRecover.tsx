@@ -1,12 +1,16 @@
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { supabase } from "@supabase/auth-ui-react/dist/esm/common/theming";
+import {
+	useSession,
+	useSupabaseClient,
+	useUser,
+} from "@supabase/auth-helpers-react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Countdown from "react-countdown";
 
 type Inputs = {
-	password: string;
-	confirmPassword: string;
+	email: string;
 };
 
 const getURL = () => {
@@ -23,10 +27,12 @@ const getURL = () => {
 
 export default function PasswordRecover() {
 	const supabase = useSupabaseClient();
+	const session = useSession();
 	const user = useUser();
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
-	const [verified, setVerified] = useState(false);
+	const [timer, setTimer] = useState<number>();
+	const [disableReset, setDisableReset] = useState(false);
 
 	const {
 		register,
@@ -35,7 +41,21 @@ export default function PasswordRecover() {
 		trigger,
 		formState: { errors },
 	} = useForm<Inputs>();
-	const onSubmit: SubmitHandler<Inputs> = (data) => resetPassword(data);
+	const onSubmit: SubmitHandler<Inputs> = (data) => recoverPassword(data);
+
+	useEffect(() => {
+		setTimer(Date.now());
+	}, []);
+
+	useEffect(() => {
+		if (session) {
+			if (router.query.redirectedFrom) {
+				router.push(router.query.redirectedFrom);
+			} else {
+				forwardToProfile();
+			}
+		}
+	}, [router, session]);
 
 	async function forwardToProfile() {
 		try {
@@ -58,42 +78,26 @@ export default function PasswordRecover() {
 		}
 	}
 
-	async function resetPassword({ password }: Inputs) {
+	async function recoverPassword({ email }: Inputs) {
 		try {
 			setLoading(true);
-			const { data, error } = await supabase.auth.updateUser({
-				password,
-			});
+			const { data, error } = await supabase.auth.resetPasswordForEmail(
+				email,
+				{ redirectTo: getURL() + "passwordReset" }
+			);
 
 			if (error) {
 				throw error;
 			}
 
 			setLoading(false);
-			alert("Senha alterada com sucesso!!");
-			forwardToProfile();
+			alert("Um link foi enviado ao seu email para alterar a senha!");
+			setTimer(Date.now() + 59000);
 		} catch (error) {
 			console.log(error);
 			alert("Error resetting password!");
 		}
 	}
-
-	useEffect(() => {
-		if (supabase) {
-			const { data } = supabase.auth.onAuthStateChange(
-				async (_event, _session) => {
-					console.log(_event, _session);
-					if (_event == "PASSWORD_RECOVERY") {
-						console.log("oioi");
-					}
-				}
-			);
-
-			return () => data.subscription.unsubscribe();
-		}
-	}, [supabase]);
-
-	if (!verified) return;
 
 	return (
 		<div className="flex items-center justify-center grow pb-16">
@@ -102,75 +106,41 @@ export default function PasswordRecover() {
 				<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto">
 					<div className="w-full p-6 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
 						<h1 className="flex flex-col mb-1 gap-y-3 text-xl font-bold align-middle leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-							<div className="h-full">Alterar senha</div>
+							<div className="h-full">Esqueceu sua senha?</div>
 						</h1>
+						<p className="font-light text-gray-500 dark:text-gray-400">
+							Não se preocupe! Digite o email cadastrado abaixo
+							que iremos te enviar um link para você resetar sua
+							senha.
+						</p>
 						<form
 							className="mt-4 space-y-4 lg:mt-5 md:space-y-5"
 							onSubmit={handleSubmit(onSubmit)}
 						>
 							<div>
 								<label
-									htmlFor="password"
+									htmlFor="email"
 									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 								>
-									Senha nova
+									Seu email
 								</label>
 								<input
-									type="password"
-									id="password"
-									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-									placeholder="••••••••"
+									type="email"
+									id="email"
+									className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+									placeholder="nome@email.com"
 									required
-									{...register("password", {
+									{...register("email", {
 										required: "Este campo é obrigatório",
-										minLength: {
-											value: 8,
-											message:
-												"A senha deve conter mais de 8 caracteres",
+										pattern: {
+											value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+											message: "Email inválido",
 										},
 									})}
 									onKeyUp={() => {
-										trigger("password");
+										trigger("email");
 									}}
 								/>
-								{errors.password && (
-									<small className="text-red-500">
-										{errors.password.message}
-									</small>
-								)}
-							</div>
-							<div>
-								<label
-									htmlFor="confirmPassword"
-									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-								>
-									Confirmar senha
-								</label>
-								<input
-									type="password"
-									id="confirmPassword"
-									placeholder="••••••••"
-									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-									required
-									{...register("confirmPassword", {
-										validate: (value) =>
-											value === watch("password", "") ||
-											"As senhas não são iguais",
-									})}
-									autoComplete="off"
-									onPaste={(e) => {
-										e.preventDefault();
-										return false;
-									}}
-									onKeyUp={() => {
-										trigger("confirmPassword");
-									}}
-								/>
-								{errors.confirmPassword && (
-									<small className="text-red-500">
-										{errors.confirmPassword.message}
-									</small>
-								)}
 							</div>
 							{loading ? (
 								<div className="w-full text-white bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600">
@@ -196,11 +166,40 @@ export default function PasswordRecover() {
 							) : (
 								<button
 									type="submit"
-									className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+									className="w-full text-white bg-primary-700 disabled:bg-primary-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+									disabled={disableReset}
 								>
-									<div>Resetar senha</div>
+									<Countdown
+										date={timer}
+										renderer={({
+											seconds,
+											completed,
+											props,
+										}) => {
+											if (completed)
+												return props.children;
+											return (
+												<div>Aguarde {seconds}s</div>
+											);
+										}}
+										onStart={() => setDisableReset(true)}
+										onComplete={() =>
+											setDisableReset(false)
+										}
+									>
+										<div>Resetar senha</div>
+									</Countdown>
 								</button>
 							)}
+							<p className="text-sm font-light text-gray-500 dark:text-gray-400">
+								Já possui uma conta?{" "}
+								<Link
+									href="/login"
+									className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+								>
+									Entre aqui
+								</Link>
+							</p>
 						</form>
 					</div>
 				</div>

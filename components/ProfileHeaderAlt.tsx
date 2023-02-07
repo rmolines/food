@@ -1,13 +1,12 @@
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { IoLogoInstagram } from "react-icons/io5";
 import Avatar from "./Avatar";
 
 type Props = {
-	avatar_url: string;
-	full_name: string;
-	instagram: string;
-	user_id: string;
+	avatar_url: string | undefined;
+	full_name: string | undefined;
+	instagram: string | undefined;
+	user_id: string | undefined;
 	isLoggedInProfile: boolean;
 };
 
@@ -15,17 +14,12 @@ export function ProfileHeaderAlt({
 	avatar_url,
 	full_name,
 	instagram,
-	user_id,
 	isLoggedInProfile,
 }: Props) {
-	const supabase = useSupabaseClient();
-	const session = useSession();
-
 	return (
 		<div className="flex justify-center gap-x-4 bg-white dark:border-gray-700 dark:bg-gray-800">
 			<div className="">
 				<Avatar
-					uid={user_id}
 					url={avatar_url}
 					size={100}
 					uploadable={false}

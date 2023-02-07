@@ -3,16 +3,18 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ProfileHeaderAlt } from "../../components/ProfileHeaderAlt";
 import { ReviewGridAlt } from "../../components/ReviewGridAlt";
+import PasswordModal from "../../components/PasswordModal";
 
 function Creator() {
 	const supabase = useSupabaseClient();
 	const user = useUser();
 	const [loading, setLoading] = useState(true);
-	const [instagram, setInstagram] = useState(null);
-	const [full_name, setFullName] = useState(null);
-	const [avatar_url, setAvatarUrl] = useState(null);
-	const [userId, setUserId] = useState(null);
+	const [instagram, setInstagram] = useState<string>();
+	const [full_name, setFullName] = useState<string>();
+	const [avatar_url, setAvatarUrl] = useState<string>();
+	const [userId, setUserId] = useState<string>();
 	const [loggedInUsername, setLoggedInUsername] = useState<string>();
+	const [showPasswordReset, setShowPasswordReset] = useState(false);
 
 	const router = useRouter();
 	const username = router.query.creator;
@@ -59,6 +61,8 @@ function Creator() {
 				throw error;
 			}
 
+			console.log(data);
+
 			if (data) {
 				setLoggedInUsername(data.username);
 			}
@@ -77,11 +81,20 @@ function Creator() {
 		if (user) {
 			getLoggedInUsername();
 		}
-	}, [username]);
+	}, [username, user]);
+
+	// useEffect(() => {
+	// 	console.log("oioi");
+	// 	supabase.auth.onAuthStateChange(async (event, session) => {
+	// 		console.log(event, session);
+	// 		if (event == "PASSWORD_RECOVERY") {
+	// 			console.log("PASSWORD_RECOVERY", session);
+	// 			setShowPasswordReset(true);
+	// 		}
+	// 	});
+	// }, [supabase]);
 
 	if (loading) return;
-
-	console.log(username, loggedInUsername);
 
 	return (
 		<div className="flex flex-col grow gap-y-12">
@@ -94,7 +107,13 @@ function Creator() {
 					isLoggedInProfile={username === loggedInUsername}
 				/>
 			</div>
-			{username && <ReviewGridAlt username={username.toString()} />}
+			<PasswordModal showModal={showPasswordReset} />
+			{username && (
+				<ReviewGridAlt
+					username={username.toString()}
+					isLoggedInProfile={username === loggedInUsername}
+				/>
+			)}
 		</div>
 	);
 	// return <Account session={session} />;

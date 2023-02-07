@@ -51,6 +51,8 @@ export default function Login() {
 					throw error;
 				}
 
+				console.log(data);
+
 				if (data) {
 					router.push("/" + data.username, "/" + data.username);
 				}
@@ -193,7 +195,7 @@ export default function Login() {
 										</div>
 									</div>
 									<Link
-										href="passwordReset"
+										href="passwordRecover"
 										className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
 									>
 										Esqueceu a senha?

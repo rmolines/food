@@ -41,8 +41,6 @@ function Header() {
 				.eq("id", user?.id)
 				.single();
 
-			console.log(data, error, status);
-
 			if (error && status !== 406) {
 				throw error;
 			}
@@ -58,6 +56,12 @@ function Header() {
 		} finally {
 			setLoading(false);
 		}
+	}
+
+	async function handleSignOut() {
+		setShowDropdown(false);
+		await supabase.auth.signOut();
+		router.reload();
 	}
 
 	return (
@@ -220,7 +224,6 @@ function Header() {
 												Open user menu
 											</span>
 											<Avatar
-												uid={user.id}
 												url={avatar_url}
 												size={50}
 												uploadable={false}
@@ -251,6 +254,7 @@ function Header() {
 																false
 															)
 														}
+														className="cursor-pointer"
 													>
 														<Link
 															href={
@@ -283,12 +287,8 @@ function Header() {
 													aria-labelledby="dropdown"
 												>
 													<li
-														onClick={() => {
-															setShowDropdown(
-																false
-															);
-															supabase.auth.signOut();
-														}}
+														onClick={handleSignOut}
+														className="cursor-pointer"
 													>
 														<div className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 															Sign out

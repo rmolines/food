@@ -5,14 +5,12 @@ import { v4 } from "uuid";
 import { Database, Profiles } from "../types/supabase";
 
 export default function Avatar({
-	uid,
 	url,
 	size,
 	onUpload,
 	uploadable,
 }: {
-	uid: string;
-	url: Profiles["avatar_url"];
+	url: Profiles["avatar_url"] | undefined;
 	size: number;
 	onUpload: (url: string) => void;
 	uploadable: boolean;
@@ -56,8 +54,6 @@ export default function Avatar({
 			const fileExt = file.name.split(".").pop();
 			const fileName = `${v4()}.${fileExt}`;
 			const filePath = `${fileName}`;
-
-			console.log(filePath);
 
 			let { error: uploadError } = await supabase.storage
 				.from("avatars")
