@@ -58,7 +58,7 @@ export default function Main() {
 			</div> */}
 			<div className="gap-8 items-center flex">
 				<div className="mt-4 md:mt-0">
-					<h2 className="mb-4 sm:text-7xl text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+					<h2 className="mb-4 sm:text-6xl text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
 						O novo jeito para seus seguidores interagirem com seu
 						conteúdo
 					</h2>
