@@ -75,13 +75,15 @@ export default function Avatar({
 	return (
 		<div className="flex gap-y-4 flex-col">
 			{avatarUrl ? (
-				<Image
-					src={avatarUrl}
-					alt="Avatar"
-					className="rounded-full"
-					width={size}
-					height={size}
-				/>
+				<div className="w-fit h-fit rounded-full border">
+					<Image
+						src={avatarUrl}
+						alt="Avatar"
+						className="rounded-full m-1"
+						width={size}
+						height={size}
+					/>
+				</div>
 			) : (
 				<div
 					className="bg-white border-1 border-gray-400 rounded-full"

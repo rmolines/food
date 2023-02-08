@@ -16,7 +16,7 @@ export function ProfileHeaderAlt({
 	isLoggedInProfile,
 }: Props) {
 	return (
-		<div className="flex justify-center gap-x-4 bg-white dark:border-gray-700 dark:bg-gray-800">
+		<div className="flex justify-center items-center gap-x-4 md:gap-x-8 bg-white dark:border-gray-700 dark:bg-gray-800">
 			<div className="">
 				<Avatar
 					url={avatar_url}
