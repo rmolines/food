@@ -21,11 +21,11 @@ function UpdateReviewModal({
 	review: Reviews;
 	imagesUrl: string[] | undefined;
 }) {
-	const [category, setCategory] = useState(review.category.name);
+	const [category, setCategory] = useState(review.category.id);
 	const [rating, setRating] = useState(review.rating);
 	const [reviewText, setReview] = useState(review.review);
 	const [title, setTitle] = useState(review.title);
-	const [type, setType] = useState(review.type);
+	const [type, setType] = useState(review.type.id);
 	const [loading, setLoading] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -58,7 +58,7 @@ function UpdateReviewModal({
 			const data = {
 				category,
 				rating,
-				reviewText,
+				review: reviewText,
 				title,
 				type,
 			};
@@ -71,8 +71,8 @@ function UpdateReviewModal({
 			alert("Review atualizada!");
 			router.reload();
 		} catch (error) {
-			alert("Error updating review!");
 			console.log(error);
+			alert("Error updating review!");
 		} finally {
 			setLoading(false);
 		}

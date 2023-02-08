@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { IoLogoInstagram } from "react-icons/io5";
 import Avatar from "./Avatar";
 
 type Props = {
 	avatar_url: string | undefined;
 	full_name: string | undefined;
-	instagram: string | undefined;
+	username: string | undefined;
 	user_id: string | undefined;
 	isLoggedInProfile: boolean;
 };
@@ -13,7 +12,7 @@ type Props = {
 export function ProfileHeaderAlt({
 	avatar_url,
 	full_name,
-	instagram,
+	username,
 	isLoggedInProfile,
 }: Props) {
 	return (
@@ -30,15 +29,9 @@ export function ProfileHeaderAlt({
 				<div className="text-2xl font-medium tracking-wide">
 					{full_name}
 				</div>
-				{/* <div className="flex items-center gap-x-1 relative">
-				<div className="absolute -left-5">
-					<IoLogoInstagram />
-				</div>
-				{instagram}
-			</div> */}
 				<div className="flex items-center gap-x-1 relative">
-					<IoLogoInstagram />
-					{instagram}
+					{"@"}
+					{username}
 				</div>
 				{isLoggedInProfile && (
 					<div className="flex gap-x-2 mt-4">

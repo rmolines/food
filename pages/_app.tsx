@@ -18,7 +18,6 @@ function MyApp({
 		if (supabase) {
 			const { data } = supabase.auth.onAuthStateChange(
 				async (_event, _session) => {
-					console.log("app", _event, _session);
 					if (_event == "PASSWORD_RECOVERY") {
 					}
 				}

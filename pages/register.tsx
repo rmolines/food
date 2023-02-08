@@ -61,10 +61,15 @@ export default function Register() {
 	}
 
 	async function signUpWithEmail({ email, password }: Inputs) {
-		const { data, error } = await supabase.auth.signUp({
-			email: email,
-			password: password,
-		});
+		const { data, error } = await supabase.auth.signUp(
+			{
+				email: email,
+				password: password,
+			},
+			{
+				data: { finishedRegistering: false },
+			}
+		);
 
 		if (error) {
 			console.log(error);
@@ -129,7 +134,8 @@ export default function Register() {
 									</label>
 									<input
 										type="password"
-										id="password"
+										id="new-password"
+										autoComplete="current-password"
 										placeholder="••••••••"
 										className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 										required={true}
@@ -161,7 +167,8 @@ export default function Register() {
 									</label>
 									<input
 										type="password"
-										id="confirm-password"
+										id="new-password"
+										autoComplete="new-password"
 										placeholder="••••••••"
 										className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 										required={true}

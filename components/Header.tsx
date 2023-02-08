@@ -72,7 +72,7 @@ function Header() {
 					setShowModal={setShowModal}
 				/>
 			)}
-			<header className="sm:my-4">
+			<header className="sm:my-2">
 				<nav className="border-gray-200 py-2.5 dark:bg-gray-800">
 					<div className="flex flex-wrap justify-between items-center">
 						{(!user || isHomepage) && (

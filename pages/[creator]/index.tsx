@@ -9,7 +9,6 @@ function Creator() {
 	const supabase = useSupabaseClient();
 	const user = useUser();
 	const [loading, setLoading] = useState(true);
-	const [instagram, setInstagram] = useState<string>();
 	const [full_name, setFullName] = useState<string>();
 	const [avatar_url, setAvatarUrl] = useState<string>();
 	const [userId, setUserId] = useState<string>();
@@ -25,7 +24,7 @@ function Creator() {
 
 			let { data, error, status } = await supabase
 				.from("profiles")
-				.select(`username, instagram, avatar_url, full_name, id`)
+				.select(`username, avatar_url, full_name, id`)
 				.eq("username", username)
 				.single();
 
@@ -34,7 +33,6 @@ function Creator() {
 			}
 
 			if (data) {
-				setInstagram(data.instagram);
 				setAvatarUrl(data.avatar_url);
 				setFullName(data.full_name);
 				setUserId(data.id);
@@ -60,8 +58,6 @@ function Creator() {
 			if (error && status !== 406) {
 				throw error;
 			}
-
-			console.log(data);
 
 			if (data) {
 				setLoggedInUsername(data.username);
@@ -103,7 +99,7 @@ function Creator() {
 					user_id={userId}
 					avatar_url={avatar_url}
 					full_name={full_name}
-					instagram={instagram}
+					username={username}
 					isLoggedInProfile={username === loggedInUsername}
 				/>
 			</div>

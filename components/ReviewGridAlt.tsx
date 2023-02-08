@@ -44,8 +44,9 @@ export function ReviewGridAlt({
 				let { data, error, status } = await supabase
 					.from("reviews")
 					.select(
-						`review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at`
+						`review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at, creator!inner(*)`
 					)
+					.eq("creator.username", username)
 					.in("category", chosenFilters)
 					.order("created_at", { ascending: false });
 
@@ -58,9 +59,12 @@ export function ReviewGridAlt({
 				let { data, error, status } = await supabase
 					.from("reviews")
 					.select(
-						`review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at`
+						`review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at, creator!inner(*))`
 					)
+					.eq("creator.username", username)
 					.order("created_at", { ascending: false });
+
+				console.log(data);
 
 				if (error && status !== 406) {
 					throw error;
@@ -77,7 +81,7 @@ export function ReviewGridAlt({
 	}
 
 	return (
-		<div className="flex flex-col grow max-w-lg mx-auto w-full">
+		<div className="flex flex-col grow md:max-w-4xl max-w-lg mx-auto w-full">
 			<div className="flex justify-between items-center gap-x-2">
 				<div>
 					{showModal && (
@@ -138,7 +142,7 @@ export function ReviewGridAlt({
 					chosenFilters={chosenFilters}
 				/>
 			</div>
-			<div className="grid grid-cols-1 gap-y-3 mt-4 justify-center justify-items-center">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-3 mt-4 justify-center justify-items-center">
 				{reviews &&
 					reviews.map((review, ind) => (
 						<Link

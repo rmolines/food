@@ -9,7 +9,6 @@ function RestaurantReview() {
 	const supabase = useSupabaseClient();
 	const user = useUser();
 	const [loading, setLoading] = useState(true);
-	const [instagram, setInstagram] = useState();
 	const [full_name, setFullName] = useState();
 	const [avatar_url, setAvatarUrl] = useState();
 	const [userId, setUserId] = useState();
@@ -24,7 +23,7 @@ function RestaurantReview() {
 		try {
 			let { data, error, status } = await supabase
 				.from("profiles")
-				.select(`username, instagram, avatar_url, full_name, id`)
+				.select(`username, avatar_url, full_name, id`)
 				.eq("username", username)
 				.single();
 
@@ -33,7 +32,6 @@ function RestaurantReview() {
 			}
 
 			if (data) {
-				setInstagram(data.instagram);
 				setAvatarUrl(data.avatar_url);
 				setFullName(data.full_name);
 				setUserId(data.id);
@@ -114,7 +112,7 @@ function RestaurantReview() {
 					user_id={userId}
 					avatar_url={avatar_url}
 					full_name={full_name}
-					instagram={instagram}
+					username={username}
 					isLoggedInProfile={username === loggedInUsername}
 				/>
 			</div>

@@ -12,7 +12,6 @@ export default function Account() {
 
 	const [loading, setLoading] = useState(true);
 	const [username, setUsername] = useState<string>();
-	const [instagram, setInstagram] = useState<string>();
 	const [fullName, setFullName] = useState<string>();
 	const [avatar_url, setAvatarUrl] = useState<string>();
 	const [showModal, setShowModal] = useState(false);
@@ -29,7 +28,7 @@ export default function Account() {
 
 			let { data, error, status } = await supabase
 				.from("profiles")
-				.select(`username, instagram, avatar_url, full_name`)
+				.select(`username, avatar_url, full_name`)
 				.eq("id", id)
 				.single();
 
@@ -39,7 +38,6 @@ export default function Account() {
 
 			if (data) {
 				setUsername(data.username);
-				setInstagram(data.instagram);
 				setAvatarUrl(data.avatar_url);
 				setFullName(data.full_name);
 			}
@@ -53,13 +51,11 @@ export default function Account() {
 
 	async function updateProfile({
 		username,
-		instagram,
 		avatar_url,
 		fullName,
 		id,
 	}: {
 		username: string | undefined;
-		instagram: string | undefined;
 		avatar_url: string | undefined;
 		fullName: string | undefined;
 		id: string;
@@ -70,7 +66,6 @@ export default function Account() {
 			const updates = {
 				id: id,
 				username,
-				instagram,
 				avatar_url,
 				full_name: fullName,
 				updated_at: new Date().toISOString(),
@@ -94,7 +89,6 @@ export default function Account() {
 			setAvatarUrl(url);
 			updateProfile({
 				username,
-				instagram,
 				fullName,
 				avatar_url: url,
 				id: user.id,
@@ -106,7 +100,6 @@ export default function Account() {
 		if (user) {
 			await updateProfile({
 				username,
-				instagram,
 				fullName,
 				avatar_url,
 				id: user.id,

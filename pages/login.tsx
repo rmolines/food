@@ -5,7 +5,7 @@ import {
 } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { BaseSyntheticEvent, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
@@ -26,7 +26,8 @@ export default function Login() {
 		trigger,
 		formState: { errors },
 	} = useForm<Inputs>();
-	const onSubmit: SubmitHandler<Inputs> = (data) => signInWithEmail(data);
+	const onSubmit: SubmitHandler<Inputs> = (data, e) =>
+		signInWithEmail(data, e);
 
 	useEffect(() => {
 		if (session) {
@@ -36,7 +37,7 @@ export default function Login() {
 				forwardToProfile();
 			}
 		}
-	}, [router, session]);
+	}, [router]);
 
 	async function forwardToProfile() {
 		try {
@@ -51,8 +52,6 @@ export default function Login() {
 					throw error;
 				}
 
-				console.log(data);
-
 				if (data) {
 					router.push("/" + data.username, "/" + data.username);
 				}
@@ -63,13 +62,45 @@ export default function Login() {
 		}
 	}
 
-	async function signInWithEmail({ email, password }: Inputs) {
+	async function checkIfFinishedRegistering() {
+		try {
+			if (user) {
+				let { data, error, status } = await supabase
+					.from("profiles")
+					.select(`username`)
+					.eq("id", user.id)
+					.single();
+
+				if (error && status !== 406) {
+					throw error;
+				}
+
+				return data?.username;
+			}
+		} catch (error) {
+			console.log(error);
+			alert("Error loading user data!");
+		}
+	}
+
+	async function signInWithEmail(
+		{ email, password }: Inputs,
+		e: BaseSyntheticEvent<object, any, any> | undefined
+	) {
+		e?.preventDefault();
+
 		const { data, error } = await supabase.auth.signInWithPassword({
 			email: email,
 			password: password,
 		});
 
-		router.reload();
+		const finishedRegistering = await checkIfFinishedRegistering();
+		if (!finishedRegistering) {
+			console.log("TWAETASDFASDFASDFOISDNFOIN", finishedRegistering);
+			router.push("/finishRegistering/");
+		} else {
+			router.reload();
+		}
 
 		if (error) {
 			console.log(error);
@@ -78,14 +109,37 @@ export default function Login() {
 	}
 
 	// return (
-	// 	<div className="max-w-sm w-full mx-auto">
-	// 		<Auth supabaseClient={supabase} appearance={{ style }} />
+	// 	<div className="flex items-center justify-center grow pb-16">
+	// 		<section className="dark:bg-gray-900 w-full max-w-md">
+	// 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto">
+	// 				<div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+	// 					<div className="p-6 space-y-4">
+	// 						<h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+	// 							{/* Entrar com sua conta */}
+	// 						</h1>
+	// 						<Auth
+	// 							supabaseClient={supabase}
+	// 							appearance={{
+	// 								theme: ThemeSupa,
+	// 								variables: {
+	// 									default: {
+	// 										colors: {
+	// 											brand: "#E15337",
+	// 											brandAccent: "#E15337",
+	// 										},
+	// 									},
+	// 								},
+	// 							}}
+	// 						/>
+	// 					</div>
+	// 				</div>
+	// 			</div>
+	// 		</section>
 	// 	</div>
 	// );
 
 	return (
 		<div className="flex items-center justify-center grow pb-16">
-			{/* <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} /> */}
 			<section className="dark:bg-gray-900 w-full max-w-md">
 				<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto">
 					<div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
@@ -144,7 +198,8 @@ export default function Login() {
 									</label>
 									<input
 										type="password"
-										id="password"
+										id="current-password"
+										autoComplete="current-password"
 										placeholder="••••••••"
 										className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 										required={true}
