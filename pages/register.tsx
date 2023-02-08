@@ -6,6 +6,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {
@@ -178,7 +179,6 @@ export default function Register() {
 													watch("password", "") ||
 												"As senhas não são iguais",
 										})}
-										autoComplete="off"
 										onPaste={(e) => {
 											e.preventDefault();
 											return false;
