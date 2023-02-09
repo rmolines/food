@@ -73,6 +73,15 @@ function Review({
 					))}
 				</Carousel>
 			)}
+			{/* {imagesUrl && (
+				<div>
+					<ReactPlayer
+						url="https://ucarecdn.com/84b30b0e-0313-483c-afef-29cf8e23c2fd~1/nth/0/"
+						playing={true}
+						controls
+					/>
+				</div>
+			)} */}
 			{/* <div className="flex overflow-x-scroll gap-x-2  snap-x snap-mandatory">
 				{imagesUrl.map((e) => (
 					<div

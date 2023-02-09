@@ -245,7 +245,6 @@ function ReviewModal({
 									publicKey="1c38a5dddc184f1a73ef"
 									id="file"
 									multiple
-									imagesOnly
 									previewStep
 									locale="pt"
 									tabs="instagram file"
