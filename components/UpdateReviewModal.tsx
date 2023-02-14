@@ -156,25 +156,25 @@ function UpdateReviewModal({
 					id="defaultModal"
 					tabIndex={-1}
 					aria-hidden="true"
-					className="overflow-y-auto overflow-x-hidden fixed inset-0 z-50 bg-gray-900/60 flex justify-center items-center w-full md:inset-0 h-modal md:h-full"
+					className="fixed inset-0 z-50 flex h-modal w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-gray-900/60 md:inset-0 md:h-full"
 				>
-					<div className="relative p-4 w-full max-w-2xl h-full md:h-auto max-h-full">
+					<div className="relative h-full max-h-full w-full max-w-2xl p-4 md:h-auto">
 						{/* <!-- Modal content --> */}
-						<div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+						<div className="relative rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-5">
 							{/* <!-- Modal header --> */}
-							<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-								<h3 className="text-lg font-semibprev text-gray-900 dark:text-white">
+							<div className="mb-4 flex items-center justify-between rounded-t border-b pb-4 dark:border-gray-600 sm:mb-5">
+								<h3 className="text-lg font-semibold text-gray-900 dark:text-white">
 									Atualizar Review
 								</h3>
 								<button
 									type="button"
-									className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+									className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
 									data-modal-toggle="defaultModal"
 									onClick={() => setShowModal(false)}
 								>
 									<svg
 										aria-hidden="true"
-										className="w-5 h-5"
+										className="h-5 w-5"
 										fill="currentColor"
 										viewBox="0 0 20 20"
 										xmlns="http:ww.w3.org/2000/svg"
@@ -203,10 +203,10 @@ function UpdateReviewModal({
 									});
 								}}
 							>
-								<div className="mb-4 bg-gray-100 p-4 rounded-lg">
-									<div className="grid relative grid-cols-3 justify-center items-center gap-4 w-full rounded-lg">
-										{imagesUrl &&
-											imagesUrl.map((url) => {
+								<div className="mb-4 rounded-lg bg-gray-100 p-4">
+									<div className="relative grid w-full grid-cols-3 items-center justify-center gap-4 rounded-lg">
+										{review.image_urls &&
+											review.image_urls.map((url) => {
 												return (
 													<div
 														className="relative aspect-square rounded-lg border-gray-600 "
@@ -225,11 +225,11 @@ function UpdateReviewModal({
 									<div className="sm:col-span-2">
 										<label
 											htmlFor="name"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										></label>
-										<div className="flex flex-col items-startjustify-between">
+										<div className="flex flex-col items-start justify-between">
 											{review.created_at && (
-												<div className="text-xs text-gray-500 mb-2">
+												<div className="mb-2 text-xs text-gray-500">
 													{new Date(
 														review.created_at
 													).toLocaleDateString(
@@ -237,13 +237,11 @@ function UpdateReviewModal({
 													)}
 												</div>
 											)}
-											<a href="#">
-												<h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-													{restaurant_name}
-												</h5>
-											</a>
+											<h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+												{restaurant_name}
+											</h5>
 										</div>
-										<div className="mb-2 text-xs flex text-gray-800">
+										<div className="mb-2 flex text-xs text-gray-800">
 											<div className="flex">
 												<div>
 													📍 {`${restaurant_address}`}
@@ -253,17 +251,17 @@ function UpdateReviewModal({
 										</div>
 									</div>
 								</div>
-								<div className="grid gap-4 mb-4 items-center sm:grid-cols-2">
+								<div className="mb-4 grid items-center gap-4 sm:grid-cols-2">
 									<div>
 										<label
 											htmlFor="category"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										>
 											Categoria
 										</label>
 										<select
 											id="category"
-											className="bg-gray-50 invalid:text-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placehprever-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+											className="dark:placehprever-gray-400 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 invalid:text-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 dark:focus:ring-primary-500"
 											required
 											onChange={(e) =>
 												setCategory(e.target.value)
@@ -284,14 +282,14 @@ function UpdateReviewModal({
 									<div>
 										<label
 											htmlFor="type"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										>
 											Tipo
 										</label>
 										{type && (
 											<select
 												id="type"
-												className="bg-gray-50 invalid:text-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placehprever-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+												className="dark:placehprever-gray-400 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 invalid:text-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 dark:focus:ring-primary-500"
 												required
 												onChange={(e) =>
 													setType(
@@ -315,7 +313,7 @@ function UpdateReviewModal({
 									<div>
 										<label
 											htmlFor="price"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										>
 											Nota
 										</label>
@@ -335,7 +333,7 @@ function UpdateReviewModal({
 									<div className="sm:col-span-2">
 										<label
 											htmlFor="description"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										>
 											Review
 										</label>
@@ -343,7 +341,7 @@ function UpdateReviewModal({
 											<textarea
 												id="description"
 												rows={5}
-												className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placehprever-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+												className="dark:placehprever-gray-400 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 dark:focus:ring-primary-500"
 												placeholder=""
 												defaultValue={review.review}
 												onChange={(e) =>
@@ -356,7 +354,7 @@ function UpdateReviewModal({
 								<div className="flex justify-between">
 									<button
 										type="submit"
-										className="text-white h-fit p-3 px-4 flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+										className="flex h-fit items-center rounded-lg bg-primary-700 p-3 px-4 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 									>
 										Atualizar
 									</button>
@@ -365,7 +363,7 @@ function UpdateReviewModal({
 											e.preventDefault();
 											setShowDeleteModal(true);
 										}}
-										className="focus:outline-none flex aspect-square text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm p-3 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+										className="mr-2 mb-2 flex aspect-square rounded-lg bg-red-700 p-3 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
 									>
 										{/* <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http:ww.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg> */}
 										<IoTrashOutline className="text-xl" />
@@ -374,17 +372,17 @@ function UpdateReviewModal({
 							</form>
 
 							{showDeleteModal && (
-								<div className="fixed flex items-center justify-center bg-gray-900/40 z-50 p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-									<div className="relative w-full h-full max-w-md md:h-auto">
-										<div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+								<div className="fixed z-50 flex h-modal items-center justify-center overflow-y-auto overflow-x-hidden bg-gray-900/40 p-4 md:inset-0 md:h-full">
+									<div className="relative h-full w-full max-w-md md:h-auto">
+										<div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
 											<button
 												type="button"
-												className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+												className="absolute top-3 right-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
 												data-modal-hide="popup-modal"
 											>
 												<svg
 													aria-hidden="true"
-													className="w-5 h-5"
+													className="h-5 w-5"
 													fill="currentColor"
 													viewBox="0 0 20 20"
 													xmlns="http://www.w3.org/2000/svg"
@@ -402,7 +400,7 @@ function UpdateReviewModal({
 											<div className="p-6 text-center">
 												<svg
 													aria-hidden="true"
-													className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200"
+													className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200"
 													fill="none"
 													stroke="currentColor"
 													viewBox="0 0 24 24"
@@ -426,7 +424,7 @@ function UpdateReviewModal({
 														)
 													}
 													type="button"
-													className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+													className="mr-2 inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800"
 												>
 													Tenho certeza
 												</button>
@@ -437,7 +435,7 @@ function UpdateReviewModal({
 														)
 													}
 													type="button"
-													className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+													className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
 												>
 													Não, cancelar
 												</button>

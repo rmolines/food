@@ -1,52 +1,182 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IoLogoInstagram } from "react-icons/io5";
+import { getCookie, setCookie } from "cookies-next";
+import { BsCheck } from "react-icons/bs";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import CreateReviewModal from "../components/CreateReviewModal";
+import { RxCross1 } from "react-icons/rx";
+import Link from "next/link";
 
 function Feed() {
+	const [instagramUserId, setInstagramUserId] = useState<string>();
+	const [accessToken, setAccessToken] = useState<string>();
+	const [media, setMedia] = useState([]);
+	const [chosenMedia, setChosenMedia] = useState([]);
+	const [chosenMedia2, setChosenMedia2] = useState([]);
+	const [count, setCount] = useState(1);
+	const [totalCount, setTotalCount] = useState(0);
+	const [username, setUsername] = useState();
+	const supabase = useSupabaseClient();
+	const user = useUser();
+	const router = useRouter();
+
 	const authUrl = `https://api.instagram.com/oauth/authorize
 ?client_id=659292209330572
 &redirect_uri=https://localhost:3000/feed/
 &scope=user_profile,user_media
 &response_type=code`;
 
-	const tokenUrl = `https://api.instagram.com/oauth/access_token`;
-	const router = useRouter();
+	useEffect(() => {
+		if (getCookie("token")) {
+			setAccessToken(getCookie("token"));
+			fetch("/api/instagramMedia/" + getCookie("token"))
+				.then((res) => res.json())
+				.then((data) => {
+					setMedia(data.data);
+				});
+		} else if (router.query.code) {
+			fetch("/api/instagramToken/" + router.query.code)
+				.then((res) => res.json())
+				.then((data) => {
+					setCookie("token", data.access_token);
+					setAccessToken(data.access_token);
+					setInstagramUserId(data.user_id);
+					fetch("/api/instagramMedia/" + data.access_token)
+						.then((res) => res.json())
+						.then((data) => {
+							setMedia(data.data);
+						});
+				});
+		}
+	}, [router.query]);
 
 	useEffect(() => {
-		console.log(router.query);
-		if (router.query.code) {
-			const formData = new FormData();
-			formData.append("client_id", "659292209330572");
-			formData.append(
-				"client_secret",
-				"c39980f561ce1945efab8a7aab6be38a"
-			);
-			formData.append("redirect_uri", "https://localhost:3000/feed/");
-			formData.append("grant_type", "authorization_code");
-			formData.append("code", router.query.code.toString());
-
-			fetch(tokenUrl, {
-				body: formData,
-				method: "POST",
-			}).then((res) => console.log(res.json()));
+		if (user) {
+			getProfile();
 		}
-	}, []);
+	}, [user]);
+
+	async function getProfile() {
+		try {
+			let { data, error, status } = await supabase
+				.from("profiles")
+				.select(`username`)
+				.eq("id", user?.id)
+				.single();
+
+			if (error && status !== 406) {
+				throw error;
+			}
+
+			if (data) {
+				setUsername(data.username);
+			}
+		} catch (error) {
+			console.log(error);
+			alert("Error loading user data!");
+		} finally {
+		}
+	}
 
 	return (
-		<div className="flex justify-center">
+		<div className="flex flex-col items-center justify-center">
 			{/* {router.query && JSON.stringify(router.query)} */}
 			{/* <InstagramEmbed
 				url="https://www.instagram.com/p/CnXiKgcuiCG/?hl=en"
 				width={328}
 			/> */}
-			<button
-				onClick={() => window.open(authUrl)}
-				type="button"
-				className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 mr-2 mb-2"
-			>
-				<IoLogoInstagram className="text-lg mr-1" />
-				Sign in with Instagram
-			</button>
+			<div className="mb-2 flex w-full max-w-xl items-center justify-between">
+				<Link href={"/" + username}>
+					<RxCross1 className="text-2xl" />
+				</Link>
+				{!media ? (
+					<button
+						onClick={() => window.open(authUrl)}
+						type="button"
+						className="mr-2 inline-flex items-center rounded-lg bg-[#24292F] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-gray-500"
+					>
+						<IoLogoInstagram className="mr-1 text-lg" />
+						Sign in with Instagram
+					</button>
+				) : (
+					<button
+						onClick={() => {
+							setChosenMedia2(chosenMedia);
+							setTotalCount(chosenMedia.length);
+						}}
+						type="button"
+						className="mr-2 inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-gray-500"
+					>
+						{/* <IoLogoInstagram className="text-lg mr-1" /> */}
+						Importar posts
+					</button>
+				)}
+			</div>
+			{chosenMedia2.length > 0 && (
+				<CreateReviewModal
+					key={chosenMedia2[0].id}
+					image_urls={[
+						chosenMedia2[0].media_type === "VIDEO"
+							? chosenMedia2[0].thumbnail_url
+							: chosenMedia2[0].media_url,
+					]}
+					review_text={chosenMedia2[0].caption}
+					next_review={() => {
+						setCount((prev) => prev + 1);
+						setChosenMedia2((prev) => {
+							return prev.slice(1);
+						});
+					}}
+					cancel={() => setChosenMedia2([])}
+					total_count={totalCount}
+					current_count={count}
+					username={username}
+					instagram_url={chosenMedia2[0].permalink}
+				/>
+			)}
+			<div className="grid h-full min-h-fit w-full max-w-xl grid-cols-3 items-center gap-2">
+				{media &&
+					media.map((e) => (
+						<button
+							key={e.id}
+							className="group relative aspect-square h-fit overflow-hidden"
+							onClick={() =>
+								setChosenMedia((prev) => {
+									if (prev.find((p) => p.id === e.id)) {
+										return prev.filter(
+											(v) => v.id !== e.id
+										);
+									} else {
+										return [...prev, e];
+									}
+								})
+							}
+						>
+							<Image
+								src={
+									e.media_type === "VIDEO"
+										? e.thumbnail_url
+										: e.media_url
+								}
+								fill
+								alt="teste"
+								className="object-cover"
+							/>
+							{chosenMedia.find((v) => v.id === e.id) ? (
+								<div className="absolute top-2 right-2 z-40 flex h-6 w-6 items-center justify-center rounded-full border border-gray-700 bg-blue-500/90">
+									<BsCheck className="text-2xl text-white" />
+								</div>
+							) : (
+								<>
+									<div className="absolute inset-0 z-30 h-full w-full bg-gray-900/70 group-hover:hidden"></div>
+									<div className="absolute top-2 right-2 z-40 h-6 w-6 rounded-full border border-gray-700 bg-gray-500/90"></div>
+								</>
+							)}
+						</button>
+					))}
+			</div>
 		</div>
 	);
 }

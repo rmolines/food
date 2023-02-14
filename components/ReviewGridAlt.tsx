@@ -2,11 +2,12 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
+import { IoLogoInstagram } from "react-icons/io5";
 import { MdOutlineIosShare } from "react-icons/md";
 import { Reviews } from "../types/supabase";
 import FilterDropdown from "./FilterDropdown";
-import HorizontalCard from "./HorizontalCard";
 import ReviewModal from "./ReviewModal";
+import VerticalCard from "./VerticalCard";
 
 export function ReviewGridAlt({
 	username,
@@ -44,7 +45,7 @@ export function ReviewGridAlt({
 				let { data, error, status } = await supabase
 					.from("reviews")
 					.select(
-						`review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at, creator!inner(*)`
+						`image_urls, instagram_url, review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at, creator!inner(*)`
 					)
 					.eq("creator.username", username)
 					.in("category", chosenFilters)
@@ -59,7 +60,7 @@ export function ReviewGridAlt({
 				let { data, error, status } = await supabase
 					.from("reviews")
 					.select(
-						`review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at, creator!inner(*))`
+						`image_urls, review, instagram_url, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at, creator!inner(*))`
 					)
 					.eq("creator.username", username)
 					.order("created_at", { ascending: false });
@@ -81,8 +82,8 @@ export function ReviewGridAlt({
 	}
 
 	return (
-		<div className="flex flex-col grow md:max-w-4xl max-w-lg mx-auto w-full">
-			<div className="flex justify-between items-center gap-x-2">
+		<div className="mx-auto flex w-full max-w-lg grow flex-col md:max-w-4xl">
+			<div className="flex items-center justify-between gap-x-2">
 				<div>
 					{showModal && (
 						<ReviewModal
@@ -91,17 +92,17 @@ export function ReviewGridAlt({
 						/>
 					)}
 					{isLoggedInProfile && (
-						<>
-							<button
+						<div className="flex items-center justify-center">
+							{/* <button
 								type="button"
-								className="inline-flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-3 py-2 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+								className="mr-2 inline-flex items-center justify-center rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 								onClick={() => {
 									setShowModal(true);
 								}}
 							>
 								<svg
 									aria-hidden="true"
-									className="mr-1 -ml-1 w-5 h-5"
+									className="mr-1 -ml-1 h-5 w-5"
 									fill="currentColor"
 									viewBox="0 0 20 20"
 									xmlns="http://www.w3.org/2000/svg"
@@ -113,10 +114,18 @@ export function ReviewGridAlt({
 									></path>
 								</svg>{" "}
 								Criar Review
-							</button>
+							</button> */}
+							<Link
+								href={"/feed"}
+								// className="inline-flex items-center justify-center text-white bg-[#24292F] hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-3 py-2 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+								className="mr-2 inline-flex items-center rounded-lg bg-[#24292F] px-3 py-2 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-gray-500"
+							>
+								<IoLogoInstagram className="mr-1 text-lg" />
+								Importar
+							</Link>
 							<button
 								type="button"
-								className="inline-flex relative items-center gap-x-1 justify-center text-gray-900 border hover:bg-gray-200 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+								className="relative mr-2 inline-flex items-center justify-center gap-x-1 rounded-lg border px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 								onClick={() => {
 									navigator.clipboard.writeText(
 										"innfluenced.me/" + username
@@ -131,7 +140,7 @@ export function ReviewGridAlt({
 								/>
 								Compartilhar
 							</button>
-						</>
+						</div>
 					)}
 				</div>
 				<FilterDropdown
@@ -142,31 +151,48 @@ export function ReviewGridAlt({
 					chosenFilters={chosenFilters}
 				/>
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-3 mt-4 justify-center justify-items-center">
+			<div className="mt-4 grid grid-cols-3 justify-center justify-items-center gap-3">
 				{reviews &&
 					reviews.map((review, ind) => (
-						<Link
+						<div
 							key={review.uuid}
-							href={username + "/" + review.uuid}
-							className="w-full"
+							className="group relative w-full"
 						>
-							<HorizontalCard
-								key={review.uuid}
-								review={review}
-								restaurant_address={
-									review.restaurant?.value
-										.structured_formatting.secondary_text
-								}
-								restaurant_name={
-									review.restaurant?.value
-										.structured_formatting.main_text
-								}
-								neighbourhood={
-									review.restaurant?.value.terms[2].value
-								}
-								city={review.restaurant?.value.terms[3].value}
-							/>
-						</Link>
+							<Link
+								href={username + "/" + review.uuid}
+								className="absolute inset-0 z-50 hidden items-center justify-center group-hover:flex group-hover:bg-gray-900/50"
+							>
+								<div className="flex aspect-square w-fit items-center justify-center rounded-full border border-white bg-gray-900/95 p-2 text-white">
+									Editar
+								</div>
+							</Link>
+							<Link
+								// href={username + "/" + review.uuid}
+								href={review.instagram_url}
+								className="w-full"
+								target="_blank"
+							>
+								<VerticalCard
+									key={review.uuid}
+									review={review}
+									restaurant_address={
+										review.restaurant?.value
+											.structured_formatting
+											.secondary_text
+									}
+									restaurant_name={
+										review.restaurant?.value
+											.structured_formatting.main_text
+									}
+									neighbourhood={
+										review.restaurant?.value.terms[2].value
+									}
+									city={
+										review.restaurant?.value.terms[3].value
+									}
+								/>
+							</Link>
+						</div>
 					))}
 			</div>
 		</div>

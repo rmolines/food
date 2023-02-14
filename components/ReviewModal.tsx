@@ -20,7 +20,7 @@ function ReviewModal({
 	const [imagesPreview, setImagesPreview] = useState<string[]>();
 	const [restaurantJson, setRestaurantJson] = useState();
 	const [category, setCategory] = useState();
-	const [rating, setRating] = useState();
+	const [rating, setRating] = useState(2.5);
 	const [review, setReview] = useState();
 	const [title, setTitle] = useState();
 	const [type, setType] = useState();
@@ -54,13 +54,20 @@ function ReviewModal({
 		try {
 			setLoading(true);
 
+			var image_urls = [];
+			if (images_info) {
+				for (var i = 0; i < images_info.count; i++) {
+					image_urls.push(images_info.cdnUrl + "nth/" + i + "/");
+				}
+			}
+
 			const data = {
 				creator: user?.id,
 				restaurant,
 				category,
 				rating,
 				review,
-				images_info,
+				image_urls,
 				title,
 				type,
 			};
@@ -417,12 +424,15 @@ function ReviewModal({
 										</label>
 										<Rating
 											name="half-rating"
-											defaultValue={2.5}
+											defaultValue={rating}
+											value={rating}
 											precision={0.5}
 											className=""
-											onChange={(event, newValue) =>
-												setRating(newValue)
-											}
+											onChange={(event, newValue) => {
+												if (newValue) {
+													setRating(newValue);
+												}
+											}}
 										/>
 									</div>
 

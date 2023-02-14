@@ -47,7 +47,7 @@ function RestaurantReview() {
 			let { data, error, status } = await supabase
 				.from("reviews")
 				.select(
-					`review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at`
+					`image_urls, review, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at`
 				)
 				.eq("uuid", uuid)
 				.single();

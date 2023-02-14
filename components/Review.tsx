@@ -28,7 +28,7 @@ function Review({
 	const [showModal, setShowModal] = useState(false);
 	const user = useUser();
 
-	const { images_info } = review;
+	const { images_info, image_urls } = review;
 
 	// useEffect(() => {
 	// 	const script = document.createElement("script");
@@ -54,14 +54,14 @@ function Review({
 	}, [images_info]);
 
 	return (
-		<div className="inline-flex w-full overflow-hidden mx-auto flex-col dark:bg-gray-800 dark:border-gray-700">
+		<div className="mx-auto inline-flex w-full flex-col overflow-hidden dark:border-gray-700 dark:bg-gray-800">
 			{/* <div className="inline-flex w-full flex-col dark:bg-gray-800 dark:border-gray-700"> */}
 			<button onClick={() => router.back()}>
-				<IoArrowBack className="text-2xl mb-4" />
+				<IoArrowBack className="mb-4 text-2xl" />
 			</button>
-			{imagesUrl && (
+			{image_urls && (
 				<Carousel className="rounded-none" slide={false}>
-					{imagesUrl.map((e) => (
+					{image_urls.map((e) => (
 						<div key={e} className="relative h-64 rounded-none">
 							<Image
 								className="object-cover"
@@ -114,7 +114,7 @@ function Review({
 					))}
 				</Carousel>
 			</div> */}
-			<div className=" p-3 py-2 gap-y-2 flex flex-col justify-between ">
+			<div className=" flex flex-col justify-between gap-y-2 p-3 py-2 ">
 				<div className="flex flex-col items-start justify-between">
 					{/* <div className="text-xs text-gray-500 mb-2">
 						{new Date(created_at).toLocaleDateString("pt-BR")}
@@ -123,7 +123,7 @@ function Review({
 						{restaurant_name}
 					</h5>
 				</div>
-				<div className="text-xs flex -mt-1 text-gray-500">
+				<div className="-mt-1 flex text-xs text-gray-500">
 					<div className="flex">
 						<div>📍 {`${neighbourhood}, ${city}`}</div>
 						{/* <div className="">{` ${city}`}</div> */}
@@ -136,7 +136,7 @@ function Review({
 						<div>{city}</div>
 					</div>
 				</div> */}
-				<span className="text-xs text-gray-500 mr-2 rounded dark:bg-gray-700 dark:text-gray-400">
+				<span className="mr-2 rounded text-xs text-gray-500 dark:bg-gray-700 dark:text-gray-400">
 					<>
 						{review.category.emoji} {review.category.name} •{" "}
 						{review.type.name}
@@ -158,13 +158,13 @@ function Review({
 					precision={0.5}
 				/>
 
-				<p className="mb-3 font-normal text-gray-700 border-t-1 pt-4 dark:text-gray-400 text-sm">
+				<p className="mb-3 border-t-1 pt-4 text-sm font-normal text-gray-700 dark:text-gray-400">
 					{review.review}
 				</p>
 				{isLoggedInProfile && (
 					<button
 						onClick={() => setShowModal(true)}
-						className="flex w-fit items-center gap-x-1 px-3 text-sm font-medium py-2 text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+						className="flex w-fit items-center gap-x-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
 					>
 						<BiEdit className="text-lg" />
 						<div>Editar</div>

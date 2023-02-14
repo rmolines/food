@@ -1,5 +1,5 @@
 {
-	"extends": "next/core-web-vitals",
+	"extends": ["next/core-web-vitals", "plugin:tailwindcss/recommended"],
 	"plugins": ["unused-imports"],
 	"rules": {
 		"no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
@@ -13,5 +13,11 @@
 				"argsIgnorePattern": "^_"
 			}
 		]
-	}
+	},
+	"overrides": [
+		{
+			"files": ["*.ts", "*.tsx", "*.js"],
+			"parser": "@typescript-eslint/parser"
+		}
+	]
 }

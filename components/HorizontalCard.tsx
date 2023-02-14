@@ -57,8 +57,8 @@ function HorizontalCard({
 			</div> */}
 
 			<div className="flex overflow-hidden h-32 sm:w-48 w-40 gap-x-2 snap-x snap-mandatory flex-none">
-				{imagesUrl &&
-					imagesUrl.map((e) => (
+				{review.image_urls &&
+					review.image_urls.map((e) => (
 						<div
 							key={e}
 							className="relative h-full w-full snap-center flex-none"
