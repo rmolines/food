@@ -158,14 +158,16 @@ export function ReviewGridAlt({
 							key={review.uuid}
 							className="group relative w-full"
 						>
-							<Link
-								href={username + "/" + review.uuid}
-								className="absolute inset-0 z-50 hidden items-center justify-center group-hover:flex group-hover:bg-gray-900/50"
-							>
-								<div className="flex aspect-square w-fit items-center justify-center rounded-full border border-white bg-gray-900/95 p-2 text-white">
-									Editar
-								</div>
-							</Link>
+							{isLoggedInProfile && (
+								<Link
+									href={username + "/" + review.uuid}
+									className="absolute inset-0 z-50 hidden items-center justify-center group-hover:flex group-hover:bg-gray-900/50"
+								>
+									<div className="flex aspect-square w-fit items-center justify-center rounded-full border border-white bg-gray-900/95 p-2 text-white">
+										Editar
+									</div>
+								</Link>
+							)}
 							<Link
 								// href={username + "/" + review.uuid}
 								href={review.instagram_url}
