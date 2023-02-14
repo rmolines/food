@@ -22,35 +22,47 @@ function Feed() {
 	const user = useUser();
 	const router = useRouter();
 
+	let url =
+		process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+		process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+		"https://localhost:3000/";
+
 	const authUrl = `https://api.instagram.com/oauth/authorize
 ?client_id=659292209330572
-&redirect_uri=https://localhost:3000/feed/
+&redirect_uri=${url}feed/
 &scope=user_profile,user_media
 &response_type=code`;
 
 	useEffect(() => {
-		if (getCookie("token")) {
-			setAccessToken(getCookie("token"));
-			fetch("/api/instagramMedia/" + getCookie("token"))
-				.then((res) => res.json())
-				.then((data) => {
-					setMedia(data.data);
-				});
-		} else if (router.query.code) {
-			fetch("/api/instagramToken/" + router.query.code)
-				.then((res) => res.json())
-				.then((data) => {
-					setCookie("token", data.access_token);
-					setAccessToken(data.access_token);
-					setInstagramUserId(data.user_id);
-					fetch("/api/instagramMedia/" + data.access_token)
-						.then((res) => res.json())
-						.then((data) => {
-							setMedia(data.data);
+		if (username) {
+			if (getCookie("instagramToken")) {
+				setAccessToken(getCookie("instagramToken"));
+				fetch("/api/instagramMedia/" + getCookie("token"))
+					.then((res) => res.json())
+					.then((data) => {
+						setMedia(data.data);
+					});
+			} else if (router.query.code) {
+				fetch("/api/instagramToken/" + router.query.code)
+					.then((res) => res.json())
+					.then((data) => {
+						setCookie("instagramToken", data.access_token, {
+							sameSite: true,
+							httpOnly: true,
+							maxAge: data.expires_in,
+							path: "/" + username,
 						});
-				});
+						setAccessToken(data.access_token);
+						setInstagramUserId(data.user_id);
+						fetch("/api/instagramMedia/" + data.access_token)
+							.then((res) => res.json())
+							.then((data) => {
+								setMedia(data.data);
+							});
+					});
+			}
 		}
-	}, [router.query]);
+	}, [router.query, username]);
 
 	useEffect(() => {
 		if (user) {
@@ -91,7 +103,7 @@ function Feed() {
 				<Link href={"/" + username}>
 					<RxCross1 className="text-2xl" />
 				</Link>
-				{!media ? (
+				{media.length == 0 ? (
 					<button
 						onClick={() => window.open(authUrl)}
 						type="button"

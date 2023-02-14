@@ -19,9 +19,14 @@ export default async function handler(
 				"csrftoken=T0QvuOz8qXZP6NbM2Cg9nT3ArcukkeAw; ig_did=E531B7AF-A1C0-4994-871A-7F879A8AFCF6; ig_nrcb=1; mid=Y-RShwAEAAGFJ_vX4k5ehUlAAEal"
 			);
 
+			let url =
+				process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+				process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+				"https://localhost:3000/";
+
 			let formdata = new FormData();
 			formdata.append("client_id", "659292209330572");
-			formdata.append("redirect_uri", "https://localhost:3000/feed/");
+			formdata.append("redirect_uri", `${url}feed/`);
 			formdata.append("grant_type", "authorization_code");
 			formdata.append("code", req.query.code);
 			formdata.append(

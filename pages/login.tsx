@@ -64,6 +64,7 @@ export default function Login() {
 
 	async function checkIfFinishedRegistering() {
 		try {
+			console.log("teste");
 			if (user) {
 				let { data, error, status } = await supabase
 					.from("profiles")
@@ -75,7 +76,13 @@ export default function Login() {
 					throw error;
 				}
 
-				return data?.username;
+				console.log(data);
+
+				if (!data?.username) {
+					router.push("/finishRegistering/");
+				} else {
+					router.push("/" + data.username);
+				}
 			}
 		} catch (error) {
 			console.log(error);
@@ -94,57 +101,27 @@ export default function Login() {
 			password: password,
 		});
 
-		const finishedRegistering = await checkIfFinishedRegistering();
-		if (!finishedRegistering) {
-			console.log("TWAETASDFASDFASDFOISDNFOIN", finishedRegistering);
-			router.push("/finishRegistering/");
-		} else {
-			router.reload();
-		}
-
 		if (error) {
 			console.log(error);
 			alert("Erro ao logar");
 		}
 	}
 
-	// return (
-	// 	<div className="flex items-center justify-center grow pb-16">
-	// 		<section className="dark:bg-gray-900 w-full max-w-md">
-	// 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto">
-	// 				<div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-	// 					<div className="p-6 space-y-4">
-	// 						<h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-	// 							{/* Entrar com sua conta */}
-	// 						</h1>
-	// 						<Auth
-	// 							supabaseClient={supabase}
-	// 							appearance={{
-	// 								theme: ThemeSupa,
-	// 								variables: {
-	// 									default: {
-	// 										colors: {
-	// 											brand: "#E15337",
-	// 											brandAccent: "#E15337",
-	// 										},
-	// 									},
-	// 								},
-	// 							}}
-	// 						/>
-	// 					</div>
-	// 				</div>
-	// 			</div>
-	// 		</section>
-	// 	</div>
-	// );
+	async function name(params: type) {}
+
+	useEffect(() => {
+		if (user) {
+			checkIfFinishedRegistering();
+		}
+	}, [user]);
 
 	return (
-		<div className="flex items-center justify-center grow pb-16">
-			<section className="dark:bg-gray-900 w-full max-w-md">
-				<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto">
-					<div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-						<div className="p-6 space-y-4">
-							<h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+		<div className="flex grow items-center justify-center pb-16">
+			<section className="w-full max-w-md dark:bg-gray-900">
+				<div className="mx-auto flex flex-col items-center justify-center px-6 py-8">
+					<div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800">
+						<div className="space-y-4 p-6">
+							<h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
 								Entrar com sua conta
 							</h1>
 							<form
@@ -158,14 +135,14 @@ export default function Login() {
 								<div>
 									<label
 										htmlFor="email"
-										className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+										className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 									>
 										Email
 									</label>
 									<input
 										type="email"
 										id="email"
-										className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
 										placeholder="nome@email.com"
 										required={true}
 										// onChange={(e) =>
@@ -192,7 +169,7 @@ export default function Login() {
 								<div>
 									<label
 										htmlFor="password"
-										className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+										className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 									>
 										Senha
 									</label>
@@ -201,7 +178,7 @@ export default function Login() {
 										id="current-password"
 										autoComplete="current-password"
 										placeholder="••••••••"
-										className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
 										required={true}
 										// onChange={(e) =>
 										// 	setPassword(e.target.value)
@@ -232,12 +209,12 @@ export default function Login() {
 								</div>
 								<div className="flex items-center justify-between">
 									<div className="flex items-start">
-										<div className="flex items-center h-5">
+										<div className="flex h-5 items-center">
 											<input
 												id="remember"
 												aria-describedby="remember"
 												type="checkbox"
-												className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+												className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-primary-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
 											/>
 										</div>
 										<div className="ml-3 text-sm">
@@ -258,7 +235,7 @@ export default function Login() {
 								</div>
 								<button
 									type="submit"
-									className="w-full cursor-pointer text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+									className="w-full cursor-pointer rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 								>
 									Entrar
 								</button>
