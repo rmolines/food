@@ -39,7 +39,7 @@ function Feed() {
 			let tokenCookie = getCookie("instagramToken");
 			if (tokenCookie && typeof tokenCookie === "string") {
 				setAccessToken(tokenCookie);
-				fetch("/api/instagramMedia/" + getCookie("token"))
+				fetch("/api/instagramMedia/" + getCookie("instagramToken"))
 					.then((res) => {
 						res.json();
 					})

@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { getCookie } from "cookies-next";
 import type { NextApiRequest, NextApiResponse } from "next";
 var axios = require("axios");
 
@@ -23,6 +24,8 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
+	getCookie("instagramToken", { req, res });
+
 	fetchMedia(req.query.token)
 		.then((data) => {
 			res.status(200).json(data);

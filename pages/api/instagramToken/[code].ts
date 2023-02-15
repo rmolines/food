@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { setCookie } from "cookies-next";
 import type { NextApiRequest, NextApiResponse } from "next";
 var axios = require("axios");
 var FormData = require("form-data");
@@ -48,6 +49,14 @@ export default async function handler(
 	fetchAccessToken(req.query.code)
 		.then((data) => {
 			console.log(data);
+			setCookie("instagramToken2", data.access_token, {
+				req,
+				res,
+				sameSite: true,
+				httpOnly: true,
+				maxAge: data.expires_in,
+				path: "/" + "rafael_molines",
+			});
 			res.status(200).json(data);
 		})
 		.catch((e) => {
