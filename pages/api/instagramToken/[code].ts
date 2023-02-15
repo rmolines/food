@@ -30,6 +30,8 @@ const fetchAccessToken = async (code) => {
 
 	const data = await res.json();
 
+	console.log(data);
+
 	const res2 = await fetch(
 		`https://graph.instagram.com/access_token?access_token=${data.access_token}&grant_type=ig_exchange_token&client_secret=c39980f561ce1945efab8a7aab6be38a`,
 		{
@@ -40,6 +42,8 @@ const fetchAccessToken = async (code) => {
 
 	const data2 = await res2.json();
 
+	console.log(data2);
+
 	return data2;
 };
 
@@ -49,9 +53,11 @@ export default async function handler(
 ) {
 	fetchAccessToken(req.query.code)
 		.then((data) => {
+			console.log(data);
 			res.status(200).json(data);
 		})
 		.catch((e) => {
+			console.log(e);
 			res.status(500).json({ error: e });
 		});
 
