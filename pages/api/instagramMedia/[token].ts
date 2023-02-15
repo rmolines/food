@@ -24,7 +24,7 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	getCookie("instagramToken", { req, res });
+	console.log(getCookie("instagramToken", { req, res }));
 
 	fetchMedia(req.query.token)
 		.then((data) => {
