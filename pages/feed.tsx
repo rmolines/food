@@ -18,6 +18,7 @@ function Feed() {
 	const [count, setCount] = useState(1);
 	const [totalCount, setTotalCount] = useState(0);
 	const [username, setUsername] = useState();
+	const [error, setError] = useState();
 	const supabase = useSupabaseClient();
 	const user = useUser();
 	const router = useRouter();
@@ -48,6 +49,9 @@ function Feed() {
 			} else if (router.query.code) {
 				fetch("/api/instagramToken/" + router.query.code)
 					.then((res) => {
+						if (!res.ok) {
+							res.json().then((data) => setError(data));
+						}
 						return res.json();
 					})
 					.then((data) => {
@@ -131,6 +135,7 @@ function Feed() {
 					</button>
 				)}
 			</div>
+			{error && <div>{JSON.stringify(error)}</div>}
 			{chosenMedia2.length > 0 && (
 				<CreateReviewModal
 					key={chosenMedia2[0].id}
