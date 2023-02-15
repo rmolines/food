@@ -42,9 +42,9 @@ export default function Layout({ children }: { children: JSX.Element }) {
 				<meta name="theme-color" content="#ffffff" />
 			</Head>
 			{/* <div className="bg-[url('/gradient.svg')] bg-hero bg-no-repeat bg-cover bg-center bg-fixed"> */}
-			<div className="container mx-auto sm:px-8 px-4 max-w-6xl min-h-screen flex justify-start flex-col">
+			<div className="container mx-auto flex min-h-screen max-w-6xl flex-col justify-start px-4 sm:px-8">
 				<Header />
-				<main className="grow flex flex-col">{children}</main>
+				<main className="flex grow flex-col">{children}</main>
 				<div className="hidden sm:block">
 					<Footer />
 				</div>

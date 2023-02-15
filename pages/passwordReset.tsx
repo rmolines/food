@@ -79,45 +79,40 @@ export default function PasswordRecover() {
 
 	useEffect(() => {
 		if (supabase) {
-			const { data } = supabase.auth.onAuthStateChange(
-				async (_event, _session) => {
-					console.log(_event, _session);
-					if (_event == "PASSWORD_RECOVERY") {
-						console.log("oioi");
-					}
+			supabase.auth.onAuthStateChange(async (_event, _session) => {
+				if (_event == "SIGNED_IN") {
+					setVerified(true);
 				}
-			);
-
-			return () => data.subscription.unsubscribe();
+			});
 		}
 	}, [supabase]);
 
 	if (!verified) return;
 
 	return (
-		<div className="flex items-center justify-center grow pb-16">
+		<div className="flex grow items-center justify-center pb-16">
 			{/* <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} /> */}
-			<section className="dark:bg-gray-900 w-full max-w-md">
-				<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto">
-					<div className="w-full p-6 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
-						<h1 className="flex flex-col mb-1 gap-y-3 text-xl font-bold align-middle leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+			<section className="w-full max-w-md dark:bg-gray-900">
+				<div className="mx-auto flex flex-col items-center justify-center px-6 py-8">
+					<div className="w-full rounded-lg bg-white p-6 shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md sm:p-8 md:mt-0">
+						<h1 className="mb-1 flex flex-col gap-y-3 align-middle text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
 							<div className="h-full">Alterar senha</div>
 						</h1>
 						<form
-							className="mt-4 space-y-4 lg:mt-5 md:space-y-5"
+							className="mt-4 space-y-4 md:space-y-5 lg:mt-5"
 							onSubmit={handleSubmit(onSubmit)}
 						>
 							<div>
 								<label
 									htmlFor="password"
-									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+									className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 								>
 									Senha nova
 								</label>
 								<input
 									type="password"
 									id="password"
-									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+									className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder:text-gray-400"
 									placeholder="••••••••"
 									required
 									{...register("password", {
@@ -141,7 +136,7 @@ export default function PasswordRecover() {
 							<div>
 								<label
 									htmlFor="confirmPassword"
-									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+									className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 								>
 									Confirmar senha
 								</label>
@@ -149,7 +144,7 @@ export default function PasswordRecover() {
 									type="password"
 									id="confirmPassword"
 									placeholder="••••••••"
-									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+									className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder:text-gray-400"
 									required
 									{...register("confirmPassword", {
 										validate: (value) =>
@@ -172,11 +167,11 @@ export default function PasswordRecover() {
 								)}
 							</div>
 							{loading ? (
-								<div className="w-full text-white bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600">
+								<div className="w-full rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white dark:bg-primary-600">
 									<svg
 										aria-hidden="true"
 										role="status"
-										className="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600"
+										className="mr-2 inline h-4 w-4 animate-spin text-gray-200 dark:text-gray-600"
 										viewBox="0 0 100 101"
 										fill="none"
 										xmlns="http://www.w3.org/2000/svg"
@@ -190,12 +185,12 @@ export default function PasswordRecover() {
 											fill="#1C64F2"
 										/>
 									</svg>
-									Loading..
+									Loading...
 								</div>
 							) : (
 								<button
 									type="submit"
-									className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+									className="w-full rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 								>
 									<div>Resetar senha</div>
 								</button>

@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function Main() {
 	return (
-		<section className="dark:bg-gray-900 my-auto">
-			<div className="absolute h-screen w-screen -z-50 top-0 left-0"></div>
+		<section className="my-auto dark:bg-gray-900">
+			<div className="absolute top-0 left-0 -z-50 h-screen w-screen"></div>
 			{/* 
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -56,11 +56,10 @@ export default function Main() {
 					</g>
 				</svg>
 			</div> */}
-			<div className="gap-8 items-center flex">
+			<div className="flex items-center gap-8">
 				<div className="mt-4 md:mt-0">
-					<h2 className="mb-4 sm:text-6xl text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-						O novo jeito para seus seguidores interagirem com seu
-						conteúdo
+					<h2 className="mb-4 text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+						O novo jeito de navegar seu conteúdo no Instagram
 					</h2>
 					<p className="mb-6 font-light text-gray-500 dark:text-gray-400">
 						Tenha uma plataforma para expor seus conteúdos novos e
@@ -70,16 +69,16 @@ export default function Main() {
 					</p>
 					<label
 						htmlFor="input-group-1"
-						className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 					>
 						Entre na lista de espera
 					</label>
 					<div className="inline-flex w-full max-w-md">
 						<div className="relative grow">
-							<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+							<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
 								<svg
 									aria-hidden="true"
-									className="w-5 h-5 text-gray-500 dark:text-gray-400"
+									className="h-5 w-5 text-gray-500 dark:text-gray-400"
 									fill="currentColor"
 									viewBox="0 0 20 20"
 									xmlns="http://www.w3.org/2000/svg"
@@ -91,24 +90,24 @@ export default function Main() {
 							<input
 								type="text"
 								id="input-group-1"
-								className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+								className="block w-full rounded-l-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
 								placeholder="Seu email..."
 							/>
 						</div>
 						<a
 							href="#"
-							className="inline-flex items-center border border-primary-700 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-r-lg text-sm px-3 py-2.5 text-center dark:focus:ring-primary-900"
+							className="inline-flex items-center rounded-r-lg border border-primary-700 bg-primary-700 px-3 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
 						>
 							Solicitar acesso
 						</a>
 					</div>
 				</div>
-				<div className="relative w-full h-full aspect-square max-w-xl hidden md:block">
+				<div className="relative hidden aspect-square h-full w-full max-w-xl md:block">
 					<Image
-						src="/post.png"
+						src="/content_team.svg"
 						alt="dashboard image"
 						fill
-						className="object-cover aspect-square"
+						className="aspect-square object-contain"
 					/>
 				</div>
 			</div>

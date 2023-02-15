@@ -74,12 +74,12 @@ function Header() {
 			)}
 			<header className="sm:my-2">
 				<nav className="border-gray-200 py-2.5 dark:bg-gray-800">
-					<div className="flex flex-wrap justify-between items-center">
+					<div className="flex flex-wrap items-start justify-between">
 						{(!user || isHomepage) && (
-							<div className="flex justify-between w-full items-center">
+							<div className="flex w-full items-center justify-between">
 								<Link
 									href={"/"}
-									className="flex mr-4 items-center justify-center"
+									className="mr-4 flex items-center justify-center"
 								>
 									<Image
 										src="/abstract-shape.png"
@@ -88,7 +88,7 @@ function Header() {
 										width={30}
 										height={30}
 									/>
-									<span className="inline-flex align-baseline h-fit text-2xl font-semibold whitespace-nowrap dark:text-white">
+									<span className="inline-flex h-fit whitespace-nowrap align-baseline text-2xl font-semibold dark:text-white">
 										<div className="text-primary-700">
 											Inn
 										</div>
@@ -105,7 +105,7 @@ function Header() {
 									</a> */}
 									<Link
 										href="/login"
-										className="text-primary-700 border-2 border-primary-700 hover:bg-primary-700 hover:text-white focus:ring-4 focus:ring-primary-300 font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+										className="mr-2 rounded-lg border-2 border-primary-700 px-4 py-2 text-sm font-bold text-primary-700 hover:bg-primary-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:px-5 lg:py-2.5"
 									>
 										Entrar
 									</Link>
@@ -149,10 +149,10 @@ function Header() {
 						)}
 						{user && !isHomepage && (
 							<>
-								<div className="flex justify-start items-center">
+								<div className="flex items-center justify-start">
 									<Link
 										href={"/" + username}
-										className="flex mr-4 items-center justify-center"
+										className="mr-4 flex items-center justify-center"
 									>
 										<Image
 											src="/abstract-shape.png"
@@ -161,7 +161,7 @@ function Header() {
 											width={30}
 											height={30}
 										/>
-										<span className="inline-flex align-baseline h-fit text-2xl font-semibold whitespace-nowrap dark:text-white">
+										<span className="inline-flex h-fit whitespace-nowrap align-baseline text-2xl font-semibold dark:text-white">
 											<div className="text-primary-700">
 												Inn
 											</div>
@@ -169,7 +169,7 @@ function Header() {
 										</span>
 									</Link>
 								</div>
-								<div className="items-center lg:order-2 hidden sm:flex">
+								<div className="hidden items-center sm:flex lg:order-2">
 									{/* <button
 										type="button"
 										className="inline-flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
@@ -212,7 +212,7 @@ function Header() {
 									<div className="relative" ref={ref}>
 										<button
 											type="button"
-											className="flex mx-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+											className="mx-3 flex rounded-full text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 md:mr-0"
 											id="user-menu-button"
 											aria-expanded="false"
 											data-dropdown-toggle="dropdown"
@@ -233,14 +233,14 @@ function Header() {
 										{/* <!-- Dropdown menu --> */}
 										{showDropdown && (
 											<div
-												className="z-50 right-0 absolute my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+												className="absolute right-0 z-50 my-4 w-56 list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700"
 												id="dropdown"
 											>
 												<div className="py-3 px-4">
 													<span className="block text-sm font-semibold text-gray-900 dark:text-white">
 														{full_name}
 													</span>
-													<span className="block text-sm font-light text-gray-500 truncate dark:text-gray-400">
+													<span className="block truncate text-sm font-light text-gray-500 dark:text-gray-400">
 														@{username}
 													</span>
 												</div>
@@ -260,7 +260,7 @@ function Header() {
 															href={
 																"/" + username
 															}
-															className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
+															className="block py-2 px-4 text-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
 														>
 															Meu perfil
 														</Link>
