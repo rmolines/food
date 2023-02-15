@@ -32,6 +32,7 @@ function FinishRegistering() {
 
 			const updates = {
 				id: user?.id,
+				email: user?.email,
 				username,
 				avatar_url,
 				full_name,
@@ -40,7 +41,7 @@ function FinishRegistering() {
 			let { error } = await supabase.from("profiles").upsert(updates);
 
 			if (error) throw error;
-			alert("Profile updated!");
+			alert("Perfil criado!");
 			router.push("/" + username);
 		} catch (error) {
 			console.log(error);
@@ -54,27 +55,27 @@ function FinishRegistering() {
 		<>
 			<div
 				aria-hidden="true"
-				className="overflow-y-auto overflow-x-hidden flex justify-center items-center w-full md:inset-0 h-modal md:h-full"
+				className="flex h-modal w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full"
 			>
-				<div className="relative p-4 w-full max-w-2xl h-full md:h-auto max-h-full">
+				<div className="relative h-full max-h-full w-full max-w-2xl p-4 md:h-auto">
 					{/* <!-- Modal content --> */}
-					<div className="relative p-4 bg-white rounded-lg dark:bg-gray-800 sm:p-5">
+					<div className="relative rounded-lg bg-white p-4 dark:bg-gray-800 sm:p-5">
 						{/* <!-- Modal header --> */}
-						<div className="flex justify-start items-center gap-x-2 pb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-							<h3 className="text-lg align-baseline font-semibold text-gray-900 dark:text-white">
+						<div className="flex items-center justify-start gap-x-2 rounded-t border-b pb-4 dark:border-gray-600 sm:mb-5">
+							<h3 className="align-baseline text-lg font-semibold text-gray-900 dark:text-white">
 								Completar perfil
 							</h3>
 						</div>
 						{/* <!-- Modal body --> */}
 						<form
 							onSubmit={handleSubmit(onSubmit)}
-							className="grid grid-cols-2 w-full "
+							className="grid w-full grid-cols-2 "
 						>
-							<div className="mb-4 border-r flex w-full mx-auto flex-col">
-								<div className="text-sm font-medium mb-4">
+							<div className="mx-auto mb-4 flex w-full flex-col border-r">
+								<div className="mb-4 text-sm font-medium">
 									Imagens
 								</div>
-								<div className="flex grow mx-auto gap-y-4 flex-col justify-center items-center">
+								<div className="mx-auto flex grow flex-col items-center justify-center gap-y-4">
 									<Avatar
 										uploadable
 										url={avatar_url}
@@ -83,18 +84,18 @@ function FinishRegistering() {
 									/>
 								</div>
 							</div>
-							<div className="flex flex-col gap-4 mb-4 items-center px-8">
+							<div className="mb-4 flex flex-col items-center gap-4 px-8">
 								<div className="w-full">
 									<label
 										htmlFor="brand"
-										className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+										className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 									>
 										Nome de Exibição
 									</label>
 									<input
 										type="text"
 										id="brand"
-										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+										className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 										required
 										{...register("full_name", {
 											required:
@@ -113,14 +114,14 @@ function FinishRegistering() {
 								<div className="w-full">
 									<label
 										htmlFor="brand"
-										className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+										className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 									>
 										Usuário
 									</label>
 									<input
 										type="text"
 										id="brand"
-										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+										className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 										required
 										{...register("username", {
 											required:
@@ -139,7 +140,7 @@ function FinishRegistering() {
 							</div>
 							<button
 								type="submit"
-								className="text-white w-fit inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+								className="inline-flex w-fit items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 							>
 								Criar perfil
 							</button>

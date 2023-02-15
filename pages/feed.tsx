@@ -35,16 +35,21 @@ function Feed() {
 
 	useEffect(() => {
 		if (username) {
-			if (getCookie("instagramToken")) {
-				setAccessToken(getCookie("instagramToken"));
+			let tokenCookie = getCookie("instagramToken");
+			if (tokenCookie && typeof tokenCookie === "string") {
+				setAccessToken(tokenCookie);
 				fetch("/api/instagramMedia/" + getCookie("token"))
-					.then((res) => res.json())
+					.then((res) => {
+						res.json();
+					})
 					.then((data) => {
 						setMedia(data.data);
 					});
 			} else if (router.query.code) {
 				fetch("/api/instagramToken/" + router.query.code)
-					.then((res) => res.json())
+					.then((res) => {
+						return res.json();
+					})
 					.then((data) => {
 						setCookie("instagramToken", data.access_token, {
 							sameSite: true,

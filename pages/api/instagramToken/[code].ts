@@ -2,14 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 const FormData = require("form-data");
 
-type Data = {
-	access_token: string;
-	user_id: number;
-};
-
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<Data>
+	res: NextApiResponse
 ) {
 	const fetchAccessToken = () =>
 		new Promise((resolve) => {
@@ -50,24 +45,27 @@ export default async function handler(
 						}
 					)
 						.then((res) => {
-							console.log(res.url);
 							return res.json();
 						})
 						.then((data) => {
-							console.log("data2", data);
 							resolve(data);
 						})
-						.catch((e) => console.log("error2", e));
+						.catch((e) => {
+							throw new Error(e);
+						});
 				})
-				// .then((result) => {
-				// 	resolve(result);
-				// })
-				.catch((error) => console.log("error", error));
+				.catch((e) => {
+					throw new Error(e);
+				});
 		});
 
-	const data = await fetchAccessToken();
-
-	res.status(200).json(data);
+	fetchAccessToken()
+		.then((data) => {
+			res.status(200).json(data);
+		})
+		.catch((e) => {
+			res.status(500).json({ error: e });
+		});
 
 	// res.status(200).json({
 	// 	access_token:

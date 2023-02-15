@@ -1,20 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Data = {
-	access_token: string;
-	user_id: string;
-};
-
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<Data>
+	res: NextApiResponse
 ) {
 	const fetchMedia = () =>
 		new Promise((resolve) => {
 			const fields = `id,caption,media_url,permalink,media_type,thumbnail_url`;
 			const mediaUrl = `https://graph.instagram.com/me/media?fields=${fields}&access_token=${req.query.token}`;
-			// const mediaUrl = `https://graph.instagram.com/6105024962881130?fields=id,username&access_token=${req.query.token}`;
 
 			let myHeaders = new Headers();
 			myHeaders.append(
@@ -33,10 +27,16 @@ export default async function handler(
 				.then((result) => {
 					resolve(result);
 				})
-				.catch((error) => console.log("error", error));
+				.catch((error) => {
+					throw new Error(error);
+				});
 		});
 
-	const data = await fetchMedia();
-
-	res.status(200).json(data);
+	fetchMedia()
+		.then((data) => {
+			res.status(200).json(data);
+		})
+		.catch((error) => {
+			res.status(500).json({ error });
+		});
 }
