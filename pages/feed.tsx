@@ -50,11 +50,12 @@ function Feed() {
 				fetch("/api/instagramToken/" + router.query.code)
 					.then((res) => {
 						if (!res.ok) {
-							res.json().then((data) => setError(data));
+							res.json().then((data) => console.log(data));
 						}
 						return res.json();
 					})
 					.then((data) => {
+						console.log(data);
 						setCookie("instagramToken", data.access_token, {
 							sameSite: true,
 							httpOnly: true,
