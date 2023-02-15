@@ -1,50 +1,44 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-const FormData = require("form-data");
+var axios = require("axios");
+var FormData = require("form-data");
 
-const fetchAccessToken = async (code) => {
-	let myHeaders = new Headers();
-	myHeaders.append(
-		"Cookie",
-		"csrftoken=T0QvuOz8qXZP6NbM2Cg9nT3ArcukkeAw; ig_did=E531B7AF-A1C0-4994-871A-7F879A8AFCF6; ig_nrcb=1; mid=Y-RShwAEAAGFJ_vX4k5ehUlAAEal"
-	);
-
+const fetchAccessToken = async (code: string) => {
 	let url =
 		process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
 		process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
 		"https://localhost:3000/";
 
-	let formdata = new FormData();
-	formdata.append("client_id", "659292209330572");
-	formdata.append("redirect_uri", `${url}feed/`);
-	formdata.append("grant_type", "authorization_code");
-	formdata.append("code", code);
-	formdata.append("client_secret", "c39980f561ce1945efab8a7aab6be38a");
+	let formData = new FormData();
+	formData.append("client_id", "659292209330572");
+	formData.append("redirect_uri", `${url}feed/`);
+	formData.append("grant_type", "authorization_code");
+	formData.append("code", code);
+	formData.append("client_secret", "c39980f561ce1945efab8a7aab6be38a");
 
-	const res = await fetch("https://api.instagram.com/oauth/access_token", {
-		method: "POST",
-		headers: myHeaders,
-		body: formdata,
-		redirect: "follow",
-	});
+	var config = {
+		method: "post",
+		url: "https://api.instagram.com/oauth/access_token",
+		headers: {
+			Cookie: "csrftoken=T0QvuOz8qXZP6NbM2Cg9nT3ArcukkeAw; ig_did=E531B7AF-A1C0-4994-871A-7F879A8AFCF6; ig_nrcb=1; mid=Y-RShwAEAAGFJ_vX4k5ehUlAAEal",
+			...formData.getHeaders(),
+		},
+		data: formData,
+	};
 
-	const data = await res.json();
+	const res = await axios(config);
 
-	console.log(data);
+	var config2 = {
+		method: "get",
+		url: `https://graph.instagram.com/access_token?access_token=${res.data.access_token}&grant_type=ig_exchange_token&client_secret=c39980f561ce1945efab8a7aab6be38a`,
+		headers: {
+			Cookie: "csrftoken=T0QvuOz8qXZP6NbM2Cg9nT3ArcukkeAw; ig_did=E531B7AF-A1C0-4994-871A-7F879A8AFCF6; ig_nrcb=1; mid=Y-RShwAEAAGFJ_vX4k5ehUlAAEal",
+		},
+	};
 
-	const res2 = await fetch(
-		`https://graph.instagram.com/access_token?access_token=${data.access_token}&grant_type=ig_exchange_token&client_secret=c39980f561ce1945efab8a7aab6be38a`,
-		{
-			headers: myHeaders,
-			redirect: "follow",
-		}
-	);
+	const res2 = await axios(config2);
 
-	const data2 = await res2.json();
-
-	console.log(data2);
-
-	return data2;
+	return res2.data;
 };
 
 export default async function handler(
