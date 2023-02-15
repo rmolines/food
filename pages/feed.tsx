@@ -52,6 +52,9 @@ function Feed() {
 						if (!res.ok) {
 							res.json().then((data) => console.log(data));
 						}
+						res.json()
+							.then((data) => console.log("t", data))
+							.catch((e) => console.log("t", e));
 						return res.json();
 					})
 					.then((data) => {
