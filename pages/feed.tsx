@@ -49,16 +49,10 @@ function Feed() {
 			} else if (router.query.code) {
 				fetch("/api/instagramToken/" + router.query.code)
 					.then((res) => {
-						if (!res.ok) {
-							res.json().then((data) => console.log(data));
-						}
-						res.json()
-							.then((data) => console.log("t", data))
-							.catch((e) => console.log("t", e));
 						return res.json();
 					})
 					.then((data) => {
-						console.log(data);
+						console.log("t", data);
 						setCookie("instagramToken", data.access_token, {
 							sameSite: true,
 							httpOnly: true,
@@ -72,7 +66,8 @@ function Feed() {
 							.then((data) => {
 								setMedia(data.data);
 							});
-					});
+					})
+					.catch((e) => console.log("t", e));
 			}
 		}
 	}, [router.query, username]);
