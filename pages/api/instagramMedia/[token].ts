@@ -3,6 +3,24 @@ import { getCookie } from "cookies-next";
 import type { NextApiRequest, NextApiResponse } from "next";
 var axios = require("axios");
 
+type userMediaResponse = {
+	data: {
+		id: string;
+		caption: string;
+		media_type: string;
+		media_url: string;
+		permalin: string;
+		thumbnail_url: string;
+	}[];
+	paging: {
+		cursors: {
+			after: string;
+			before: string;
+		};
+		next: string;
+	};
+};
+
 const fetchMedia = async (token: string) => {
 	const fields = `id,caption,media_url,permalink,media_type,thumbnail_url`;
 	const mediaUrl = `https://graph.instagram.com/me/media?fields=${fields}&access_token=${token}`;
@@ -24,13 +42,19 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	console.log(getCookie("instagramToken", { req, res }));
+	let instagramToken = getCookie("instagramToken", { req, res });
 
-	fetchMedia(req.query.token)
-		.then((data) => {
-			res.status(200).json(data);
-		})
-		.catch((error) => {
-			res.status(500).json({ error });
-		});
+	if (typeof instagramToken === "string") {
+		fetchMedia(instagramToken)
+			.then((data) => {
+				res.status(200).json(data);
+			})
+			.catch((error) => {
+				console.log("erro api", error);
+				res.status(500).json({ error });
+			});
+	} else {
+		console.log("deu ruim");
+		res.status(500).json({ error: "Access Token not provided" });
+	}
 }

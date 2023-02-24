@@ -75,6 +75,7 @@ export default function Main() {
 				<div className="relative hidden aspect-square h-full w-full max-w-xl md:block">
 					<Image
 						src="/content_team.svg"
+						// src={"/product2.png"}
 						alt="dashboard image"
 						fill
 						className="aspect-square object-contain"

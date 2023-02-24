@@ -24,6 +24,10 @@ function MyApp({
 			);
 
 			return () => data.subscription.unsubscribe();
+
+			// const user = supabase.auth.getUser();
+
+			// if (user)
 		}
 	}, [supabase]);
 

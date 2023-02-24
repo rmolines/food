@@ -46,23 +46,26 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	fetchAccessToken(req.query.code)
-		.then((data) => {
-			console.log(data);
-			setCookie("instagramToken2", data.access_token, {
-				req,
-				res,
-				sameSite: true,
-				httpOnly: true,
-				maxAge: data.expires_in,
-				path: "/" + "rafael_molines",
+	if (typeof req.query.code === "string") {
+		fetchAccessToken(req.query.code)
+			.then((data) => {
+				setCookie("instagramToken", data.access_token, {
+					req,
+					res,
+					sameSite: true,
+					httpOnly: true,
+					maxAge: data.expires_in,
+					// path: "/" + "rafael_molines",
+				});
+				res.status(200).json(data);
+			})
+			.catch((e) => {
+				console.log(e);
+				res.status(500).json({ error: e });
 			});
-			res.status(200).json(data);
-		})
-		.catch((e) => {
-			console.log(e);
-			res.status(500).json({ error: e });
-		});
+	} else {
+		res.status(500).json({ error: "Access Token not provided" });
+	}
 
 	// res.status(200).json({
 	// 	access_token:

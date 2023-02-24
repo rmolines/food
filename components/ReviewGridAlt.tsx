@@ -93,7 +93,7 @@ export function ReviewGridAlt({
 					)}
 					{isLoggedInProfile && (
 						<div className="flex items-center justify-center">
-							{/* <button
+							<button
 								type="button"
 								className="mr-2 inline-flex items-center justify-center rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 								onClick={() => {
@@ -114,7 +114,7 @@ export function ReviewGridAlt({
 									></path>
 								</svg>{" "}
 								Criar Review
-							</button> */}
+							</button>
 							<Link
 								href={"/feed"}
 								// className="inline-flex items-center justify-center text-white bg-[#24292F] hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-3 py-2 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
@@ -161,16 +161,20 @@ export function ReviewGridAlt({
 							{isLoggedInProfile && (
 								<Link
 									href={username + "/" + review.uuid}
-									className="absolute inset-0 z-50 hidden items-center justify-center group-hover:flex group-hover:bg-gray-900/50"
+									className="absolute inset-0 z-50 hidden items-center justify-center group-hover:flex group-hover:bg-gray-900/20 group-hover:shadow-xl"
 								>
-									<div className="flex aspect-square w-fit items-center justify-center rounded-full border border-white bg-gray-900/95 p-2 text-white">
+									<div className="flex aspect-square w-fit items-center justify-center rounded-full border border-gray-200/80 bg-gray-900/70 p-2 text-white">
 										Editar
 									</div>
 								</Link>
 							)}
 							<Link
 								// href={username + "/" + review.uuid}
-								href={review.instagram_url}
+								href={
+									review.instagram_url
+										? review.instagram_url
+										: "#"
+								}
 								className="w-full"
 								target="_blank"
 							>

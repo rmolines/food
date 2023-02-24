@@ -4,6 +4,7 @@ import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import Image from "next/image";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/router";
 
 type Inputs = {
 	review_text: string;
@@ -42,6 +43,7 @@ function CreateReviewModal({
 
 	const supabase = useSupabaseClient();
 	const user = useUser();
+	const router = useRouter();
 
 	console.log(instagram_url);
 
@@ -98,8 +100,12 @@ function CreateReviewModal({
 
 			let { error } = await supabase.from("reviews").insert(data);
 			if (error) throw error;
-			alert("Review criada!");
-			next_review();
+			// alert("Review criada!");
+			if (current_count === total_count) {
+				router.push("/" + username);
+			} else {
+				next_review();
+			}
 		} catch (error) {
 			console.log(error);
 			alert("Error creating review!");

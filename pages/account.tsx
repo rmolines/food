@@ -16,13 +16,7 @@ export default function Account() {
 	const [avatar_url, setAvatarUrl] = useState<string>();
 	const [showModal, setShowModal] = useState(false);
 
-	useEffect(() => {
-		if (user) {
-			getProfile(user.id);
-		}
-	}, [user]);
-
-	async function getProfile(id: string) {
+	const getProfile = async (id: string) => {
 		try {
 			setLoading(true);
 
@@ -47,7 +41,13 @@ export default function Account() {
 		} finally {
 			setLoading(false);
 		}
-	}
+	};
+
+	useEffect(() => {
+		if (user) {
+			getProfile(user.id);
+		}
+	}, [user]);
 
 	async function updateProfile({
 		username,
@@ -115,33 +115,33 @@ export default function Account() {
 				<>
 					<div
 						aria-hidden="true"
-						className="overflow-y-auto overflow-x-hidden flex justify-center items-center w-full md:inset-0 h-modal md:h-full"
+						className="flex h-modal w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full"
 					>
-						<div className="relative p-4 w-full max-w-2xl h-full md:h-auto max-h-full">
+						<div className="relative h-full max-h-full w-full max-w-2xl p-4 md:h-auto">
 							{/* <!-- Modal content --> */}
-							<div className="relative p-4 bg-white rounded-lg dark:bg-gray-800 sm:p-5">
+							<div className="relative rounded-lg bg-white p-4 dark:bg-gray-800 sm:p-5">
 								{/* <!-- Modal header --> */}
-								<div className="flex justify-start items-center gap-x-2 pb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+								<div className="flex items-center justify-start gap-x-2 rounded-t border-b pb-4 dark:border-gray-600 sm:mb-5">
 									<button
 										className=" rounded-full"
 										onClick={() => router.back()}
 									>
 										<IoArrowBack className="text-2xl" />
 									</button>
-									<h3 className="text-lg align-baseline font-semibold text-gray-900 dark:text-white">
+									<h3 className="align-baseline text-lg font-semibold text-gray-900 dark:text-white">
 										Editar Perfil
 									</h3>
 								</div>
 								{/* <!-- Modal body --> */}
 								<form
 									onSubmit={handleForm}
-									className="grid grid-cols-2 w-full "
+									className="grid w-full grid-cols-2 "
 								>
-									<div className="mb-4 border-r flex w-full mx-auto flex-col">
-										<div className="text-sm font-medium mb-4">
+									<div className="mx-auto mb-4 flex w-full flex-col border-r">
+										<div className="mb-4 text-sm font-medium">
 											Imagens
 										</div>
-										<div className="flex grow mx-auto gap-y-4 flex-col justify-center items-center">
+										<div className="mx-auto flex grow flex-col items-center justify-center gap-y-4">
 											<Avatar
 												uploadable
 												url={avatar_url}
@@ -150,11 +150,11 @@ export default function Account() {
 											/>
 										</div>
 									</div>
-									<div className="flex flex-col gap-4 mb-4 items-center px-8">
+									<div className="mb-4 flex flex-col items-center gap-4 px-8">
 										<div className="w-full">
 											<label
 												htmlFor="brand"
-												className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+												className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 											>
 												Nome de Exibição
 											</label>
@@ -162,7 +162,7 @@ export default function Account() {
 												type="text"
 												name="brand"
 												id="brand"
-												className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+												className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 												required
 												onChange={(e) =>
 													setFullName(e.target.value)
@@ -173,7 +173,7 @@ export default function Account() {
 										<div className="w-full">
 											<label
 												htmlFor="brand"
-												className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+												className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 											>
 												Usuário
 											</label>
@@ -181,7 +181,7 @@ export default function Account() {
 												type="text"
 												name="brand"
 												id="brand"
-												className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+												className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 												required
 												onChange={(e) =>
 													setUsername(e.target.value)
@@ -192,7 +192,7 @@ export default function Account() {
 										<div className="w-full">
 											<label
 												htmlFor="brand"
-												className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+												className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 											>
 												Email
 											</label>
@@ -200,7 +200,7 @@ export default function Account() {
 												type="text"
 												name="brand"
 												id="brand"
-												className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+												className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 												required
 												onChange={(e) =>
 													setUsername(e.target.value)
@@ -211,7 +211,7 @@ export default function Account() {
 										<div className="w-full">
 											<label
 												htmlFor="brand"
-												className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+												className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 											>
 												Senha
 											</label>
@@ -220,18 +220,18 @@ export default function Account() {
 													e.preventDefault();
 													setShowModal(true);
 												}}
-												className="w-full text-gray-50 bg-gray-700 border border-gray-300 focus:outline-none hover:bg-gray-900 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-2.5 py-1 mr-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+												className="mr-2 w-full rounded-lg border border-gray-300 bg-gray-700 px-2.5 py-1 text-sm font-medium text-gray-50 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
 											>
 												Alterar senha
 											</button>
 										</div>
 										<PasswordModal showModal={showModal} />
 									</div>
-									<div className="col-span-2 border-b mb-4"></div>
+									<div className="col-span-2 mb-4 border-b"></div>
 									{/* <div className="col-span-2 flex justify-end"> */}
 									<button
 										type="submit"
-										className="text-white w-fit inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+										className="inline-flex w-fit items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 									>
 										Atualizar perfil
 									</button>

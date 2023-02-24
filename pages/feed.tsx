@@ -1,24 +1,21 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { IoLogoInstagram } from "react-icons/io5";
-import { getCookie, setCookie } from "cookies-next";
-import { BsCheck } from "react-icons/bs";
+import { getCookie, getCookies, setCookie } from "cookies-next";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import CreateReviewModal from "../components/CreateReviewModal";
 import { RxCross1 } from "react-icons/rx";
+import { BsCheck } from "react-icons/bs";
 import Link from "next/link";
+import Image from "next/image";
 
 function Feed() {
-	const [instagramUserId, setInstagramUserId] = useState<string>();
-	const [accessToken, setAccessToken] = useState<string>();
 	const [media, setMedia] = useState([]);
 	const [chosenMedia, setChosenMedia] = useState([]);
 	const [chosenMedia2, setChosenMedia2] = useState([]);
 	const [count, setCount] = useState(1);
 	const [totalCount, setTotalCount] = useState(0);
-	const [username, setUsername] = useState();
-	const [error, setError] = useState();
+	const [username, setUsername] = useState<string>();
 	const supabase = useSupabaseClient();
 	const user = useUser();
 	const router = useRouter();
@@ -29,48 +26,46 @@ function Feed() {
 		"https://localhost:3000/";
 
 	const authUrl = `https://api.instagram.com/oauth/authorize
-?client_id=659292209330572
-&redirect_uri=${url}feed/
-&scope=user_profile,user_media
-&response_type=code`;
+					?client_id=659292209330572
+					&redirect_uri=${url}feed/
+					&scope=user_profile,user_media
+					&response_type=code`;
 
 	useEffect(() => {
-		if (username) {
-			let tokenCookie = getCookie("instagramToken");
-			if (tokenCookie && typeof tokenCookie === "string") {
-				setAccessToken(tokenCookie);
-				fetch("/api/instagramMedia/" + getCookie("instagramToken"))
-					.then((res) => {
-						res.json();
-					})
-					.then((data) => {
-						setMedia(data.data);
-					});
-			} else if (router.query.code) {
-				fetch("/api/instagramToken/" + router.query.code)
-					.then((res) => {
-						return res.json();
-					})
-					.then((data) => {
-						console.log("t", data);
-						setCookie("instagramToken", data.access_token, {
-							sameSite: true,
-							httpOnly: true,
-							maxAge: data.expires_in,
-							path: "/" + username,
-						});
-						setAccessToken(data.access_token);
-						setInstagramUserId(data.user_id);
-						fetch("/api/instagramMedia/" + data.access_token)
-							.then((res) => res.json())
-							.then((data) => {
-								setMedia(data.data);
-							});
-					})
-					.catch((e) => console.log("t", e));
+		console.log("cookies", getCookies());
+		fetch("/api/instagramMedia/" + getCookie("instagramToken")).then(
+			(res) => {
+				if (res.ok) {
+					res.json().then((data) => setMedia(data.data));
+				}
 			}
+		);
+	}, []);
+
+	useEffect(() => {
+		if (router.query.code && username) {
+			fetch("/api/instagramToken/" + router.query.code)
+				.then((res) => {
+					return res.json();
+				})
+				.then((data) => {
+					setCookie("instagramToken", data.access_token, {
+						sameSite: true,
+						httpOnly: true,
+						maxAge: data.expires_in,
+						// path: "/" + username,
+					});
+					fetch("/api/instagramMedia/" + data.access_token).then(
+						(res) => {
+							if (res.ok)
+								res.json().then((data) => setMedia(data.data));
+							else res.text().then((data) => console.log(data));
+						}
+					);
+				})
+				.catch((e) => console.log("t", e));
 		}
-	}, [router.query, username]);
+	}, [router.query.code, username]);
 
 	useEffect(() => {
 		if (user) {
@@ -102,11 +97,6 @@ function Feed() {
 
 	return (
 		<div className="flex flex-col items-center justify-center">
-			{/* {router.query && JSON.stringify(router.query)} */}
-			{/* <InstagramEmbed
-				url="https://www.instagram.com/p/CnXiKgcuiCG/?hl=en"
-				width={328}
-			/> */}
 			<div className="mb-2 flex w-full max-w-xl items-center justify-between">
 				<Link href={"/" + username}>
 					<RxCross1 className="text-2xl" />
@@ -129,12 +119,10 @@ function Feed() {
 						type="button"
 						className="mr-2 inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-gray-500"
 					>
-						{/* <IoLogoInstagram className="text-lg mr-1" /> */}
 						Importar posts
 					</button>
 				)}
 			</div>
-			{error && <div>{JSON.stringify(error)}</div>}
 			{chosenMedia2.length > 0 && (
 				<CreateReviewModal
 					key={chosenMedia2[0].id}
