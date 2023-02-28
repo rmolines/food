@@ -151,7 +151,7 @@ export function ReviewGridAlt({
 					chosenFilters={chosenFilters}
 				/>
 			</div>
-			<div className="mt-4 grid grid-cols-3 justify-center justify-items-center gap-3">
+			<div className="mt-4 grid grid-cols-3 justify-center justify-items-center gap-2 sm:gap-3">
 				{reviews &&
 					reviews.map((review, ind) => (
 						<div

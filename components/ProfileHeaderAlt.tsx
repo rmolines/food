@@ -16,28 +16,26 @@ export function ProfileHeaderAlt({
 	isLoggedInProfile,
 }: Props) {
 	return (
-		<div className="grid grid-cols-2 justify-center items-center gap-x-4 md:gap-x-8 bg-white dark:border-gray-700 dark:bg-gray-800">
-			<div className="w-full flex justify-end">
+		<div className="flex grid-cols-2 items-center justify-center gap-x-4 bg-white dark:border-gray-700 dark:bg-gray-800 sm:grid md:gap-x-8">
+			<div className="flex sm:w-full sm:justify-end">
 				<Avatar
 					url={avatar_url}
-					size={100}
+					size={75}
 					uploadable={false}
 					onUpload={() => {}}
 				/>
 			</div>
 			<div className="flex flex-col">
-				<div className="text-2xl font-medium tracking-wide">
-					{full_name}
-				</div>
-				<div className="flex items-center gap-x-1 relative">
+				<div className="text-2xl font-medium">{full_name}</div>
+				<div className="relative flex items-center gap-x-1">
 					{"@"}
 					{username}
 				</div>
 				{isLoggedInProfile && (
-					<div className="flex gap-x-2 mt-4">
+					<div className="mt-4 flex gap-x-2">
 						<Link
 							href={"/account/"}
-							className="text-sm border rounded-lg w-fit px-2 py-0.5 cursor-pointer hover:bg-gray-100"
+							className="w-fit cursor-pointer rounded-lg border px-2 py-0.5 text-sm hover:bg-gray-100"
 						>
 							Editar perfil
 						</Link>

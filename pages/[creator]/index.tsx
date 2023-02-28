@@ -93,7 +93,7 @@ function Creator() {
 	if (loading) return;
 
 	return (
-		<div className="flex flex-col grow gap-y-12">
+		<div className="flex grow flex-col gap-y-4">
 			<div className="mt-4">
 				<ProfileHeaderAlt
 					user_id={userId}
