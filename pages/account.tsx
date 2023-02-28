@@ -13,6 +13,7 @@ export default function Account() {
 	const [loading, setLoading] = useState(true);
 	const [username, setUsername] = useState<string>();
 	const [fullName, setFullName] = useState<string>();
+	const [email, setEmail] = useState<string>();
 	const [avatar_url, setAvatarUrl] = useState<string>();
 	const [showModal, setShowModal] = useState(false);
 
@@ -34,6 +35,7 @@ export default function Account() {
 				setUsername(data.username);
 				setAvatarUrl(data.avatar_url);
 				setFullName(data.full_name);
+				setEmail(user?.email);
 			}
 		} catch (error) {
 			console.log(error);
@@ -203,9 +205,9 @@ export default function Account() {
 												className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 												required
 												onChange={(e) =>
-													setUsername(e.target.value)
+													setEmail(e.target.value)
 												}
-												value={user.email}
+												value={email}
 											/>
 										</div>
 										<div className="w-full">
