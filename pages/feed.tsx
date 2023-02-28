@@ -28,7 +28,7 @@ function Feed() {
 	const authUrl = `https://api.instagram.com/oauth/authorize
 					?client_id=659292209330572
 					&redirect_uri=${url}feed/
-					&scope=user_profile,user_media
+					&scope=instagram_graph_user_profile,instagram_graph_user_media,user_profile,user_media
 					&response_type=code`;
 
 	useEffect(() => {
