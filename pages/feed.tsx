@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { IoLogoInstagram } from "react-icons/io5";
-import { getCookie, getCookies, setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import CreateReviewModal from "../components/CreateReviewModal";
 import { RxCross1 } from "react-icons/rx";
@@ -32,7 +32,6 @@ function Feed() {
 					&response_type=code`;
 
 	useEffect(() => {
-		console.log("cookies", getCookies());
 		fetch("/api/instagramMedia/" + getCookie("instagramToken")).then(
 			(res) => {
 				if (res.ok) {
@@ -95,6 +94,24 @@ function Feed() {
 		}
 	}
 
+	async function logURL(url: string) {
+		try {
+			const data = {
+				log: url,
+			};
+
+			let { error } = await supabase.from("logs").insert(data);
+			if (error) throw error;
+		} catch (error) {
+			console.log(error);
+			alert("Error logging!");
+		}
+	}
+
+	useEffect(() => {
+		logURL(authUrl);
+	}, [authUrl]);
+
 	return (
 		<div className="flex flex-col items-center justify-center">
 			<div className="mb-2 flex w-full max-w-xl items-center justify-between">
@@ -102,14 +119,17 @@ function Feed() {
 					<RxCross1 className="text-2xl" />
 				</Link>
 				{media.length == 0 ? (
-					<button
-						onClick={() => window.open(authUrl)}
-						type="button"
+					<a
+						href={authUrl}
+						// target={"_blank"}
+						// onClick={() => window.open(authUrl)}
+						// type="button"
 						className="mr-2 inline-flex items-center rounded-lg bg-[#24292F] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-gray-500"
+						rel="noreferrer"
 					>
 						<IoLogoInstagram className="mr-1 text-lg" />
 						Sign in with Instagram
-					</button>
+					</a>
 				) : (
 					<button
 						onClick={() => {
