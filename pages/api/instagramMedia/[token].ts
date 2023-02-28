@@ -54,7 +54,6 @@ export default async function handler(
 				res.status(500).json({ error });
 			});
 	} else {
-		console.log("deu ruim");
 		res.status(500).json({ error: "Access Token not provided" });
 	}
 }

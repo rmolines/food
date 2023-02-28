@@ -25,11 +25,11 @@ function Feed() {
 		process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
 		"https://localhost:3000/";
 
-	const authUrl = `https://api.instagram.com/oauth/authorize
-					?client_id=659292209330572
+	const authUrl = encodeURI(`https://api.instagram.com/oauth/authorize
+					?scope=user_profile user_media
+					&client_id=659292209330572
 					&redirect_uri=${url}feed/
-					&scope=instagram_graph_user_profile,instagram_graph_user_media,user_profile,user_media
-					&response_type=code`;
+					&response_type=code`);
 
 	useEffect(() => {
 		fetch("/api/instagramMedia/" + getCookie("instagramToken")).then(
