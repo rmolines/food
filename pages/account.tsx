@@ -73,9 +73,12 @@ export default function Account() {
 				updated_at: new Date().toISOString(),
 			};
 
-			console.log(updates);
-
 			let { error } = await supabase.from("profiles").upsert(updates);
+
+			if (email !== user?.email) {
+				await supabase.auth.updateUser({ email: email });
+			}
+
 			if (error) throw error;
 			alert("Profile updated!");
 		} catch (error) {
