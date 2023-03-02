@@ -40,6 +40,10 @@ export default function Layout({ children }: { children: JSX.Element }) {
 				/>
 				<meta name="msapplication-TileColor" content="#da532c" />
 				<meta name="theme-color" content="#ffffff" />
+				<meta
+					name="facebook-domain-verification"
+					content="nmd4yyeikwr5w18k2u0w2k9ip7pqzx"
+				/>
 			</Head>
 			{/* <div className="bg-[url('/gradient.svg')] bg-hero bg-no-repeat bg-cover bg-center bg-fixed"> */}
 			<div className="container mx-auto flex min-h-screen max-w-4xl flex-col justify-start px-2 sm:px-8">

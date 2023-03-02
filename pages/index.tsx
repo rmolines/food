@@ -25,7 +25,7 @@ export default function Main() {
 		<section className="my-auto dark:bg-gray-900">
 			<div className="flex items-center gap-8">
 				<div className="mt-4 md:mt-0">
-					<h2 className="mb-4 w-full text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+					<h2 className="mb-4 w-full text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
 						Todas as suas reviews em um só lugar para seus
 						seguidores
 					</h2>
