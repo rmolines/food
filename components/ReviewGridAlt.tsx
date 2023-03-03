@@ -7,6 +7,7 @@ import { MdOutlineIosShare } from "react-icons/md";
 import { Reviews } from "../types/supabase";
 import FilterDropdown from "./FilterDropdown";
 import ReviewModal from "./ReviewModal";
+import SortDropdown from "./SortDropdown";
 import VerticalCard from "./VerticalCard";
 
 export function ReviewGridAlt({
@@ -19,6 +20,8 @@ export function ReviewGridAlt({
 	const supabase = useSupabaseClient();
 	const [reviews, setReviews] = useState<Reviews[]>();
 	const [chosenFilters, setChosenFilters] = useState<number[]>();
+	const [chosenSort, setChosenSort] = useState("created_at");
+	const [ascending, setAscending] = useState(true);
 	const [loading, setLoading] = useState(true);
 	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
 	const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -29,13 +32,21 @@ export function ReviewGridAlt({
 		onTriggered: () => setShowFilterDropdown(false),
 	});
 
+	const sortRef = useDetectClickOutside({
+		onTriggered: () => setShowSortDropdown(false),
+	});
+
 	function onFilterClick() {
 		setShowFilterDropdown((prevState) => !prevState);
 	}
 
+	function onSortClick() {
+		setShowSortDropdown((prevState) => !prevState);
+	}
+
 	useEffect(() => {
 		getReviews();
-	}, [chosenFilters]);
+	}, [chosenFilters, chosenSort, ascending]);
 
 	async function getReviews() {
 		try {
@@ -63,9 +74,7 @@ export function ReviewGridAlt({
 						`image_urls, review, instagram_url, images_info, category(name, id, emoji), type(name, id), restaurant, rating, uuid, created_at, creator!inner(*))`
 					)
 					.eq("creator.username", username)
-					.order("created_at", { ascending: false });
-
-				console.log(data);
+					.order(chosenSort, { ascending: ascending });
 
 				if (error && status !== 406) {
 					throw error;
@@ -143,13 +152,22 @@ export function ReviewGridAlt({
 						</div>
 					)}
 				</div>
-				<FilterDropdown
-					onClick={onFilterClick}
-					showDropdown={showFilterDropdown}
-					ref={filterRef}
-					setChosenFilters={setChosenFilters}
-					chosenFilters={chosenFilters}
-				/>
+				<div className="flex gap-x-2">
+					<SortDropdown
+						onClick={onSortClick}
+						showDropdown={showSortDropdown}
+						ref={sortRef}
+						setChosenSort={setChosenSort}
+						setAscending={setAscending}
+					/>
+					<FilterDropdown
+						onClick={onFilterClick}
+						showDropdown={showFilterDropdown}
+						ref={filterRef}
+						setChosenFilters={setChosenFilters}
+						chosenFilters={chosenFilters}
+					/>
+				</div>
 			</div>
 			<div className="mt-4 grid grid-cols-3 justify-center justify-items-center gap-2 sm:gap-3">
 				{reviews &&
@@ -161,7 +179,7 @@ export function ReviewGridAlt({
 							{isLoggedInProfile && (
 								<Link
 									href={username + "/" + review.uuid}
-									className="absolute inset-0 z-50 hidden items-center justify-center group-hover:flex group-hover:bg-gray-900/20 group-hover:shadow-xl"
+									className="absolute inset-0 z-10 hidden items-center justify-center group-hover:flex group-hover:bg-gray-900/20 group-hover:shadow-xl"
 								>
 									<div className="flex aspect-square w-fit items-center justify-center rounded-full border border-gray-200/80 bg-gray-900/70 p-2 text-white">
 										Editar

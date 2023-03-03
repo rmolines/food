@@ -14,6 +14,11 @@ const nextConfig = {
 				hostname: "**.cdninstagram.com",
 				pathname: "/**",
 			},
+			{
+				protocol: "https",
+				hostname: "cdn-icons-png.flaticon.com",
+				pathname: "/**",
+			},
 		],
 	},
 	typescript: {

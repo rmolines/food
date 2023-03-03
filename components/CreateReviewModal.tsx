@@ -39,7 +39,6 @@ function CreateReviewModal({
 	const [loading, setLoading] = useState(false);
 
 	const [categories, setCategories] = useState();
-	const [types, setTypes] = useState();
 
 	const supabase = useSupabaseClient();
 	const user = useUser();
@@ -73,7 +72,6 @@ function CreateReviewModal({
 		rating,
 		review,
 		image_urls,
-		type,
 		instagram_url,
 	}: {
 		restaurant: object;
@@ -81,7 +79,6 @@ function CreateReviewModal({
 		rating: number;
 		review: string;
 		image_urls: string[];
-		type: string;
 		instagram_url: string;
 	}) {
 		try {
@@ -94,7 +91,6 @@ function CreateReviewModal({
 				rating,
 				review,
 				image_urls,
-				type,
 				instagram_url,
 			};
 
@@ -137,32 +133,8 @@ function CreateReviewModal({
 		}
 	}
 
-	async function getTypes() {
-		try {
-			setLoading(true);
-
-			let { data, error, status } = await supabase
-				.from("types")
-				.select(`id, name`);
-
-			if (error && status !== 406) {
-				throw error;
-			}
-
-			if (data) {
-				setTypes(data);
-			}
-		} catch (error) {
-			console.log(error);
-			alert("Error loading types!");
-		} finally {
-			setLoading(false);
-		}
-	}
-
 	useEffect(() => {
 		getCategories();
-		getTypes();
 	}, []);
 
 	return (
@@ -278,7 +250,7 @@ function CreateReviewModal({
 										}}
 									/>
 								</div>
-								<div>
+								<div className="w-full">
 									<label
 										htmlFor="category"
 										className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -302,36 +274,6 @@ function CreateReviewModal({
 										</option>
 										{categories &&
 											categories.map((e) => (
-												<option key={e.id} value={e.id}>
-													{e.name}
-												</option>
-											))}
-									</select>
-								</div>
-								<div>
-									<label
-										htmlFor="type"
-										className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-									>
-										Tipo
-									</label>
-									<select
-										id="type"
-										className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 invalid:text-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-										required
-										{...register("type", {
-											required:
-												"Este campo é obrigatório",
-										})}
-										onKeyUp={() => {
-											trigger("type");
-										}}
-									>
-										<option value="" disabled selected>
-											Selecionar...
-										</option>
-										{types &&
-											types.map((e) => (
 												<option key={e.id} value={e.id}>
 													{e.name}
 												</option>

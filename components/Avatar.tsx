@@ -16,7 +16,7 @@ export default function Avatar({
 	uploadable: boolean;
 }) {
 	const supabase = useSupabaseClient<Database>();
-	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>(null);
+	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>(url);
 	const [uploading, setUploading] = useState(false);
 
 	useEffect(() => {
@@ -73,27 +73,27 @@ export default function Avatar({
 	};
 
 	return (
-		<div className="flex gap-y-4 flex-col">
+		<div className="flex flex-col gap-y-4">
 			{avatarUrl ? (
-				<div className="w-fit h-fit rounded-full border">
+				<div className="h-fit w-fit rounded-full border">
 					<Image
 						src={avatarUrl}
 						alt="Avatar"
-						className="rounded-full m-1"
+						className="m-1 rounded-full"
 						width={size}
 						height={size}
 					/>
 				</div>
 			) : (
 				<div
-					className="bg-white border-1 border-gray-400 rounded-full"
+					className="rounded-full border-1 border-gray-400 bg-white"
 					style={{ height: size, width: size }}
 				/>
 			)}
 			{uploadable && (
 				<div>
 					<label
-						className="cursor-pointer text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-2.5 py-1 mr-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+						className="mr-2 cursor-pointer rounded-lg border border-gray-300 bg-white px-2.5 py-1 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
 						htmlFor="single"
 					>
 						{uploading ? "Carregando..." : "Trocar Foto de Perfil"}

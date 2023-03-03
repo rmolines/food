@@ -13,7 +13,9 @@ function FinishRegistering() {
 	const supabase = useSupabaseClient();
 	const router = useRouter();
 	const user = useUser();
-	const [avatar_url, setAvatarUrl] = useState<string>();
+	const [avatar_url, setAvatarUrl] = useState<string>(
+		`https://cdn-icons-png.flaticon.com/512/149/149071.png`
+	);
 
 	const [loading, setLoading] = useState(true);
 
@@ -94,7 +96,6 @@ function FinishRegistering() {
 									</label>
 									<input
 										type="text"
-										id="brand"
 										className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 										required
 										{...register("full_name", {
@@ -120,7 +121,6 @@ function FinishRegistering() {
 									</label>
 									<input
 										type="text"
-										id="brand"
 										className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 										required
 										{...register("username", {
