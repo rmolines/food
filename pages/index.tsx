@@ -26,15 +26,14 @@ export default function Main() {
 			<div className="flex items-center gap-8">
 				<div className="mt-4 md:mt-0">
 					<h2 className="mb-4 w-full text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-						Todas as suas reviews em um só lugar para seus
-						seguidores
+						Transforme seu feed do Instagram em seu próprio site
+						pessoal
 					</h2>
 					<p className="mb-6 font-light text-gray-500 dark:text-gray-400">
-						Importe todos os conteúdos e recomendações que você já
-						criou no Instagram em uma plataforma organizada e
-						acessível. Crie categorias, links e notas para que seus
-						seguidores consigam procurar, filtrar e ordenar seus
-						posts!
+						Tenha seu próprio site de recomendações a partir de seus
+						posts do Instagram. Crie novas reviews ou importe posts
+						antigos, seus seguidores finalmente terão um lugar para
+						navegar seus conteúdos de forma clara e organizada.
 					</p>
 					<label
 						htmlFor="input-group-1"
@@ -72,13 +71,13 @@ export default function Main() {
 						</button>
 					</div>
 				</div>
-				<div className="relative hidden aspect-square h-full w-full max-w-xl md:block">
+				<div className="relative hidden h-[45em] w-full md:block">
 					<Image
-						src="/content_team.svg"
+						src="/iphone.png"
 						// src={"/product2.png"}
 						alt="dashboard image"
 						fill
-						className="aspect-square object-contain"
+						className="object-contain"
 					/>
 				</div>
 			</div>

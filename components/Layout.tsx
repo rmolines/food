@@ -46,7 +46,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
 				/>
 			</Head>
 			{/* <div className="bg-[url('/gradient.svg')] bg-hero bg-no-repeat bg-cover bg-center bg-fixed"> */}
-			<div className="container mx-auto flex min-h-screen max-w-5xl flex-col justify-start px-2 sm:px-8">
+			<div className="container mx-auto flex min-h-screen max-w-7xl flex-col justify-start px-2 sm:px-8">
 				<Header />
 				<main className="flex grow flex-col">{children}</main>
 				<div className="hidden sm:block">
