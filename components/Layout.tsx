@@ -27,7 +27,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
 				{/* <meta property="og:image" content={"/preview.png"} /> */}
 				<meta
 					property="og:image"
-					content={"https://www.innfluenced.me/api/og"}
+					content={"https://www.innfluenced.me/preview.png"}
 				/>
 
 				<meta name="twitter:card" content="summary_large_image" />
@@ -46,7 +46,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
 				/>
 				<meta
 					name="twitter:image"
-					content="/https://www.innfluenced.me/api/og"
+					content="https://www.innfluenced.me/preview.png"
 				/>
 				<meta
 					name="viewport"

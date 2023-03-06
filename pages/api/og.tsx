@@ -9,7 +9,7 @@ export default function OgImage() {
 	return new ImageResponse(
 		(
 			<div className="flex items-center gap-8">
-				<div className="mt-4 md:mt-0">
+				<div className="mt-4 flex">
 					<h2 className="mb-4 w-full text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
 						Transforme seu feed do Instagram em seu próprio site
 						pessoal
@@ -21,7 +21,7 @@ export default function OgImage() {
 						navegar seus conteúdos de forma clara e organizada.
 					</p>
 				</div>
-				<div className="relative hidden h-[45em] w-full md:block">
+				<div className="relative flex h-[45em] w-full">
 					<Image
 						src="/iphone.png"
 						alt="dashboard image"
