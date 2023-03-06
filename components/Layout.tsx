@@ -6,11 +6,41 @@ export default function Layout({ children }: { children: JSX.Element }) {
 	return (
 		<>
 			<Head>
-				<title>Innfluenced</title>
+				<title>
+					Innfluenced.me - Transforme seu feed em seu site pessoal
+				</title>
 				<meta
 					name="description"
-					content="Sua plataforma de reviews e recomendações!"
+					content="Crie novas reviews ou importe posts antigos, seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
 				/>
+
+				<meta property="og:url" content="https://www.innfluenced.me" />
+				<meta property="og:type" content="website" />
+				<meta
+					property="og:title"
+					content="Innfluenced.me - Transforme seu feed em seu site pessoal"
+				/>
+				<meta
+					property="og:description"
+					content="Crie novas reviews ou importe posts antigos, seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
+				/>
+				<meta property="og:image" content="./preview.png" />
+
+				<meta name="twitter:card" content="summary_large_image" />
+				<meta property="twitter:domain" content="innfluenced.me" />
+				<meta
+					property="twitter:url"
+					content="https://www.innfluenced.me"
+				/>
+				<meta
+					name="twitter:title"
+					content="Innfluenced.me - Transforme seu feed em seu site pessoal"
+				/>
+				<meta
+					name="twitter:description"
+					content="Crie novas reviews ou importe posts antigos, seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
+				/>
+				<meta name="twitter:image" content="./preview.png" />
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1"
