@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
 					name="twitter:description"
 					content="Crie novas reviews ou importe posts antigos, seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
 				/>
-				<meta name="twitter:image" content="./preview.png" />
+				<meta name="twitter:image" content="/preview.png" />
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1"
