@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
 					property="og:description"
 					content="Seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
 				/>
-				<meta property="og:image" content="./preview.png" />
+				<meta property="og:image" content="/preview.png" />
 
 				<meta name="twitter:card" content="summary_large_image" />
 				<meta property="twitter:domain" content="innfluenced.me" />
