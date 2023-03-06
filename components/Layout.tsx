@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
 				/>
 				<meta
 					property="og:description"
-					content="Crie novas reviews ou importe posts antigos, seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
+					content="Seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
 				/>
 				<meta property="og:image" content="./preview.png" />
 
