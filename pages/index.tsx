@@ -25,15 +25,13 @@ export default function Main() {
 		<section className="my-auto mx-4 mt-36 dark:bg-gray-900 md:mx-0 md:mt-0">
 			<div className="flex flex-col items-center gap-8 text-center md:flex-row md:text-left">
 				<div className="mt-4 md:mt-0">
-					<h2 className="mb-4 w-full text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-						Transforme seu feed do Instagram em seu próprio site
-						pessoal
+					<h2 className="mb-4 w-full text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+						Organize seu feed do Instagram em segundos
 					</h2>
-					<p className="mb-6 text-sm font-light text-gray-500 dark:text-gray-400 md:text-base">
-						Tenha seu próprio site de recomendações a partir de seus
-						posts do Instagram. Crie novas reviews ou importe posts
-						antigos, seus seguidores finalmente terão um lugar para
-						navegar seus conteúdos de forma clara e organizada.
+					<p className="mb-6 text-sm font-light text-gray-600 dark:text-gray-400 md:text-lg">
+						Importe seus posts e reels direto da sua conta e tenha
+						seu próprio site para expor seus mais diversos conteúdos
+						de forma clara e organizada para seus seguidores.
 					</p>
 					<div className="w-full max-w-xl">
 						<label
