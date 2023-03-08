@@ -5,6 +5,9 @@ import { AppProps } from "next/app";
 import "../styles/globals.css";
 import Layout from "../components/Layout";
 import { Database } from "../types/supabase";
+import { Rubik } from "@next/font/google";
+
+const inter = Rubik({ subsets: ["latin"] });
 
 function MyApp({
 	Component,
@@ -36,9 +39,11 @@ function MyApp({
 			supabaseClient={supabase}
 			initialSession={pageProps.initialSession}
 		>
-			<Layout>
-				<Component {...pageProps} />
-			</Layout>
+			<div>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+			</div>
 		</SessionContextProvider>
 	);
 }

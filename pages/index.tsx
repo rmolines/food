@@ -22,7 +22,7 @@ export default function Main() {
 	};
 
 	return (
-		<section className="my-auto mx-4 mt-20 dark:bg-gray-900 md:mx-0 md:mt-0">
+		<section className="my-auto mx-4 mt-20 dark:bg-gray-900 md:mx-0">
 			<div className="flex flex-col items-center gap-8 text-center md:flex-row md:text-left">
 				<div className="mt-4 md:mt-0">
 					<h2 className="mb-4 w-full text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">

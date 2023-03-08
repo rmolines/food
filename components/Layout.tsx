@@ -7,22 +7,26 @@ export default function Layout({ children }: { children: JSX.Element }) {
 		<>
 			<Head>
 				<title>
-					Innfluenced.me - Transforme seu feed em seu site pessoal
+					Innfluenced.me - Organize seu feed do Instagram em segundos
 				</title>
 				<meta
 					name="description"
-					content="Crie novas reviews ou importe posts antigos, seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
+					content="Importe seus posts e reels direto da sua conta e tenha
+					seu próprio site para expor seus mais diversos conteúdos
+					de forma clara e organizada para seus seguidores."
 				/>
 
 				<meta property="og:url" content="https://www.innfluenced.me" />
 				<meta property="og:type" content="website" />
 				<meta
 					property="og:title"
-					content="Innfluenced.me - Transforme seu feed em seu site pessoal"
+					content="Innfluenced.me - Organize seu feed do Instagram em segundos"
 				/>
 				<meta
 					property="og:description"
-					content="Seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
+					content="Importe seus posts e reels direto da sua conta e tenha
+					seu próprio site para expor seus mais diversos conteúdos
+					de forma clara e organizada para seus seguidores."
 				/>
 				{/* <meta property="og:image" content={"/preview.png"} /> */}
 				<meta
@@ -38,11 +42,13 @@ export default function Layout({ children }: { children: JSX.Element }) {
 				/>
 				<meta
 					name="twitter:title"
-					content="Innfluenced.me - Transforme seu feed em seu site pessoal"
+					content="Innfluenced.me - Organize seu feed do Instagram em segundos"
 				/>
 				<meta
 					name="twitter:description"
-					content="Crie novas reviews ou importe posts antigos, seus seguidores finalmente terão um lugar para navegar seus conteúdos de forma clara e organizada."
+					content="Importe seus posts e reels direto da sua conta e tenha
+					seu próprio site para expor seus mais diversos conteúdos
+					de forma clara e organizada para seus seguidores."
 				/>
 				<meta
 					name="twitter:image"
