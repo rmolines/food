@@ -143,25 +143,25 @@ function ReviewModal({
 					id="defaultModal"
 					tabIndex={-1}
 					aria-hidden="true"
-					className="overflow-y-auto overflow-x-hidden fixed inset-0 z-50 bg-gray-900/60 flex justify-center items-center w-full md:inset-0 h-modal md:h-full"
+					className="fixed inset-0 z-50 flex h-modal w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-gray-900/60 md:inset-0 md:h-full"
 				>
-					<div className="relative p-4 w-full max-w-2xl h-full md:h-auto max-h-full">
+					<div className="relative h-full max-h-full w-full max-w-2xl p-4 md:h-auto">
 						{/* <!-- Modal content --> */}
-						<div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+						<div className="relative rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-5">
 							{/* <!-- Modal header --> */}
-							<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+							<div className="mb-4 flex items-center justify-between rounded-t border-b pb-4 dark:border-gray-600 sm:mb-5">
 								<h3 className="text-lg font-semibold text-gray-900 dark:text-white">
 									Nova Review
 								</h3>
 								<button
 									type="button"
-									className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+									className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
 									data-modal-toggle="defaultModal"
 									onClick={() => setShowModal(false)}
 								>
 									<svg
 										aria-hidden="true"
-										className="w-5 h-5"
+										className="h-5 w-5"
 										fill="currentColor"
 										viewBox="0 0 20 20"
 										xmlns="http:ww.w3.org/2000/svg"
@@ -192,12 +192,12 @@ function ReviewModal({
 								}}
 							>
 								<div className="mb-4">
-									<div className="text-sm font-medium mb-2">
+									<div className="mb-2 text-sm font-medium">
 										Imagens
 									</div>
 									{!imagesPreview ? (
 										<div
-											className="flex flex-col justify-center py-10 items-center gap-2 border rounded-lg bg-gray-50 border-gray-300 cursor-pointer hover:bg-gray-100"
+											className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-gray-300 bg-gray-50 py-10 hover:bg-gray-100"
 											onClick={() => {
 												if (widgetApi.current) {
 													widgetApi.current.openDialog();
@@ -209,14 +209,14 @@ function ReviewModal({
 									) : (
 										<>
 											<div
-												className="grid relative grid-cols-4 grid-flow-row overflow-y-scroll p-2 justify-center items-center gap-2 border rounded-lg bg-gray-50 border-gray-300 hover:bg-gray-100 cursor-pointer"
+												className="relative grid cursor-pointer grid-flow-row grid-cols-4 items-center justify-center gap-2 overflow-y-scroll rounded-lg border border-gray-300 bg-gray-50 p-2 hover:bg-gray-100"
 												onClick={() => {
 													if (widgetApi.current) {
 														widgetApi.current.openDialog();
 													}
 												}}
 											>
-												<div className="w-full h-full hover:bg-gray-600/20 hover:z-50 absolute flex items-center justify-center text-lg font-medium">
+												<div className="absolute flex h-full w-full items-center justify-center text-lg font-medium hover:z-50 hover:bg-gray-600/20">
 													{/* <button
 														type="submit"
 														className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -271,11 +271,11 @@ function ReviewModal({
 										setChosenImages(info);
 									}}
 								/>
-								<div className="grid gap-4 mb-4 items-center sm:grid-cols-2">
+								<div className="mb-4 grid items-center gap-4 sm:grid-cols-2">
 									<div className="sm:col-span-2">
 										<label
 											htmlFor="name"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										>
 											Restaurante
 										</label>
@@ -344,13 +344,13 @@ function ReviewModal({
 									<div>
 										<label
 											htmlFor="category"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										>
 											Categoria
 										</label>
 										<select
 											id="category"
-											className="bg-gray-50 invalid:text-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+											className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 invalid:text-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 											required
 											onChange={(e) =>
 												setCategory(e.target.value)
@@ -361,35 +361,6 @@ function ReviewModal({
 											</option>
 											{categories &&
 												categories.map((e) => (
-													<option
-														key={e.id}
-														value={e.id}
-													>
-														{e.name}
-													</option>
-												))}
-										</select>
-									</div>
-									<div>
-										<label
-											htmlFor="type"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-										>
-											Tipo
-										</label>
-										<select
-											id="type"
-											className="bg-gray-50 invalid:text-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-											required
-											onChange={(e) =>
-												setType(e.target.value)
-											}
-										>
-											<option value="" disabled selected>
-												Selecionar...
-											</option>
-											{types &&
-												types.map((e) => (
 													<option
 														key={e.id}
 														value={e.id}
@@ -418,7 +389,7 @@ function ReviewModal({
 									<div>
 										<label
 											htmlFor="price"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										>
 											Nota
 										</label>
@@ -458,14 +429,14 @@ function ReviewModal({
 									<div className="sm:col-span-2">
 										<label
 											htmlFor="description"
-											className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										>
 											Review
 										</label>
 										<textarea
 											id="description"
 											rows={5}
-											className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+											className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 											placeholder=""
 											onChange={(e) =>
 												setReview(e.target.value)
@@ -475,7 +446,7 @@ function ReviewModal({
 								</div>
 								<button
 									type="submit"
-									className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+									className="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 								>
 									{/* <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http:ww.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg> */}
 									Criar review
