@@ -64,7 +64,7 @@ export default function Main() {
 							</div>
 							<button
 								onClick={() => addEmailWaitlist({ email })}
-								className="inline-flex items-center rounded-r-lg border border-primary-700 bg-primary-700 px-3 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+								className="inline-flex items-center rounded-r-lg border border-primary-700 bg-primary-700 px-3 py-2.5 text-center text-sm font-semibold text-white shadow drop-shadow hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
 							>
 								Solicitar acesso
 							</button>
