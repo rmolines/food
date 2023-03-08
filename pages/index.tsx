@@ -25,7 +25,7 @@ export default function Main() {
 		<section className="mx-4 mt-20 dark:bg-gray-900 md:mx-0 md:my-auto">
 			<div className="flex flex-col items-center text-center md:flex-row md:text-left">
 				<div className="mt-4 md:mt-0">
-					<h2 className="mb-4 w-full text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+					<h2 className="mb-4 w-full text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl lg:text-7xl">
 						Organize seu feed do Instagram em segundos
 					</h2>
 					<p className="mb-6 max-w-2xl text-sm font-light text-gray-700 dark:text-gray-400 md:text-lg">
@@ -72,7 +72,7 @@ export default function Main() {
 						</div>
 					</div>
 				</div>
-				<div className="relative h-[45em] w-full max-w-md md:block">
+				<div className="relative h-[45em] w-full max-w-sm md:block">
 					<Image
 						src="/iphone.png"
 						// src={"/product2.png"}
