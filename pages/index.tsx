@@ -73,7 +73,7 @@ export default function Main() {
 				</div>
 				<div className="relative h-[45em] w-full md:block">
 					<Image
-						src="/iphone2.png"
+						src="/iphone.png"
 						// src={"/product2.png"}
 						alt="dashboard image"
 						fill
