@@ -94,76 +94,81 @@ export function ReviewGridAlt({
 
 	return (
 		<div className="mx-auto flex w-full max-w-lg grow flex-col md:max-w-4xl">
-			<div className="flex items-center justify-between gap-x-2">
-				<div>
-					{showModal && (
-						<ReviewModal
-							showModal={showModal}
-							setShowModal={setShowModal}
-						/>
-					)}
-					{isLoggedInProfile && (
-						<div className="flex items-center justify-center">
-							<button
-								type="button"
-								className="mr-2 inline-flex items-center justify-center rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-								onClick={() => {
-									setShowModal(true);
-								}}
+			<div className="flex w-full flex-col items-center justify-between gap-2 md:flex-row">
+				{showModal && (
+					<ReviewModal
+						showModal={showModal}
+						setShowModal={setShowModal}
+					/>
+				)}
+				{isLoggedInProfile && (
+					<div className="flex w-full items-center justify-start">
+						<button
+							type="button"
+							className="mr-2 inline-flex items-center justify-center rounded-lg bg-primary-700 p-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+							onClick={() => {
+								setShowModal(true);
+							}}
+						>
+							<svg
+								aria-hidden="true"
+								className="mr-1 -ml-1 h-5 w-5"
+								fill="currentColor"
+								viewBox="0 0 20 20"
+								xmlns="http://www.w3.org/2000/svg"
 							>
-								<svg
-									aria-hidden="true"
-									className="mr-1 -ml-1 h-5 w-5"
-									fill="currentColor"
-									viewBox="0 0 20 20"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										fillRule="evenodd"
-										d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-										clipRule="evenodd"
-									></path>
-								</svg>{" "}
-								Criar Review
-							</button>
-							<Link
-								href={"/feed"}
-								// className="inline-flex items-center justify-center text-white bg-[#24292F] hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-3 py-2 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-								className="mr-2 inline-flex items-center rounded-lg bg-[#24292F] px-3 py-2 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-gray-500"
-							>
-								<IoLogoInstagram className="mr-1 text-lg" />
-								Importar
-							</Link>
-							<button
-								type="button"
-								className="relative mr-2 inline-flex items-center justify-center gap-x-1 rounded-lg border px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-								onClick={() => {
-									navigator.clipboard.writeText(
-										"innfluenced.me/" + username
-									);
-									alert("URL copiada com sucesso!");
-								}}
-							>
-								<MdOutlineIosShare
-									height={5}
-									width={5}
-									className="text-lg"
-								/>
-								Compartilhar
-							</button>
-						</div>
-					)}
-				</div>
-				<div className="flex gap-x-2">
-					<div className="relative h-fit w-fit">
+								<path
+									fillRule="evenodd"
+									d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+									clipRule="evenodd"
+								></path>
+							</svg>{" "}
+							Review
+						</button>
+						<Link
+							href={"/feed"}
+							// className="inline-flex items-center justify-center text-white bg-[#24292F] hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-3 py-2 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+							className="mr-2 inline-flex items-center rounded-lg bg-[#24292F] px-3 py-2 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50 dark:hover:bg-[#050708]/30 dark:focus:ring-gray-500"
+						>
+							<IoLogoInstagram className="mr-1 text-lg" />
+							Importar
+						</Link>
+						<button
+							type="button"
+							className="relative mr-2 inline-flex items-center justify-center gap-x-1 rounded-lg border px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+							onClick={() => {
+								navigator.clipboard.writeText(
+									"innfluenced.me/" + username
+								);
+								alert("URL copiada com sucesso!");
+							}}
+						>
+							<MdOutlineIosShare
+								height={5}
+								width={5}
+								className="text-lg"
+							/>
+							Compartilhar
+						</button>
+					</div>
+				)}
+				<div className="flex w-full justify-end gap-x-2">
+					<div className="relative w-full">
 						<input
-							// className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-center text-gray-700 bg-gray-50 border border-gray-200 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-							className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 pl-6 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-							placeholder="Pesquisar"
+							className="w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 pl-6 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
 							onChange={(e) => setTextSearch(e.target.value)}
+							placeholder="Pesquisar"
 						/>
 						<FaSearch className="absolute inset-y-0 left-2 h-full text-sm text-gray-500" />
 					</div>
+					{/* <div className="relative md:hidden">
+						<input
+							// className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-center text-gray-700 bg-gray-50 border border-gray-200 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+							className="w-8 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 pl-6 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+							onChange={(e) => setTextSearch(e.target.value)}
+						/>
+						<FaSearch className="absolute inset-y-0 left-2 h-full text-sm text-gray-500" />
+					</div> */}
 					<SortDropdown
 						onClick={onSortClick}
 						showDropdown={showSortDropdown}
