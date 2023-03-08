@@ -6,7 +6,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { IoFilterSharp } from "react-icons/io5";
+import { FaFilter } from "react-icons/fa";
 import { Categories } from "../types/supabase";
 
 type Props = {
@@ -62,7 +62,7 @@ const FilterDropdown = forwardRef<HTMLDivElement, Props>(
 					type="button"
 					onClick={onClick}
 				>
-					<IoFilterSharp className="mr-1" />
+					<FaFilter className="mr-1" />
 					Filtrar
 				</button>
 

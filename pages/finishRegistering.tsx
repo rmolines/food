@@ -14,7 +14,7 @@ function FinishRegistering() {
 	const router = useRouter();
 	const user = useUser();
 	const [avatar_url, setAvatarUrl] = useState<string>(
-		`https://cdn-icons-png.flaticon.com/512/149/149071.png`
+		`fc7e8586-5f97-43af-8460-1a95c89cfd78.png`
 	);
 
 	const [loading, setLoading] = useState(true);

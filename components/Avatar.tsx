@@ -16,7 +16,7 @@ export default function Avatar({
 	uploadable: boolean;
 }) {
 	const supabase = useSupabaseClient<Database>();
-	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>(url);
+	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>();
 	const [uploading, setUploading] = useState(false);
 
 	useEffect(() => {

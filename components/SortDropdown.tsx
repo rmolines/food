@@ -1,5 +1,5 @@
 import { Dispatch, forwardRef, SetStateAction, useState } from "react";
-import { IoFilterSharp } from "react-icons/io5";
+import { FaSortAmountDown } from "react-icons/fa";
 
 type Props = {
 	onClick: () => void;
@@ -25,7 +25,7 @@ const SortDropdown = forwardRef<HTMLDivElement, Props>(function FilterDropdown(
 				type="button"
 				onClick={onClick}
 			>
-				<IoFilterSharp className="mr-1" />
+				<FaSortAmountDown className="mr-1" />
 				Ordenar
 			</button>
 
@@ -47,6 +47,7 @@ const SortDropdown = forwardRef<HTMLDivElement, Props>(function FilterDropdown(
 									setAscending(false);
 									setLiChecked(0);
 								}}
+								checked={liChecked === 0}
 							/>
 							<label
 								htmlFor="checkbox-item-11"
@@ -64,6 +65,7 @@ const SortDropdown = forwardRef<HTMLDivElement, Props>(function FilterDropdown(
 									setAscending(true);
 									setLiChecked(1);
 								}}
+								checked={liChecked === 1}
 							/>
 							<label
 								htmlFor="checkbox-item-11"
@@ -81,6 +83,7 @@ const SortDropdown = forwardRef<HTMLDivElement, Props>(function FilterDropdown(
 									setAscending(false);
 									setLiChecked(2);
 								}}
+								checked={liChecked === 2}
 							/>
 							<label
 								htmlFor="checkbox-item-11"
@@ -98,6 +101,7 @@ const SortDropdown = forwardRef<HTMLDivElement, Props>(function FilterDropdown(
 									setAscending(true);
 									setLiChecked(3);
 								}}
+								checked={liChecked === 3}
 							/>
 							<label
 								htmlFor="checkbox-item-11"
