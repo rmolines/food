@@ -2,6 +2,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
+import { FaSearch } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io5";
 import { MdOutlineIosShare } from "react-icons/md";
 import { Reviews } from "../types/supabase";
@@ -27,6 +28,7 @@ export function ReviewGridAlt({
 	const [showSortDropdown, setShowSortDropdown] = useState(false);
 	const [chosenReview, setChosenReview] = useState(-1);
 	const [showModal, setShowModal] = useState(false);
+	const [textSearch, setTextSearch] = useState();
 
 	const filterRef = useDetectClickOutside({
 		onTriggered: () => setShowFilterDropdown(false),
@@ -153,6 +155,15 @@ export function ReviewGridAlt({
 					)}
 				</div>
 				<div className="flex gap-x-2">
+					<div className="relative h-fit w-fit">
+						<input
+							// className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-center text-gray-700 bg-gray-50 border border-gray-200 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+							className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 pl-6 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+							placeholder="Pesquisar"
+							onChange={(e) => setTextSearch(e.target.value)}
+						/>
+						<FaSearch className="absolute inset-y-0 left-2 h-full text-sm text-gray-500" />
+					</div>
 					<SortDropdown
 						onClick={onSortClick}
 						showDropdown={showSortDropdown}
@@ -171,53 +182,69 @@ export function ReviewGridAlt({
 			</div>
 			<div className="mt-4 grid grid-cols-3 justify-center justify-items-center gap-2 sm:gap-3">
 				{reviews &&
-					reviews.map((review, ind) => (
-						<div
-							key={review.uuid}
-							className="group relative w-full"
-						>
-							{isLoggedInProfile && (
-								<Link
-									href={username + "/" + review.uuid}
-									className="absolute inset-0 z-10 hidden items-center justify-center group-hover:flex group-hover:bg-gray-900/20 group-hover:shadow-xl"
-								>
-									<div className="flex aspect-square w-fit items-center justify-center rounded-full border border-gray-200/80 bg-gray-900/70 p-2 text-white">
-										Editar
-									</div>
-								</Link>
-							)}
-							<Link
-								// href={username + "/" + review.uuid}
-								href={
-									review.instagram_url
-										? review.instagram_url
-										: "#"
-								}
-								className="w-full"
-								target="_blank"
+					reviews.map((review, ind) => {
+						if (textSearch) {
+							const tokens =
+								`${review.category.name} ${review.restaurant?.value.structured_formatting.main_text} ${review.restaurant?.value.terms[2].value}`.toLowerCase();
+							if (
+								tokens.search(textSearch.toLowerCase()) !== -1
+							) {
+								console.log(tokens);
+							} else {
+								return;
+							}
+						}
+
+						return (
+							<div
+								key={review.uuid}
+								className="group relative w-full"
 							>
-								<VerticalCard
-									key={review.uuid}
-									review={review}
-									restaurant_address={
-										review.restaurant?.value
-											.structured_formatting
-											.secondary_text
+								{isLoggedInProfile && (
+									<Link
+										href={username + "/" + review.uuid}
+										className="absolute inset-0 z-10 hidden items-center justify-center group-hover:flex group-hover:bg-gray-900/20 group-hover:shadow-xl"
+									>
+										<div className="flex aspect-square w-fit items-center justify-center rounded-full border border-gray-200/80 bg-gray-900/70 p-2 text-white">
+											Editar
+										</div>
+									</Link>
+								)}
+								<Link
+									// href={username + "/" + review.uuid}
+									href={
+										review.instagram_url
+											? review.instagram_url
+											: "#"
 									}
-									restaurant_name={
-										review.restaurant?.value
-											.structured_formatting.main_text
-									}
-									neighbourhood={
-										review.restaurant?.value.terms[2].value
-									}
-									city={
-										review.restaurant?.value.terms[3].value
-									}
-								/>
-							</Link>
-						</div>
-					))}
+									className="w-full"
+									target="_blank"
+								>
+									<VerticalCard
+										key={review.uuid}
+										review={review}
+										restaurant_address={
+											review.restaurant?.value
+												.structured_formatting
+												.secondary_text
+										}
+										restaurant_name={
+											review.restaurant?.value
+												.structured_formatting.main_text
+										}
+										neighbourhood={
+											review.restaurant?.value.terms[2]
+												.value
+										}
+										city={
+											review.restaurant?.value.terms[3]
+												.value
+										}
+									/>
+								</Link>
+							</div>
+						);
+					})}
 			</div>
 		</div>
 	);
