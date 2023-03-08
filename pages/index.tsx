@@ -22,16 +22,17 @@ export default function Main() {
 	};
 
 	return (
-		<section className="my-auto mx-4 mt-20 dark:bg-gray-900 md:mx-0">
-			<div className="flex flex-col items-center gap-8 text-center md:flex-row md:text-left">
+		<section className="mx-4 mt-20 dark:bg-gray-900 md:mx-0 md:my-auto">
+			<div className="flex flex-col items-center text-center md:flex-row md:text-left">
 				<div className="mt-4 md:mt-0">
-					<h2 className="mb-4 w-full text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+					<h2 className="mb-4 w-full text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
 						Organize seu feed do Instagram em segundos
 					</h2>
-					<p className="mb-6 text-sm font-light text-gray-600 dark:text-gray-400 md:text-lg">
+					<p className="mb-6 max-w-2xl text-sm font-light text-gray-700 dark:text-gray-400 md:text-lg">
 						Importe seus posts e reels direto da sua conta e tenha
 						seu próprio site para expor seus mais diversos conteúdos
-						de forma clara e organizada para seus seguidores.
+						de forma clara e organizada para seus seguidores, com
+						filtro, oredenação e pesquisa por texto de seus posts!
 					</p>
 					<div className="w-full max-w-xl">
 						<label
@@ -71,7 +72,7 @@ export default function Main() {
 						</div>
 					</div>
 				</div>
-				<div className="relative h-[45em] w-full md:block">
+				<div className="relative h-[45em] w-full max-w-md md:block">
 					<Image
 						src="/iphone.png"
 						// src={"/product2.png"}
