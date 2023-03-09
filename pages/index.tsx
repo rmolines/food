@@ -82,6 +82,12 @@ export default function Main() {
 					/>
 				</div>
 			</div>
+			<div>
+				{/* <video src={require("/howto.mp4")} /> */}
+				<video autoPlay muted loop className="">
+					<source src="/howto.mp4" type="video/mp4" />
+				</video>
+			</div>
 		</section>
 	);
 }
