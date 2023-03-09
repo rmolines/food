@@ -16,7 +16,7 @@ export function ProfileHeaderAlt({
 	isLoggedInProfile,
 }: Props) {
 	return (
-		<div className="flex flex-col items-center justify-center gap-x-4 bg-white dark:border-gray-700 dark:bg-gray-800 md:gap-x-8">
+		<div className="mb-4 flex flex-col items-center justify-center gap-x-4 bg-white dark:border-gray-700 dark:bg-gray-800 md:mb-8 md:gap-x-8">
 			<Avatar
 				url={avatar_url}
 				size={90}
@@ -29,7 +29,7 @@ export function ProfileHeaderAlt({
 				{username}
 			</div>
 			{isLoggedInProfile && (
-				<div className="mt-4 flex gap-x-2">
+				<div className="mt-2 flex gap-x-2">
 					<Link
 						href={"/account/"}
 						className="w-fit cursor-pointer rounded-lg border px-2 py-0.5 text-sm hover:bg-gray-100"

@@ -94,7 +94,7 @@ function Creator() {
 
 	return (
 		<div className="flex grow flex-col gap-y-4">
-			<div className="mt-4">
+			<div className="mt-4 md:mt-0">
 				<ProfileHeaderAlt
 					user_id={userId}
 					avatar_url={avatar_url}

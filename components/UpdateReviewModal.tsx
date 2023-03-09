@@ -25,7 +25,6 @@ function UpdateReviewModal({
 	const [rating, setRating] = useState(review.rating);
 	const [reviewText, setReview] = useState(review.review);
 	const [title, setTitle] = useState(review.title);
-	const [type, setType] = useState(review.type.id);
 	const [loading, setLoading] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -42,14 +41,12 @@ function UpdateReviewModal({
 		rating,
 		reviewText,
 		title,
-		type,
 		id,
 	}: {
 		category: number | null;
 		rating: number | null;
 		reviewText: string | null;
 		title: string | null;
-		type: number | null;
 		id: string | null;
 	}) {
 		try {
@@ -60,7 +57,6 @@ function UpdateReviewModal({
 				rating,
 				review: reviewText,
 				title,
-				type,
 			};
 
 			let { error } = await supabase
@@ -198,7 +194,6 @@ function UpdateReviewModal({
 										rating,
 										reviewText,
 										title,
-										type,
 										id: review.uuid,
 									});
 								}}
@@ -281,37 +276,6 @@ function UpdateReviewModal({
 									</div>
 									<div>
 										<label
-											htmlFor="type"
-											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-										>
-											Tipo
-										</label>
-										{type && (
-											<select
-												id="type"
-												className="dark:placehprever-gray-400 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 invalid:text-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 dark:focus:ring-primary-500"
-												required
-												onChange={(e) =>
-													setType(
-														parseInt(e.target.value)
-													)
-												}
-												value={type}
-											>
-												{types &&
-													types.map((e) => (
-														<option
-															key={e.id}
-															value={e.id}
-														>
-															{e.name}
-														</option>
-													))}
-											</select>
-										)}
-									</div>
-									<div>
-										<label
 											htmlFor="price"
 											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 										>
@@ -325,27 +289,6 @@ function UpdateReviewModal({
 												className=""
 												onChange={(event, newValue) =>
 													setRating(newValue)
-												}
-											/>
-										)}
-									</div>
-
-									<div className="sm:col-span-2">
-										<label
-											htmlFor="description"
-											className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-										>
-											Review
-										</label>
-										{review.review && (
-											<textarea
-												id="description"
-												rows={5}
-												className="dark:placehprever-gray-400 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 dark:focus:ring-primary-500"
-												placeholder=""
-												defaultValue={review.review}
-												onChange={(e) =>
-													setReview(e.target.value)
 												}
 											/>
 										)}

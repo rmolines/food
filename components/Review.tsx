@@ -138,8 +138,7 @@ function Review({
 				</div> */}
 				<span className="mr-2 rounded text-xs text-gray-500 dark:bg-gray-700 dark:text-gray-400">
 					<>
-						{review.category.emoji} {review.category.name} •{" "}
-						{review.type.name}
+						{review.category.emoji} {review.category.name}
 					</>
 				</span>
 				{/* <div className="flex flex-wrap gap-y-2">

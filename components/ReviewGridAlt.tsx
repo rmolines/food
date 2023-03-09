@@ -22,7 +22,7 @@ export function ReviewGridAlt({
 	const [reviews, setReviews] = useState<Reviews[]>();
 	const [chosenFilters, setChosenFilters] = useState<number[]>();
 	const [chosenSort, setChosenSort] = useState("created_at");
-	const [ascending, setAscending] = useState(true);
+	const [ascending, setAscending] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
 	const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -62,7 +62,7 @@ export function ReviewGridAlt({
 					)
 					.eq("creator.username", username)
 					.in("category", chosenFilters)
-					.order("created_at", { ascending: false });
+					.order(chosenSort, { ascending: ascending });
 
 				if (error && status !== 406) {
 					throw error;
@@ -153,13 +153,13 @@ export function ReviewGridAlt({
 					</div>
 				)}
 				<div className="flex w-full justify-end gap-x-2">
-					<div className="relative w-full">
+					<div className="relative w-full max-w-xs">
 						<input
-							className="w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 pl-6 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+							className="w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 pl-8 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
 							onChange={(e) => setTextSearch(e.target.value)}
 							placeholder="Pesquisar"
 						/>
-						<FaSearch className="absolute inset-y-0 left-2 h-full text-sm text-gray-500" />
+						<FaSearch className="absolute inset-y-0 left-3 h-full text-sm text-gray-500" />
 					</div>
 					{/* <div className="relative md:hidden">
 						<input
